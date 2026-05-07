@@ -1,8 +1,13 @@
 title: AI & Agentic Systems — Learning Path
 description: From experienced software engineer to credible AI architect. A structured curriculum for senior engineers.
-remote_theme: just-the-docs/just-the-docs
 
-url: "" # Will be set by GitHub Pages automatically
+theme: just-the-docs
+
+url: "https://jonathan34.github.io"
+baseurl: "/ai-learning"
+
+plugins:
+  - jekyll-remote-theme
 
 # Navigation structure
 nav_enabled: true
@@ -19,6 +24,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - .gitignore
 
 # Color scheme
 color_scheme: dark
