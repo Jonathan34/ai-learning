@@ -7,142 +7,145 @@ parent: "Foundations"
 
 # Context Engineering
 
-Prompts get all the attention, but in real systems the prompt is usually the smallest part of what the model sees. The bigger challenge is assembling the right context — the full input the model receives on each call.
+Prompts get all the attention, but in real systems the prompt is usually the smallest part of what the model sees. The bigger challenge is assembling the full input — called the **context** — that the model receives on each call.
 
 A typical production call includes:
 - A system prompt (stable, versioned)
-- Retrieved documents (from a knowledge base)
-- Conversation history (from prior turns)
-- Tool outputs (from function calls the agent made)
-- User state (profile, permissions, session data)
+- Retrieved documents (pulled from a knowledge base based on the user's question)
+- Conversation history (what was said before in this session)
+- Tool outputs (results from functions the agent called)
+- User state (profile, permissions, preferences)
 - The current user input
 
-The model sees all of this as one long sequence of tokens. Its response is a function of that entire sequence. Context engineering is about doing that assembly well — deciding what goes in, in what form, and in what order.
+The model sees all of this as one long sequence of tokens. Its response depends on the entire sequence. Context engineering is about assembling that sequence well — deciding what goes in, in what form, and in what order.
 
-This is the more honest framing for what people used to call "prompt engineering" once they realized the prompt is usually 5% of the input.
+This is the more honest name for what people used to call "prompt engineering" once they realized the prompt is usually 5% of the input.
 
 ## Why this is where most systems fail
 
-Most production AI failures are context failures, not model failures. The model gets the wrong documents, too many documents, stale state, or conflicting instructions — and produces a bad answer that gets blamed on "hallucination."
+Most production AI failures are context failures, not model failures. The model gets the wrong documents, too many documents, stale information, or conflicting instructions — and produces a bad answer that gets blamed on "hallucination."
 
-Garbage in, garbage out applies with compounding severity here. The model has no way to know which parts of its context are relevant, trustworthy, or current. That's your job.
+The model has no way to know which parts of its context are relevant, trustworthy, or current. That's your job as the engineer.
 
-## The three jobs
+## The three jobs of context engineering
 
 ### 1. Deciding what to include
 
-The context window is a finite budget. Even in a 200K-token window, you have to decide what's worth spending tokens on.
+The context window is a budget. Even with 200K tokens available, you have to choose what's worth spending tokens on.
 
-Typical trade-offs:
-- More retrieved documents → better recall, more cost, more risk of the model getting lost
-- More conversation history → better continuity, more cost, more risk of old instructions conflicting with current ones
-- Tool outputs → essential when fresh, clutter when stale
-- Few-shot examples → helpful for novel tasks, wasteful for routine ones
+Trade-offs you'll face:
+- More retrieved documents → better chance of including the right answer, but more cost and more risk of the model getting confused
+- More conversation history → better continuity, but old messages can conflict with current instructions
+- Tool outputs → essential when fresh, noise when stale
+- Examples → helpful for unfamiliar tasks, wasteful for routine ones
 
-A context assembly strategy is a design artifact. Write it down. Diagram it. Review it the way you'd review a data flow diagram. Most teams don't do this and end up with ad-hoc context that works until it doesn't.
+A context assembly strategy is a design decision worth documenting. Most teams don't, and end up with ad-hoc assembly that works until it doesn't.
 
 ### 2. Formatting what's included
 
-Same information, different formats, different results.
+Same information, different format, different results.
 
-What tends to work:
-- Consistent delimiters so the model can distinguish sections (`<document id="42">...</document>`)
-- Source metadata on retrieved documents (title, date, source) — helps the model cite correctly
-- For long context, put the most important content near the end — models attend better to recent tokens
-- Structured data (JSON, tables) for machine-like information; prose for narrative
+What works:
+- Clear boundaries between sections (`<document id="42">...</document>`)
+- Metadata on retrieved documents (title, date, source) — helps the model cite correctly
+- Important content near the end of the context, close to the user's question — models pay more attention to recent tokens
+- Structured data (JSON, tables) for factual information
 
-What doesn't work:
-- Dumping raw documents without any structure
+What doesn't:
+- Dumping raw documents without structure
 - Mixing instructions and data without clear boundaries
-- Putting critical information in the middle of a 100K-token context and hoping the model finds it
+- Burying critical information in the middle of a 100K-token context
 
 ### 3. Keeping context coherent
 
-The model can't detect contradictions. If document A says "policy X was retired in 2024" and document B says "policy X applies to all new users," the model may cite either, both, or synthesize something confused.
+The model can't detect contradictions. If one document says "policy X was retired" and another says "policy X applies to all users," the model may cite either one or try to merge them into something confused.
 
-This is why retrieval quality matters so much. You're not just finding relevant documents — you're trying to produce a coherent context that actually supports a correct answer.
+This is why retrieval quality matters so much. You're not just finding relevant documents — you're trying to produce a coherent input that supports a correct answer.
 
-## RAG in one section
+## RAG: Retrieval-Augmented Generation
 
-Retrieval-Augmented Generation is the dominant pattern for giving LLMs access to information they weren't trained on. The basic loop:
+RAG is the standard pattern for giving LLMs access to information they weren't trained on — your company's docs, recent data, user-specific information. Here's how it works:
 
-1. Embed your documents into vectors (one vector per chunk)
-2. Embed the user query into a vector
-3. Find the top-K most similar chunks (nearest neighbor search)
-4. Inject those chunks into the prompt as context
-5. Generate the response
+```mermaid
+flowchart LR
+    Q[User question] --> E1[Embed question<br/>into a vector]
+    E1 --> S[Search vector database<br/>find similar chunks]
+    S --> R[Top K document chunks]
+    R --> P[Assemble into prompt<br/>with system instructions]
+    P --> M[Send to model]
+    M --> A[Generated answer]
+```
 
-This is "naive RAG." It works surprisingly well for easy cases and fails predictably for hard ones.
+The steps:
+1. **Split your documents into chunks** (paragraphs or sections, typically 200-500 tokens each)
+2. **Convert each chunk into a vector** (a list of numbers that represents its meaning) using an embedding model
+3. **Store those vectors** in a vector database
+4. **When a user asks a question**, convert their question into a vector too
+5. **Find the chunks whose vectors are most similar** to the question vector (nearest neighbor search)
+6. **Put those chunks into the prompt** as context
+7. **Generate the answer** based on the retrieved context
 
-The hard parts, in order of how much they'll bite you:
+This is called "naive RAG." It works well for straightforward questions and fails predictably for harder ones.
 
-**Chunking.** How you split documents determines what can be retrieved. Too small and chunks lose context. Too large and they dilute relevance. Most teams end up with sentence-boundary chunks of 200-500 tokens with overlaps and parent-document references. There's no universal right answer — it depends on your documents.
+### Where naive RAG breaks down
 
-**Query transformation.** User queries are often short and ambiguous. Rewriting them into better search queries (sometimes using an LLM) is a cheap improvement that most teams skip.
+**Chunking problems.** If you split a document in the wrong place, the relevant information might be split across two chunks, and neither chunk alone makes sense. There's no universal right answer — it depends on your documents.
 
-**Re-ranking.** After nearest-neighbor retrieval, re-rank the top results with a cross-encoder or small LLM. Often the single biggest quality win you can get. The initial retrieval casts a wide net; the re-ranker picks the best fish.
+**Bad queries.** Users ask short, ambiguous questions. "What's the policy?" could match dozens of documents. Rewriting the user's question into a better search query (sometimes using the LLM itself) is a cheap improvement most teams skip.
 
-**Hybrid search.** Dense retrieval (vectors) plus sparse retrieval (BM25 keyword search) together usually beats either alone. Keywords catch exact matches; vectors catch semantic matches. Use both.
+**Wrong results ranked high.** Vector similarity isn't perfect. A document about "apple pie recipes" might score high for "Apple stock price" because the word "apple" is in both. Adding a **re-ranking step** — a second, more precise model that re-scores the top results — is often the single biggest quality improvement you can make.
 
-**Citation.** If users need to verify answers, you need to surface which documents supported them. Design this in from the start — retrofitting citation is painful.
+**Keyword misses.** Vector search finds semantically similar content, but can miss exact keyword matches. Combining vector search with traditional keyword search (called **hybrid search**) usually beats either alone.
 
-The gap between "demo RAG" and "production RAG" is large. Demo RAG works because the test query exactly matches a stored document. Real users ask questions the documents don't directly answer, or the right document doesn't exist, or the question is ambiguous. Production RAG is mostly about handling those cases gracefully.
+**No answer available.** The user asks something your documents don't cover. Without explicit handling, the model will synthesize an answer from whatever was retrieved, even if it's off-topic. You need to design the prompt to say "I don't have information about that" when retrieval comes up empty.
 
-## Memory patterns for agents
+## Memory for agents
 
-An agent running across multiple turns needs memory. The model itself is stateless — memory is a system you build around it.
+An agent that runs across multiple turns needs to remember what happened. But the model itself is stateless — it forgets everything between calls. "Memory" is a system you build around the model.
 
-**Short-term (within a session):** conversation history, current task state, recent tool results. Usually just kept in the context, truncated or summarized as it grows.
+**Short-term memory** (within a session): conversation history, what the agent has tried so far, recent tool results. Usually just kept in the context, trimmed or summarized as it grows too long.
 
-**Long-term (across sessions):** user facts, prior conversations, learned preferences. Usually a vector store or structured database, queried at the start of each session to produce relevant context.
+**Long-term memory** (across sessions): user preferences, facts learned in prior conversations, past decisions. Usually stored in a database or vector store, retrieved at the start of each session.
 
-The gotcha with memory: it decays. Stale facts, outdated preferences, contradictions between what was remembered and what's currently true. If memory is in your architecture, so is memory pruning, correction, and conflict resolution. Most teams skip these and pay for it later.
+The gotcha: memory decays in quality over time. Old facts become stale. Preferences change. Contradictions accumulate. If you add memory to your system, you also need memory cleanup, correction, and conflict resolution. Most teams skip this and pay for it later.
 
 ## The "lost in the middle" problem
 
-Research finding (Liu et al., 2023): LLMs attend better to tokens at the beginning and end of long contexts than those in the middle. If critical information is buried in the middle of a 100K-token context, the model may miss it.
+Research has shown that LLMs pay more attention to tokens at the beginning and end of their context than those in the middle. If critical information is buried in the middle of a long context, the model may miss it.
 
-Practical consequences:
-- Put the most likely-relevant retrieved documents near the end, close to the query
-- For multi-document synthesis, don't pile everything in — re-rank and select
-- The effect varies by model; newer long-context models are better but not immune
+Practical takeaway: put the most important retrieved documents near the end of the context, close to the user's question. Don't just dump them in order of retrieval score — think about position.
 
-## When to use RAG vs fine-tuning vs agents
+## When to use RAG vs other approaches
 
-Quick decision framework:
+- **Use RAG** when the knowledge is factual, changes over time, or is specific to your organization. You want the model to cite sources and stay current.
+- **Use fine-tuning** when you want to change how the model behaves (its style, format, or approach to a task). Fine-tuning doesn't add knowledge well — it changes behavior.
+- **Use agents** when the task requires multiple steps, decisions, or tool use that unfolds over time.
 
-- **RAG** when the knowledge is factual, changes over time, or is proprietary. You want freshness and citability.
-- **Fine-tuning** when you want to change the style or behavior of responses, or teach a structured task. Fine-tuning doesn't add knowledge well; it changes how the model acts.
-- **Agents** when the task requires multiple steps, tool use, or decisions that unfold over time.
-
-Most production systems are hybrids: an instruction-tuned model, driven by agents, using RAG for knowledge.
+Most real systems combine all three: a fine-tuned or instruction-tuned model, driven by an agent, using RAG for knowledge.
 
 ## Things that trip people up
 
-**"We'll just throw everything in the context."** Tempting with large context windows. Terrible idea. Costs balloon, latency increases, "lost in the middle" kicks in, and you still have no guarantee the right information gets used.
+**"We'll just put everything in the context."** Tempting with large context windows. Bad idea. Costs go up, latency increases, the model gets confused, and you still can't guarantee it uses the right information.
 
-**Embedding drift.** If you re-index documents with a new embedding model, old queries in logs will compare against new embeddings incorrectly. Either re-embed everything or version your index carefully.
+**Changing your embedding model is expensive.** If you switch to a new embedding model, you have to re-process every document in your database. Pick carefully upfront.
 
-**PII in context.** Retrieved documents, chat history, and tool outputs often contain user PII. That PII now flows to the model provider. Know your data flow and comply with your governance requirements.
+**User data in context flows to the model provider.** Retrieved documents and chat history often contain personal information. That data now goes to whoever hosts the model. Know your data flow.
 
-**RAG without a "say I don't know" path.** A system that always answers will hallucinate when retrieval fails. Design the prompt to acknowledge insufficient context and test for it explicitly.
-
-**Tight coupling to the embedding model.** Changing your embedding model is a multi-week project because you have to re-embed everything and re-tune retrieval parameters. Pick carefully upfront.
+**RAG without a "say I don't know" path.** A system that always answers will hallucinate when retrieval fails. Test explicitly for the "no relevant documents found" case.
 
 ## Where things stand
 
-Context engineering is less a settled discipline and more an active practice. The tooling is improving (vector databases, re-ranking models, hybrid search) but best practices are still shifting. The gap between "demo RAG" and "production RAG" is where most of the real engineering lives.
+Context engineering is still an active practice, not a settled discipline. The tooling is improving (better vector databases, better re-ranking models, better hybrid search) but best practices are still shifting.
 
-If you take one thing from this chapter: the model is only as good as the context you give it. Most "the AI is wrong" complaints are actually "the context assembly is wrong" complaints. Fix the context first.
+If you take one thing from this chapter: the model is only as good as the context you give it. Most "the AI is wrong" complaints are actually "the context assembly is wrong" complaints.
 
-## Where to go deeper
+## Go deeper
 
-- **Workshop W2 — First RAG Pipeline.** Build one end-to-end. Nothing teaches this like doing it.
-- **Anthropic's "Contextual Retrieval" blog post.** Practical technique that materially improves RAG quality.
-- **"Lost in the Middle" paper** (Liu et al., 2023). The canonical reference for attention degradation in long contexts.
-- **LangChain's RAG docs.** Concrete patterns, decent starting point even if you don't use LangChain.
-- Next chapter: **Evaluation** — you can't improve context quality without measuring it.
+- **Workshop W2 — First RAG Pipeline.** Build one end-to-end.
+- **Anthropic's "Contextual Retrieval" blog post** — practical technique that improves RAG quality
+- **"Lost in the Middle" paper** (Liu et al., 2023) — the research on attention and position
+- **LangChain's RAG documentation** — concrete patterns and code
 
 ---
 
-[← Previous](02-prompting-as-programming.html){: .mr-4 }[Next: Evaluation →](04-evaluation.html)
+[← Previous](02-prompting-as-programming.html){: .mr-4 } [Next: Evaluation →](04-evaluation.html)

@@ -7,137 +7,132 @@ parent: "Foundations"
 
 # Evaluation
 
-This is the chapter most people skip and then regret. Evaluation is how you know your AI system works — and in LLM systems, it's genuinely hard because there's no "correct answer" to diff against.
+This is the chapter most people skip and then regret.
 
-A summary can be correct in a hundred different ways and wrong in a million subtle ones. Your eval set is tiny; the real input distribution is vast. Every senior engineer I've talked to who's shipped LLM features in production has converged on the same conclusion: evaluation is the bottleneck. The thing that keeps teams from moving fast is almost always "we don't have a way to tell if this change made things better or worse."
+Evaluation is how you know your AI system works. In traditional software, you write unit tests with expected outputs. In LLM systems, you can't do that — a summary can be correct in a hundred different ways and wrong in a million subtle ones. There's no single "right answer" to compare against.
 
-So let's talk about how to actually do it.
+Every team I've seen ship LLM features in production hits the same wall: "we changed the prompt and we think it's better, but we can't actually prove it." That's an evaluation problem.
 
-## Three things people confuse
+## Why it's hard
 
-**ML evaluation** — measuring how well a trained model does on a task (accuracy, F1 on a labeled set). This is what your ML friends do. Mostly irrelevant for applied AI work since you're not training models.
+In normal software testing, you check: does the output match the expected output? With LLMs, the output is free-form text. Two completely different responses can both be correct. A response can be mostly right but wrong on one detail. A response can sound perfect but be entirely made up.
 
-**LLM evaluation** — measuring base model capability (MMLU, HumanEval, GPQA). This is what benchmark papers measure. It informs your choice of model, not your production work.
+You need new approaches. Here are the ones that work.
 
-**LLM system evaluation** — measuring whether *your* specific system works for *your* specific users on *your* specific inputs. This is the one that matters, and it's the hardest because there's no off-the-shelf benchmark for "does my customer support agent actually help our customers."
+## Three different things people call "evaluation"
 
-Most of this chapter is about system evaluation.
+These get mixed up constantly:
 
-## What you actually need
+**Model benchmarks** — measuring how capable a model is in general (can it do math? code? follow instructions?). This is what papers report. It helps you pick a model but doesn't tell you if your system works.
 
-At minimum, an evaluation harness has three pieces:
+**Task evaluation** — measuring whether your specific system produces good outputs for your specific inputs. This is what matters for production. There's no off-the-shelf benchmark for "does my customer support bot actually help our customers."
 
-**A test set.** Representative inputs, paired with either ground truth outputs or checkable properties. A good test set is diverse (covers real usage patterns), large enough to distinguish signal from noise (20 examples is usually too few; 200 is often enough), and stable but evolvable (same set for regression testing, but you add new cases as production surfaces them).
+**Online monitoring** — measuring quality on live traffic over time. Catches drift and regressions that offline tests miss.
 
-The hardest part is labeling what "correct" means. Depending on the task, that might be an exact string, a set of acceptable answers, a structural property, or a human judgment call.
+Most of this chapter is about task evaluation — the one you have to build yourself.
 
-**A way to run the system under test.** Your production prompt, context assembly, model, and post-processing — as close to prod as you can get. If your eval runs against a different prompt than production uses, it's not testing what you think it's testing.
+## What you need (minimum viable eval)
 
-**A scorer.** Something that decides whether each output is acceptable. This is where it gets interesting.
+Three pieces:
 
-## Scoring strategies
+**1. A test set.** A collection of inputs paired with some definition of "correct." This could be:
+- Exact expected outputs (for classification or extraction)
+- Properties the output must have ("must be valid JSON," "must mention the source document," "must be under 200 words")
+- Human judgments ("is this response helpful? yes/no")
 
-Depending on the task:
+Start with 20-50 examples. That's enough to catch obvious regressions. Grow to 200+ as the system matures.
 
-**Exact match.** Works for classification, extraction with a small output space, structured responses. Cheap, reliable, underused. People assume it won't work — often it does once you add tolerance (case-insensitive, whitespace-normalized, synonym-aware).
+**2. A way to run your system on those inputs.** Your actual production prompt, context assembly, and model — not a simplified version. If your eval runs against a different setup than production, it's not testing what you think.
 
-**Structural checks.** "Is this valid JSON?" "Does it contain a citation?" "Is it under 200 words?" Deterministic and fast. Run these first as cheap filters before anything expensive.
+**3. A scorer.** Something that looks at each output and decides: good or bad?
 
-**Embedding similarity.** Embed the output and a reference; compare cosine similarity. Better than string matching for semantic similarity; still a rough signal.
+## Scoring approaches (from cheapest to most expensive)
 
-**LLM-as-judge.** Use an LLM to score the output. Flexible, powerful, expensive, and has specific failure modes (see below).
+**Exact match.** Does the output equal the expected string? Works for classification, extraction, structured outputs. Cheap and reliable. Add tolerance for whitespace, casing, and minor formatting differences.
 
-**Human evaluation.** The ground truth, but slow and expensive. Use it to calibrate your automated scorers, not as your primary eval.
+**Property checks.** Is it valid JSON? Does it contain a citation? Is it under 200 words? Does it avoid forbidden phrases? These are deterministic — fast and free. Run them first as a cheap filter.
 
-Production systems typically stack these: cheap structural checks first, then LLM-as-judge or embedding similarity, with periodic human-labeled samples for calibration.
+**Embedding similarity.** Convert the output and a reference answer into vectors (using an embedding model) and measure how similar they are. Better than string matching for open-ended text, but still a rough signal.
 
-## LLM-as-judge: powerful and treacherous
+**LLM-as-judge.** Use a language model to evaluate the output. "Given this input and this output, is the response accurate and helpful? Rate 1-5." Flexible and powerful, but has its own failure modes (see below).
 
-Using an LLM to evaluate another LLM's output has become the default because it's the only scalable way to score open-ended outputs. It works. It also has specific failure modes you need to know about.
+**Human review.** A person reads the output and rates it. The gold standard, but slow and expensive. Use it to calibrate your automated scorers, not as your primary eval.
 
-Where it's good:
-- Pairwise comparison ("which response is better?") — more reliable than absolute scoring
-- Factual accuracy checks against a reference document
-- Detecting refusals, incomplete responses, format violations
-- Checking specific properties ("does this mention a recommendation?")
+In practice, stack these: property checks first (cheap, catches obvious failures), then LLM-as-judge or embedding similarity for quality, with periodic human review to make sure your automated scores are trustworthy.
 
-Where it fails:
-- **Self-preference bias.** A model scoring its own outputs rates them higher. Use a different model as the judge.
-- **Position bias.** When comparing A vs B, the model prefers whichever comes first. Randomize order; evaluate both orderings.
-- **Verbosity bias.** Longer responses get rated higher even when they're not better.
-- **Narrow rubric failure.** "Rate this 1-10" gives inconsistent, clustered ratings. Specific rubrics ("does the response cite at least one source? Yes/No") are far more reliable.
+## LLM-as-judge: useful but tricky
 
-Always calibrate your LLM judge against human-labeled examples. Measure agreement (Cohen's kappa or similar). If judge and humans agree 85%+ on clear cases, you're probably OK. If it's 70%, the judge isn't ready.
+Using one LLM to evaluate another LLM's output is now the standard approach for scoring open-ended responses. It works, but has specific failure modes:
 
-## Offline vs online eval
+**Self-preference.** If you use the same model to generate and judge, it rates its own outputs higher. Use a different model as the judge.
 
-**Offline eval** runs against your test set. Fast, reproducible, catches most regressions. Blind to everything in production that's not in your test set — which is most of it.
+**Position bias.** When comparing two responses ("which is better, A or B?"), the model tends to prefer whichever comes first. Fix: randomize the order, run both orderings, only count cases where the judgment is consistent.
 
-**Online eval** measures quality on live traffic:
-- Shadow mode (new system runs alongside current; compare outputs)
-- Canary (small % of traffic to new version; measure quality signals)
-- A/B tests (proper randomized comparison)
-- Continuous sampling for human review (1-5% of calls, rated over time)
+**Verbosity bias.** Longer responses get rated higher even when they're not better. The judge confuses "more words" with "more helpful."
 
-You need both. Offline for rapid iteration; online for ground truth. If you can only do one, start with offline — it's cheaper and catches most regressions.
+**Vague rubrics fail.** "Rate this 1-10" gives inconsistent, clustered scores. Specific questions work much better: "Does this response cite at least one source document? Yes/No." "Does this response answer the user's actual question? Yes/No."
 
-## Drift
+To check if your judge is trustworthy: have humans rate 50-100 examples, then compare the judge's ratings to the human ratings. If they agree 85%+ of the time, the judge is probably reliable enough. If agreement is below 75%, the judge needs work.
 
-Four kinds, all real:
+## Offline eval vs online eval
 
-- **Model drift.** Provider updates the model. Run your eval before and after.
-- **Prompt drift.** Your prompt evolves as people tweak it. Without versioning and re-eval, you accumulate regressions.
-- **Data drift.** User inputs change over time. Your test set from six months ago doesn't reflect current traffic.
-- **Eval set drift.** Your eval set itself changes as people add and remove cases. Track this separately.
+**Offline eval** runs your test set before you ship changes. It's fast, repeatable, and catches most regressions. But it only tests the cases you thought of — it's blind to everything else.
 
-A dashboard showing "eval score over time" that drops could be any of these. If you don't know which, you can't fix it.
+**Online eval** measures quality on real traffic after you ship:
+- **Shadow mode** — run the new version alongside the old one, compare outputs without showing users the new version
+- **Canary** — send a small percentage of traffic to the new version, monitor quality
+- **Sampling for human review** — randomly pick 1-5% of production responses and have someone rate them over time
 
-## Evaluating agents (much harder)
+You need both. Offline eval for fast iteration; online eval for catching things your test set missed.
 
-Everything above assumes single-turn: input → output, score the output. Agents don't work that way. An agent takes a goal, makes multiple decisions, calls tools, and may take hundreds of tokens of intermediate reasoning.
+## Drift: four kinds
 
-To evaluate an agent you need to decide:
-- Is the final output correct?
-- Is the trajectory efficient? (Did it take 3 steps when 1 would do?)
-- Did it avoid unsafe actions?
-- Is it robust when tools fail?
+Your system's quality can degrade over time even if you don't change anything:
 
-Trajectory-level evaluation is still an open research problem. Most production teams evaluate on final outputs plus instrumented properties (step count, tools used, error rate) and accept they're not capturing everything.
+- **Model drift** — the provider updates the model. Even "same version" can shift subtly.
+- **Prompt drift** — someone tweaks the prompt without running the eval. Small changes accumulate.
+- **Data drift** — users start asking different questions than they used to. Your test set no longer represents real traffic.
+- **Eval drift** — your test set itself changes as people add and remove cases.
 
-One important point: a purely output-focused eval can mask catastrophic intermediate behaviors. An agent that produces the right answer after reading the user's private files is worse than one that produces the wrong answer without reading anything. Safety-relevant evals need to check the trajectory.
+If your quality score drops, it could be any of these. Track them separately so you know what to fix.
 
-## The tooling landscape
+## Evaluating agents (harder)
 
-As of late 2025: Braintrust, Langfuse, LangSmith, Promptfoo, Arize Phoenix, Inspect (UK AI Safety Institute), OpenAI Evals. Pick one. The important part is having a process, not the specific tool.
+Everything above assumes a simple input → output system. Agents are different — they take multiple steps, call tools, make decisions along the way.
 
-Most teams end up with a mix — a specialized tool for the harness, plus custom Python for project-specific scorers, test case generation, and reporting. Tools are good; tools that fit your workflow are better; tools that force you to fit their workflow are a trap.
+To evaluate an agent, you need to think about:
+- **Final output quality** — did it get the right answer?
+- **Efficiency** — did it take 3 steps when 1 would have worked?
+- **Safety** — did it avoid calling tools it shouldn't have? Did it stay within its budget?
+- **Robustness** — what happens when a tool call fails?
+
+Most teams evaluate agents on final output quality plus a few instrumented checks (step count, tools used, errors encountered). Full trajectory evaluation — scoring every decision the agent made — is still an open research problem.
 
 ## Things that trip people up
 
-**"We'll eval it once we have users."** By then the feature is shipped and quality problems are public. Build eval first, even if it's small.
+**"We'll add eval later."** By the time you add it, you've already shipped quality problems. Build eval before or alongside the feature, even if it's small.
 
-**Overfitting to the eval set.** If you tune your prompt until it aces all 50 test cases, you've overfit. Hold out some data for validation.
+**Overfitting to the test set.** If you tune your prompt until it aces all 50 test cases, you've probably overfit. Hold some cases back for validation.
 
-**Eval as a one-time exercise.** You built an eval, it passed, you shipped. Six months later everything has drifted. If you don't run eval continuously, it doesn't help you.
+**Eval as a one-time thing.** You built an eval, it passed, you shipped. Six months later everything has drifted. Run eval continuously — at minimum on every prompt or model change.
 
-**Scoring on outputs you can't parse.** The model returns "Here's my answer: {json}" instead of just the JSON. Your parser fails, scorer counts it as wrong. Separate "did the model output something parseable" from "was the content right."
+**Confusing "parseable" with "correct."** The model returns `Here's the JSON: {"answer": "..."}` instead of just the JSON. Your parser fails. Separate "did the output have the right format?" from "was the content right?"
 
-**Cost of good eval.** On a mature system, evaluation can consume 20-40% of engineering time. This is not a sign something is wrong — it's the cost of reliability in this domain. Budget for it.
+**Underestimating the cost.** On a mature system, evaluation can take 20-40% of engineering time. That's normal. It's the cost of reliability in a domain where you can't write unit tests.
 
 ## Where things stand
 
-Evaluation is the least mature part of the applied AI stack. The tools are getting better, the patterns are emerging, but there's no "just use X" answer yet. Every production team is building custom infrastructure. Expect this to remain true for another year or two.
+Evaluation is the least mature part of the AI stack. Tools are improving (Braintrust, Langfuse, Promptfoo, Arize Phoenix) but there's no "just use X" answer. Every team builds custom infrastructure.
 
-The good news: if you invest in eval early, it becomes a genuine competitive advantage. Teams with good eval iterate faster because they can tell what's working. Teams without it are guessing.
+The upside: if you invest in eval early, it becomes a real advantage. Teams with good eval iterate faster because they can tell what's working. Teams without it are guessing.
 
-## Where to go deeper
+## Go deeper
 
 - **Workshop W3 — Real Evaluation.** Build an eval harness end-to-end.
-- **"Judging LLM-as-a-Judge"** (Zheng et al., 2023). Foundational work on LLM judges and their failure modes.
-- **Anthropic's evaluation documentation.** Practical, from people who do this at scale.
-- **Braintrust's blog on evals.** Concrete production patterns.
-- Next chapter: **Security and Safety** — evaluation and safety intersect at red-teaming.
+- **"Judging LLM-as-a-Judge"** (Zheng et al., 2023) — research on LLM judge failure modes
+- **Anthropic's evaluation docs** — practical patterns
+- **Braintrust blog** — production eval patterns
 
 ---
 
-[← Previous](03-context-engineering.html){: .mr-4 }[Next: Security and Safety →](05-security-and-safety.html)
+[← Previous](03-context-engineering.html){: .mr-4 } [Next: Security and Safety →](05-security-and-safety.html)
