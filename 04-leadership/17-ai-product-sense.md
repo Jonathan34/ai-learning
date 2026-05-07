@@ -1,64 +1,105 @@
 ---
 layout: default
-
 title: "17 — AI Product Sense"
 nav_order: 2
 parent: "Leadership"
 ---
-# 17 — AI Product Sense
 
-> Status: **outline**. Will expand in full depth.
-
-## The mental model
+# AI Product Sense
 
 A production AI feature is not a model. It's a model wrapped in UX decisions that determine whether users trust it, use it, and benefit from it. Good AI product sense is a specific skill — adjacent to general product sense but with its own traps.
 
-## Planned contents
+## What good AI UX looks like
 
-### What "good" AI UX looks like
-- Loading states that match actual latency (streaming beats spinners)
-- Uncertainty made visible, not hidden
-- Confidence calibration in the UI (when to say "I'm not sure")
-- Citations and verification paths for claims
-- Graceful degradation when the model fails or refuses
-- Edit-ability of AI output (the human should be able to correct and continue)
+**Streaming over spinners.** When the model takes 3-5 seconds to respond, showing tokens as they arrive feels fast. A spinner for 5 seconds feels broken. Streaming is almost always the right choice for interactive AI.
 
-### Latency budget
-- First token in <1s where possible; longer is OK for async
-- Streaming creates the perception of speed
-- Perceived performance matters more than actual for most tasks
+**Visible uncertainty.** When the model isn't sure, the UI should show it. "Based on the available documents, it appears that..." is better than stating uncertain things as fact. Users trust systems that admit limitations.
 
-### Trust engineering
-- Users trust systems that are calibrated (admit uncertainty, cite sources)
-- Users distrust systems that are over-confident
-- Consistency builds trust; randomness erodes it
-- Disclosure: when to show the user this is AI-generated
+**Citations and verification paths.** If the AI makes a claim, show where it came from. "According to [Document X, page 3]..." lets users verify. This is especially important for RAG systems where the answer is grounded in specific sources.
 
-### Interaction patterns
-- Single-turn (query, response)
-- Multi-turn conversation
-- Document-grounded chat
-- Agent with a visible plan
-- AI-assisted editing (the Copilot pattern)
-- Invisible AI (the model runs behind a deterministic UI)
+**Graceful degradation.** When the model fails (refuses, produces garbage, times out), the user should see something useful — not a blank screen or a generic error. "I couldn't find an answer to that. Here are some related topics..." is better than nothing.
 
-### Failure modes and their UX
-- Hallucination: citations, "I don't know," verification paths
-- Refusal: make it clear why, offer alternatives
-- Over-promising: don't let the model commit to things it can't deliver
-- Stale memory: let the user correct
+**Editable outputs.** AI-generated drafts should be easy to edit. The user should be able to accept, modify, or reject. The AI is a starting point, not a final answer.
 
-## Key gotchas
+**Appropriate disclosure.** Users should know when they're interacting with AI. Not every response needs "I am an AI" — but the overall experience should be transparent about what's automated.
 
-- Shipping a chatbot as the UX by default → often the wrong choice
-- Not designing for the failure case → fragile in production
-- Over-indexing on the happy path demo → rude surprise at launch
-- Disclosure done poorly → either spammy (every response is "I am an AI") or missing (user doesn't know)
-- Inconsistent behavior across sessions → users don't know what to expect
+## Interaction patterns
 
-## What a PE needs to be credible on
+Not everything needs to be a chatbot. Common patterns:
 
-- Can critique an AI feature design from a UX perspective, not just an engineering one
-- Can suggest interaction patterns beyond "chatbot"
-- Can advocate for investment in AI-specific UX (streaming, citations, uncertainty) over generic PM polish
-- Can work fluently with designers and PMs on AI features
+| Pattern | When to use | Example |
+|---|---|---|
+| **Chat** | Open-ended exploration, multi-turn tasks | Customer support, research assistant |
+| **Single-turn Q&A** | Specific questions with specific answers | Search, FAQ, documentation lookup |
+| **Draft generation** | User needs a starting point to edit | Email drafts, report templates, code suggestions |
+| **Inline suggestions** | User is working; AI assists in context | Autocomplete, grammar correction, code completion |
+| **Background processing** | AI works asynchronously on a batch | Summarizing meeting notes, classifying tickets |
+| **Invisible AI** | AI powers a feature without the user knowing | Smart search ranking, content recommendations |
+
+The chatbot is overused. Many tasks are better served by a single-turn interface, inline suggestions, or background processing. Ask: does the user actually want a conversation, or do they want a result?
+
+## Latency budget
+
+| Interaction type | Acceptable latency | Notes |
+|---|---|---|
+| Inline suggestions | < 200ms | Must feel instant |
+| Chat (streaming) | < 1s to first token | Streaming makes the rest tolerable |
+| Chat (no streaming) | < 3s total | Beyond this, users abandon |
+| Background processing | Minutes to hours | User doesn't wait; notify when done |
+| Batch/async | Hours | Acceptable for bulk operations |
+
+If your system can't meet the latency budget for the interaction type you've chosen, either optimize (smaller model, shorter prompts, caching) or change the interaction pattern (move from real-time to async).
+
+## Trust engineering
+
+Users trust AI systems that are:
+- **Calibrated.** They admit uncertainty when uncertain and are confident when confident.
+- **Consistent.** Same question gets similar answers across sessions.
+- **Transparent.** They show their sources, explain their reasoning when asked, and don't pretend to be human.
+- **Correctable.** When wrong, the user can fix it and the system learns (or at least doesn't repeat the mistake in the same session).
+
+Users distrust AI systems that are:
+- **Overconfident.** Stating wrong things as fact.
+- **Inconsistent.** Different answers to the same question on different days.
+- **Opaque.** No way to understand why it said what it said.
+- **Uncorrectable.** User says "that's wrong" and the system ignores it or repeats the error.
+
+## Designing for failure
+
+Every AI feature will produce bad outputs sometimes. The question is: what does the user experience when that happens?
+
+**For low-stakes features** (suggestions, drafts): make it easy to dismiss or edit. The cost of a bad suggestion is one click to ignore it.
+
+**For medium-stakes features** (customer-facing responses, reports): add a review step. Show the AI output to a human before it reaches the end user.
+
+**For high-stakes features** (medical, legal, financial): the AI should be advisory only. A human makes the final decision. The UI should make this clear.
+
+The worst outcome is a high-stakes AI feature that looks authoritative and is sometimes wrong. Users will trust it, act on it, and get hurt.
+
+## Things that trip people up
+
+**Shipping a chatbot by default.** Chat is the most complex interaction pattern (multi-turn state, context management, open-ended inputs). It's often not what the user needs. A simple form with an AI-powered response is often better.
+
+**Not designing for the failure case.** The happy path demo looks great. What happens when the model refuses? When it hallucinates? When it times out? When the user asks something out of scope? Design these paths explicitly.
+
+**Over-promising via model responses.** If the model says "I've scheduled your appointment for Tuesday" but it actually can't schedule anything, trust is destroyed. Constrain what the model claims to do to what it can actually do.
+
+**Inconsistent behavior across sessions.** Users build mental models of how the AI works. If it behaves differently each time (because of temperature, context differences, or model updates), users can't predict it and stop trusting it.
+
+**Ignoring accessibility.** Streaming text, dynamic content, and conversational interfaces all have accessibility implications. Screen readers, keyboard navigation, and reduced-motion preferences all need consideration.
+
+## Where things stand
+
+AI product sense is still developing as a discipline. Most AI features today are chatbots or copilot-style suggestions. The design space is much larger — background processing, invisible AI, structured workflows with AI at specific nodes.
+
+The teams building the best AI products are the ones that start with the user's task, not with the model's capabilities. "What does the user need to accomplish?" first. "How can AI help?" second.
+
+## Go deeper
+
+- [Anthropic's design guidelines for Claude](https://docs.anthropic.com/en/docs/build-with-claude) — practical UX patterns
+- [Nielsen Norman Group on AI UX](https://www.nngroup.com/topic/artificial-intelligence/) — research-backed design guidance
+- [Apple's Human Interface Guidelines for AI](https://developer.apple.com/design/human-interface-guidelines/machine-learning) — platform-specific but principles transfer
+
+---
+
+[← Previous](16-deciding-what-to-build.html){: .mr-4 } [Next: Team and Org Patterns →](18-team-and-org-patterns.html)

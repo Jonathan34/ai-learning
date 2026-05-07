@@ -1,59 +1,119 @@
 ---
 layout: default
-
 title: "15 — AI Platform Engineering"
 nav_order: 5
 parent: "Production"
 ---
-# 15 — AI Platform Engineering (LLMOps)
 
-> Status: **outline**. Will expand in full depth.
+# AI Platform Engineering
 
-## The mental model
+If your organization has more than a handful of AI features, you need a platform. Otherwise every team reinvents prompt versioning, eval harnesses, observability, rate limiting, and cost tracking. This is where DevOps was in 2015 — the patterns are emerging, the tooling is splintered, and there's a huge gap between teams that have invested and teams that haven't.
 
-If your organization has more than a handful of AI features, you need a platform. Otherwise every team reinvents prompt versioning, eval harnesses, observability, rate limiting, secret management, and cost attribution. LLMOps — the set of platform services supporting AI in production — is where DevOps was in 2015: the patterns are emerging, the tooling is splintered, and there's a huge gap between leaders and laggards.
+## What an AI platform provides
 
-## Planned contents
+Think of it as the shared infrastructure that sits between your product teams and the model providers:
 
-### The platform stack
-- Prompt registry (versioning, metadata, environment-aware)
-- Model registry and routing
-- Eval pipelines (offline and online)
-- Observability (traces, metrics, logs)
-- Cost attribution (per team, per feature, per user)
-- Rate limiting and quota management
-- Secret and credential management (API keys for providers)
-- Capability governance (who can call which model, with which data)
-- Red-teaming and safety review workflows
+```mermaid
+flowchart TB
+    subgraph "Product Teams"
+        T1[Team A] 
+        T2[Team B]
+        T3[Team C]
+    end
+    subgraph "AI Platform"
+        PR[Prompt Registry]
+        MR[Model Router]
+        EV[Eval Pipelines]
+        OB[Observability]
+        CO[Cost Attribution]
+        GV[Governance]
+    end
+    subgraph "Providers"
+        P1[Anthropic]
+        P2[OpenAI]
+        P3[Self-hosted]
+    end
+    T1 & T2 & T3 --> PR & MR & EV & OB & CO & GV
+    MR --> P1 & P2 & P3
+```
 
-### Developer experience
-- Prompt playground for engineers
-- SDKs / wrappers around provider APIs that bake in observability, retries, fallbacks
-- Templates for common patterns (chat, RAG, agent)
-- Local dev with production parity
+### The components
 
-### Cross-cutting concerns
-- Data governance and PII handling
-- Audit logs for compliance
-- Incident response for AI failures
-- Model upgrade and deprecation playbooks
+**Prompt registry.** Versioned storage for prompts with metadata (which model, which feature, who owns it, when it last changed). Lets you track what's in production, roll back changes, and compare versions.
 
-### Buy-vs-build decisions
-- Which platform pieces buy (Braintrust, Langfuse, Helicone, OpenRouter)
-- Which to build (often: the integration layer that ties them together)
-- Which to defer (most orgs don't need everything immediately)
+**Model routing.** A layer that decides which model handles each request. Can route based on cost, latency, complexity, or feature flags. Also handles fallback when a provider is down.
 
-## Key gotchas
+**Eval pipelines.** Shared infrastructure for running evaluations — both offline (on test sets) and online (on production samples). Ideally triggered automatically on prompt or model changes.
 
-- Starting with the fanciest platform → team can't use it effectively
-- No platform at all → every team reinvents and makes different trade-offs
-- Building the platform before you know what you need → platforms that solve problems no one has
-- Ignoring cost attribution → surprise six-figure bills
-- "We'll just let engineers pick a provider" → compliance and cost chaos
+**Observability.** Centralized tracing, logging, and metrics for all AI calls across all teams. Covered in chapter 12.
 
-## What a PE needs to be credible on
+**Cost attribution.** Tracking which team, feature, and user is responsible for which costs. Without this, you get surprise bills and no accountability.
 
-- Can design an LLMOps platform roadmap for an organization
-- Can decide what to build vs. buy
-- Can identify where a platform investment will and won't pay off
-- Can communicate the ROI of platform work to leadership in an era where "AI velocity" is the stated goal
+**Governance.** Who can use which models, with which data, for which purposes. Approval workflows for new AI features. Safety review gates.
+
+**Rate limiting and quotas.** Per-team, per-feature limits to prevent one team's runaway agent from consuming all available capacity.
+
+**Secret management.** API keys for model providers, stored securely, rotated regularly, scoped to specific teams or features.
+
+## Developer experience
+
+The platform should make it easy for product engineers to build AI features without becoming AI infrastructure experts:
+
+- **Prompt playground.** A UI where engineers can test prompts against different models, see token counts, and compare outputs.
+- **SDKs / wrappers.** A thin layer around provider APIs that automatically adds observability, retries, fallbacks, and cost tracking. Engineers import your SDK instead of calling the provider directly.
+- **Templates.** Starter patterns for common use cases (chat, RAG, classification, extraction). Not frameworks — just well-documented starting points.
+- **Local dev with production parity.** Engineers should be able to test against the same models and prompts locally that run in production.
+
+## Buy vs build
+
+| Component | Buy (use a vendor) | Build (do it yourself) |
+|---|---|---|
+| Prompt registry | Braintrust, Langfuse | Simple: git repo + metadata file |
+| Model routing | LiteLLM, OpenRouter | Custom: a few hundred lines of code |
+| Eval pipelines | Braintrust, Promptfoo | Custom: specific to your tasks |
+| Observability | Langfuse, Helicone, LangSmith | OpenTelemetry + your existing stack |
+| Cost tracking | Helicone, LiteLLM | Custom: parse provider invoices |
+| Governance | Custom (usually) | Custom (always) |
+
+Most teams end up with a mix: buy the observability and cost tracking (commodity problems), build the eval pipelines and governance (specific to your organization).
+
+The integration layer — the thing that ties all these pieces together and presents a coherent developer experience — is almost always custom. No vendor sells "your AI platform." They sell components of it.
+
+## When to invest
+
+**Too early:** you have one AI feature, one team, one model. A platform is overhead. Just build the feature.
+
+**Right time:** you have 3+ teams building AI features, or you're about to. Patterns are repeating (everyone is solving prompt versioning independently). Cost is becoming hard to track. Quality is inconsistent across features.
+
+**Too late:** every team has their own prompt storage, their own eval approach, their own provider integration. Consolidating is now a migration project, not a greenfield build.
+
+The sweet spot is usually when the second or third team starts building AI features. That's when the patterns become clear enough to abstract.
+
+## Things that trip people up
+
+**Building the platform before you know what you need.** Platforms that solve problems nobody has are shelfware. Build the first 2-3 AI features without a platform. Notice what's painful. Then build the platform to solve those specific pains.
+
+**No platform at all.** Every team reinvents everything. Inconsistent quality, duplicated effort, no shared learning. This doesn't scale past 3-4 teams.
+
+**Ignoring cost attribution.** Without it, nobody owns the bill. One team's experiment costs $50K/month and nobody notices until the invoice arrives.
+
+**Over-engineering the prompt registry.** A git repo with markdown files and a CHANGELOG is a perfectly good prompt registry for most teams. You don't need a database with a UI and approval workflows until you have 50+ prompts across 10+ teams.
+
+**Platform team that doesn't ship AI features themselves.** Platform teams that only build infrastructure without using it tend to build the wrong things. The best AI platform teams also own at least one production AI feature.
+
+## Where things stand
+
+AI platform engineering is early. The patterns are clear (the components listed above) but the tooling is fragmented and immature. Most organizations are building custom platforms from a mix of vendor tools and internal code.
+
+In 2-3 years, this will likely consolidate the way DevOps tooling did — a few dominant platforms, clear best practices, less custom work. Today, you're building on shifting ground. Keep your platform thin, focused on real pain points, and easy to evolve.
+
+## Go deeper
+
+- [LiteLLM](https://github.com/BerriAI/litellm) — multi-provider proxy with cost tracking
+- [Langfuse](https://langfuse.com) — open-source observability + eval
+- [Braintrust](https://www.braintrust.dev) — eval-focused platform
+- [Humanloop](https://humanloop.com) — prompt management and eval
+
+---
+
+[← Previous](14-local-and-edge.html){: .mr-4 } [Next: Deciding What to Build →](../04-leadership/16-deciding-what-to-build.html)
