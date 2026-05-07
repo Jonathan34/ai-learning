@@ -64,6 +64,8 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W5 | [Multi-Agent System](05-workshops/W5-multi-agent-system.html) | ✅ Complete |
 | W6 | [Observability Setup](05-workshops/W6-observability-setup.html) | ✅ Complete |
 | W7 | [Red-Team Exercise](05-workshops/W7-red-team-exercise.html) | ✅ Complete |
+| W8 | [Cost Optimization](05-workshops/W8-cost-optimization.html) | ✅ Complete |
+| W9 | [Agent Efficiency & KPIs](05-workshops/W9-agent-efficiency-kpis.html) | ✅ Complete |
 
 ### Reference
 

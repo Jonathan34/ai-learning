@@ -275,4 +275,4 @@ After implementing mitigations, re-run the attacks. Did they help? Which attacks
 
 ---
 
-[← Previous](W6-observability-setup.html){: .mr-4 } [Back to Home →](../index.html)
+[← Previous](W6-observability-setup.html){: .mr-4 } [Next: Cost Optimization →](W8-cost-optimization.html)
