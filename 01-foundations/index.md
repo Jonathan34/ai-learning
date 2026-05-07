@@ -1,13 +1,12 @@
 ---
 layout: default
-
 title: "Foundations"
 nav_order: 2
 has_children: true
 ---
 
-# Phase 1: Foundations
+# Foundations
 
-The conceptual layer. You won't build production systems without these mental models.
+Five chapters covering the conceptual layer you need before building anything production-grade. How LLMs work, how to steer them, how to feed them context, how to know if they're working, and how to keep them from doing damage.
 
-Five chapters covering how LLMs work, prompting, context engineering, evaluation, and security/safety. ~50 minutes of reading total.
+About 50 minutes of reading total. None of it is optional if you want to be credible in architecture discussions.
