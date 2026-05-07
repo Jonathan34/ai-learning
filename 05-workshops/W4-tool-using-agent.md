@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W4 — Tool-Using Agent"
 nav_order: 4
 parent: "Workshops"

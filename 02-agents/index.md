@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "Agents"
 nav_order: 3
 has_children: true

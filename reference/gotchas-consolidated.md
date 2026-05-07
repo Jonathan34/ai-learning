@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "Gotchas (Consolidated)"
 nav_order: 4
 parent: "Reference"

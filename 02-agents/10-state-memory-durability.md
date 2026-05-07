@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "10 — State, Memory, Durability"
 nav_order: 5
 parent: "Agents"

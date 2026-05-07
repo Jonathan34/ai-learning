@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "07 — Framework Landscape"
 nav_order: 2
 parent: "Agents"

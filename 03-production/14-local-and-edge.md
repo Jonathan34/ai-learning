@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "14 — Local and Edge Inference"
 nav_order: 4
 parent: "Production"

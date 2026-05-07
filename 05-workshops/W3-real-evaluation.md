@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W3 — Real Evaluation"
 nav_order: 3
 parent: "Workshops"

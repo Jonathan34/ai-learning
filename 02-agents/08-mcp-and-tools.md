@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "08 — MCP and Tool Interfaces"
 nav_order: 3
 parent: "Agents"

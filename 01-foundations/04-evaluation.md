@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "04 — Evaluation"
 nav_order: 4
 parent: "Foundations"

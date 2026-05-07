@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "19 — Staying Current"
 nav_order: 4
 parent: "Leadership"

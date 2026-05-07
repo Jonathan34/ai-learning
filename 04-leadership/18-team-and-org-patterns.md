@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "18 — Team and Org Patterns"
 nav_order: 3
 parent: "Leadership"

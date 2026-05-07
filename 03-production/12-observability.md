@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "12 — Observability for AI"
 nav_order: 2
 parent: "Production"

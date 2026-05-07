@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W6 — Observability Setup"
 nav_order: 6
 parent: "Workshops"

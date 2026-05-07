@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "Papers to Know"
 nav_order: 2
 parent: "Reference"

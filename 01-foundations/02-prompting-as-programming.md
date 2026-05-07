@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "02 — Prompting as Programming"
 nav_order: 2
 parent: "Foundations"

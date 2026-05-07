@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W5 — Multi-Agent System"
 nav_order: 5
 parent: "Workshops"

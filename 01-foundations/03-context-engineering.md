@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "03 — Context Engineering"
 nav_order: 3
 parent: "Foundations"

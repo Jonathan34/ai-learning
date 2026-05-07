@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W2 — First RAG Pipeline"
 nav_order: 2
 parent: "Workshops"

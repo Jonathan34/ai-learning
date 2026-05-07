@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "Workshops"
 nav_order: 6
 has_children: true

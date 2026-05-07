@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "01 — How LLMs Actually Work"
 nav_order: 1
 parent: "Foundations"

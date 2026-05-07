@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W1 — Local LLM Setup"
 nav_order: 1
 parent: "Workshops"

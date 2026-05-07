@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "Tools and Models"
 nav_order: 3
 parent: "Reference"

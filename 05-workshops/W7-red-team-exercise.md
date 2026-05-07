@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "W7 — Red-Team Exercise"
 nav_order: 7
 parent: "Workshops"

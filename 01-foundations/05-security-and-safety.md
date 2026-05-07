@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "05 — Security and Safety"
 nav_order: 5
 parent: "Foundations"

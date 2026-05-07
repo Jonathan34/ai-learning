@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "17 — AI Product Sense"
 nav_order: 2
 parent: "Leadership"

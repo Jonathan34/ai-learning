@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "11 — Inference Economics"
 nav_order: 1
 parent: "Production"

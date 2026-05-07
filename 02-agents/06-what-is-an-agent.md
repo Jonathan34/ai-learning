@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "06 — What an Agent Actually Is"
 nav_order: 1
 parent: "Agents"

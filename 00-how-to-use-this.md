@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "How to Use This Material"
 nav_order: 1
 ---

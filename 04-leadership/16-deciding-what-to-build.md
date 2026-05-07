@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "16 — Deciding What to Build"
 nav_order: 1
 parent: "Leadership"

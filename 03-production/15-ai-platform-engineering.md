@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "15 — AI Platform Engineering"
 nav_order: 5
 parent: "Production"

@@ -1,4 +1,6 @@
 ---
+layout: default
+
 title: "13 — Deployment Patterns"
 nav_order: 3
 parent: "Production"
