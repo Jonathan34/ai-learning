@@ -74,7 +74,7 @@ These two layers alternate: attention (tokens talk to each other) → feed-forwa
 
 ```mermaid
 flowchart TB
-    subgraph "Transformer (repeated N times)"
+    subgraph "Transformer block — repeated N times"
         direction TB
         ATT[Attention Layer<br/>tokens look at each other] --> FF[Feed-Forward Layer<br/>each token processed alone]
     end
@@ -120,7 +120,7 @@ Result: each token's representation becomes a mix of information from all other 
 
 Example: in "The cat sat on the mat. It was tired." — the token "It" will attend strongly to "cat" because their Q-K match is high. The model learns these Q/K/V transformations during training.
 
-**Multi-head attention** runs this process multiple times in parallel (32-128 "heads"). Each head learns to look for different things — one might track grammar, another meaning, another position. Their outputs get combined.
+**Multi-head attention** runs this process multiple times in parallel — typically 32 to 128 independent copies, called "heads." Why multiple? Each head learns to pay attention to different things. One head might learn to track grammatical relationships (subject-verb), another might track semantic similarity (synonyms), another might track nearby tokens. Running many heads in parallel and combining their outputs gives the model a richer understanding than any single attention pass could.
 
 **Causal masking** (during generation): token at position 5 can only attend to positions 0-4, not 6+. This enforces left-to-right generation — the model can't peek at future tokens.
 
