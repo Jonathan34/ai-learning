@@ -24,6 +24,14 @@ I'm interested in applied AI and agentic systems — mostly from an architecture
 
 - LinkedIn: [linkedin.com/in/delfour](https://www.linkedin.com/in/delfour)
 
+## Support this work
+
+If this curriculum has been useful to you, consider buying me a coffee. It helps keep this content free and updated.
+
+<a href="https://buymeacoffee.com/jonathan34" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 45px !important; width: 162px !important;">
+</a>
+
 ## About this site
 
 Built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/). Source on GitHub. Feedback welcome.
