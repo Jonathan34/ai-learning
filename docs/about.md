@@ -8,19 +8,18 @@ The content is opinionated and honest about what's settled vs. still evolving. I
 
 ## About me
 
-I'm Jonathan Delfour. Principal Solutions Architect at Amazon, currently working on cloud gaming and applied AI. 17+ years across software engineering, cloud architecture, and data platforms.
+I'm Jonathan Delfour. Principal Architect at Amazon, currently working on cloud gaming and applied AI. 17+ years across software engineering, cloud architecture, and data platforms.
 
 Past work:
 - **Amazon (current):** Shipping production LLM systems on Amazon Bedrock for Amazon Luna. Prompt engineering, retrieval, evaluation harnesses, human-in-the-loop design.
 - **AWS (4+ years):** Founded the first Enterprise Support team for the Energy vertical in North America (zero to 20+ engineers). Principal TAM for Fortune 500 accounts. Featured speaker at AWS re:Invent 2024.
-- **Schlumberger (13 years):** From C++ engineer to cloud and data architect. Pioneered the first cloud-native application at SLB. Designed ML-based logistics optimization saving $3.5M–$5M/month.
+- **Schlumberger/SLB (13 years):** From C++ engineer to cloud and data architect. Pioneered the first cloud-native application at SLB. Designed ML-based logistics optimization saving $3.5M–$5M/month.
 
-I'm interested in applied AI and agentic systems — as an architect, forward-deployed engineer, or engineering manager. This curriculum is both my learning notes and a way to contribute to the broader engineering community figuring this out.
+I'm interested in applied AI and agentic systems — mostly from an architecture point of view. This curriculum is both my learning notes and a way to contribute to the broader engineering community figuring this out.
 
 ## Contact
 
 - LinkedIn: [linkedin.com/in/delfour](https://www.linkedin.com/in/delfour)
-- Email: jonathan.delfour@gmail.com
 
 ## About this site
 
