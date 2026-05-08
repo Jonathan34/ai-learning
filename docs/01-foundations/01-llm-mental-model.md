@@ -94,7 +94,7 @@ Other pieces:
 
 ## Attention: how tokens talk to each other
 
-This is the mechanism that makes transformers special. Older architectures (RNNs) processed tokens one by one in order. Attention lets every token look at every other token directly — which is why LLMs can connect a pronoun on page 3 to a name on page 1.
+This is the mechanism that makes transformers special. Older architectures (Recurrent Neural Networks aka RNNs) processed tokens one by one in order. Attention lets every token look at every other token directly — which is why LLMs can connect a pronoun on page 3 to a name on page 1.
 
 Here's how it works:
 
@@ -147,7 +147,7 @@ Three stages, each building on the last:
 
 2. **Supervised fine-tuning (SFT)** — train on curated instruction/response pairs. This teaches the model to be helpful and follow directions.
 
-3. **RLHF / preference tuning** — train the model to prefer outputs that humans rate highly. This is where safety behavior, personality, and refusal patterns come from.
+3. **Reinforcement Learning from Human Feedback (RLHF) / preference tuning** — train the model to prefer outputs that humans rate highly. This is where safety behavior, personality, and refusal patterns come from.
 
 What this means for you:
 
@@ -174,7 +174,7 @@ What this means for you:
 
 **"The model knows X."** It doesn't know anything. It has statistical patterns. It fails on obscure-but-real facts and succeeds on common-but-wrong ones. Never use it as a factual database without retrieval.
 
-**Token ≠ word.** 1,000 tokens ≈ 750 English words ≈ 500 French words. Code tokenizes differently. Use the actual tokenizer when estimating costs.
+**Token ≠ word.** 1,000 tokens ≈ 750 English words ≈ 500 French words. Code tokenizes differently. Use the actual tokenizer when estimating costs. You can try [Huggingface's tokenizer for testing](https://huggingface.co/spaces/Xenova/the-tokenizer-playground).
 
 **Non-determinism is the default.** Same prompt, different outputs (at temperature > 0). Even at temperature 0, you'll see minor variance in practice — not from the sampling itself (which is deterministic) but from tiny floating-point rounding differences in how GPUs parallelize the math. Design for it.
 
