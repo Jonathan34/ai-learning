@@ -140,4 +140,7 @@ nav:
       - Cost Optimization: 05-workshops/W8-cost-optimization.md
       - Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
       - Structured Output in Practice: 05-workshops/W10-structured-output-in-practice.md
+  - Perspectives:
+      - Overview: perspectives/index.md
+      - "Neurology of AI Safety": perspectives/neurology-of-ai-safety.md
   - About: about.md
