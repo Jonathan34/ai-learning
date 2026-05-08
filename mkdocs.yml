@@ -101,26 +101,27 @@ nav:
           - Context Engineering: 01-foundations/03-context-engineering.md
           - Evaluation: 01-foundations/04-evaluation.md
           - Security and Safety: 01-foundations/05-security-and-safety.md
+          - Structured Output: 01-foundations/06-structured-output.md
       - 02 — Agents:
           - Overview: 02-agents/index.md
-          - What an Agent Is: 02-agents/06-what-is-an-agent.md
-          - Framework Landscape: 02-agents/07-framework-landscape.md
-          - MCP and Tools: 02-agents/08-mcp-and-tools.md
-          - Multi-Agent Patterns: 02-agents/09-multi-agent-patterns.md
-          - State, Memory, Durability: 02-agents/10-state-memory-durability.md
+          - What an Agent Is: 02-agents/07-what-is-an-agent.md
+          - Framework Landscape: 02-agents/08-framework-landscape.md
+          - MCP and Tools: 02-agents/09-mcp-and-tools.md
+          - Multi-Agent Patterns: 02-agents/10-multi-agent-patterns.md
+          - State, Memory, Durability: 02-agents/11-state-memory-durability.md
       - 03 — Production:
           - Overview: 03-production/index.md
-          - Inference Economics: 03-production/11-inference-economics.md
-          - Observability: 03-production/12-observability.md
-          - Deployment Patterns: 03-production/13-deployment-patterns.md
-          - Local and Edge: 03-production/14-local-and-edge.md
-          - Platform Engineering: 03-production/15-ai-platform-engineering.md
+          - Inference Economics: 03-production/12-inference-economics.md
+          - Observability: 03-production/13-observability.md
+          - Deployment Patterns: 03-production/14-deployment-patterns.md
+          - Local and Edge: 03-production/15-local-and-edge.md
+          - Platform Engineering: 03-production/16-ai-platform-engineering.md
       - 04 — Leadership:
           - Overview: 04-leadership/index.md
-          - Deciding What to Build: 04-leadership/16-deciding-what-to-build.md
-          - AI Product Sense: 04-leadership/17-ai-product-sense.md
-          - Team & Org Patterns: 04-leadership/18-team-and-org-patterns.md
-          - Staying Current: 04-leadership/19-staying-current.md
+          - Deciding What to Build: 04-leadership/17-deciding-what-to-build.md
+          - AI Product Sense: 04-leadership/18-ai-product-sense.md
+          - Team & Org Patterns: 04-leadership/19-team-and-org-patterns.md
+          - Staying Current: 04-leadership/20-staying-current.md
       - 05 — Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md
@@ -138,4 +139,5 @@ nav:
       - Red-Team Exercise: 05-workshops/W7-red-team-exercise.md
       - Cost Optimization: 05-workshops/W8-cost-optimization.md
       - Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
+      - Structured Output in Practice: 05-workshops/W10-structured-output-in-practice.md
   - About: about.md
