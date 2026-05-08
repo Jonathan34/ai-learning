@@ -11,6 +11,7 @@ The content is opinionated and honest about what's settled vs. still evolving. I
 I'm Jonathan Delfour. Principal Architect at Amazon, currently working on cloud gaming and applied AI. 17+ years across software engineering, cloud architecture, and data platforms.
 
 Past work:
+
 - **Amazon (current):** Shipping production LLM systems on Amazon Bedrock for Amazon Luna. Prompt engineering, retrieval, evaluation harnesses, human-in-the-loop design.
 
 - **AWS (4+ years):** Founded the first Enterprise Support team for the Energy vertical in North America (zero to 20+ engineers). Principal TAM for Fortune 500 accounts. Featured speaker at AWS re:Invent 2024.
