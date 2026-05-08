@@ -84,6 +84,7 @@ flowchart LR
     R --> P[Assemble into prompt<br/>with system instructions]
     P --> M[Send to model]
     M --> A[Generated answer]
+
 ```
 
 The steps:

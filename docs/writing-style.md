@@ -151,7 +151,7 @@ Not everything needs a conclusion. Sometimes "this is still messy and nobody has
 
 ### No performative humility or enthusiasm
 
-- Don't say "I'm excited to share..." 
+- Don't say "I'm excited to share..."
 
 - Don't say "This is just my humble opinion..."
 
@@ -170,12 +170,15 @@ Every chapter ends with:
 3. Previous/Next navigation links
 
 Format:
+
 ```markdown
+
 ```
 
 ## Front matter
 
 Every page needs:
+
 ```yaml
 ---
 layout: default
@@ -183,6 +186,7 @@ title: "Chapter title"
 nav_order: N
 parent: "Section name"
 ---
+
 ```
 
 ## File naming

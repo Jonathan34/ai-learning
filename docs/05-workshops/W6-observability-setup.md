@@ -36,15 +36,15 @@ import uuid
 def call_llm_instrumented(messages, tools=None, **kwargs):
     call_id = str(uuid.uuid4())[:8]
     start = time.time()
-    
+
     response = client.chat.completions.create(
         messages=messages,
         tools=tools,
         **kwargs
     )
-    
+
     duration = time.time() - start
-    
+
     log_entry = {
         "call_id": call_id,
         "timestamp": time.time(),
@@ -62,12 +62,13 @@ def call_llm_instrumented(messages, tools=None, **kwargs):
         },
         "duration_ms": int(duration * 1000),
     }
-    
+
     # Write to a log file (in production, send to your log aggregator)
     with open("llm_calls.jsonl", "a") as f:
         f.write(json.dumps(log_entry) + "\n")
-    
+
     return response
+
 ```
 
 Replace your existing `client.chat.completions.create` calls with this instrumented version. Now every call is logged with full context.
@@ -94,6 +95,7 @@ def call_llm_instrumented(messages, tools=None, **kwargs):
     log_entry["trace_id"] = trace_id
     log_entry["step"] = get_and_increment_step()  # track step number within trace
     # ...
+
 ```
 
 Now in your agent loop:
@@ -103,6 +105,7 @@ def run_agent(user_message, **kwargs):
     trace_id = start_trace()
     print(f"Trace: {trace_id}")
     # ... rest of agent loop using call_llm_instrumented
+
 ```
 
 Every LLM call within one user request shares a trace ID. You can reconstruct the full trajectory by filtering logs on that ID.
@@ -116,16 +119,16 @@ Instrument tool execution the same way:
 ```python
 def execute_tool_instrumented(name, arguments):
     start = time.time()
-    
+
     try:
         result = execute_tool(name, arguments)
         error = None
     except Exception as e:
         result = None
         error = str(e)
-    
+
     duration = time.time() - start
-    
+
     log_entry = {
         "trace_id": trace_id_var.get(),
         "type": "tool_call",
@@ -136,13 +139,14 @@ def execute_tool_instrumented(name, arguments):
         "error": error,
         "duration_ms": int(duration * 1000),
     }
-    
+
     with open("llm_calls.jsonl", "a") as f:
         f.write(json.dumps(log_entry) + "\n")
-    
+
     if error:
         return {"error": error}
     return result
+
 ```
 
 ---
@@ -159,14 +163,14 @@ def view_trace(trace_id):
             entry = json.loads(line)
             if entry.get("trace_id") == trace_id:
                 events.append(entry)
-    
+
     events.sort(key=lambda e: e["timestamp"])
-    
+
     print(f"=== Trace {trace_id} ({len(events)} events) ===\n")
-    
+
     total_tokens = 0
     total_cost = 0
-    
+
     for event in events:
         if event.get("type") == "tool_call":
             print(f"  🔧 Tool: {event['tool_name']}({event['arguments']})")
@@ -185,9 +189,10 @@ def view_trace(trace_id):
             elif event.get("response"):
                 print(f"     → Final response: {event['response'][:100]}...")
         print()
-    
+
     print(f"Total tokens: {total_tokens}")
     print(f"Total events: {len(events)}")
+
 ```
 
 Run your agent, then view the trace. You should be able to see exactly what happened at each step.
@@ -232,6 +237,7 @@ generation = trace.generation(
     output=response.choices[0].message.content,
     usage={"input": response.usage.prompt_tokens, "output": response.usage.completion_tokens}
 )
+
 ```
 
 Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spot patterns. It's what the DIY approach above evolves into at scale.

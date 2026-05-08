@@ -52,6 +52,7 @@ test_cases = [
     },
     # ... 19-29 more cases covering easy, medium, and hard
 ]
+
 ```
 
 Include cases where the correct answer is "I don't know" — these test whether your system hallucinates.
@@ -65,12 +66,12 @@ These are cheap, deterministic checks. Run them first on every output.
 ```python
 def score_structural(output, expected_properties):
     results = {}
-    
+
     # Length check
     word_count = len(output.split())
     if "max_length_words" in expected_properties:
         results["length_ok"] = word_count <= expected_properties["max_length_words"]
-    
+
     # Format check
     if expected_properties.get("is_json"):
         try:
@@ -78,20 +79,21 @@ def score_structural(output, expected_properties):
             results["valid_json"] = True
         except:
             results["valid_json"] = False
-    
+
     # Contains expected content
     if expected_properties.get("mentions_timeframe"):
         results["mentions_timeframe"] = any(
-            term in output.lower() 
+            term in output.lower()
             for term in ["30 days", "thirty days", "one month", "within a month"]
         )
-    
+
     # Doesn't contain forbidden content
     if expected_properties.get("should_not_contain"):
         for forbidden in expected_properties["should_not_contain"]:
             results[f"no_{forbidden}"] = forbidden.lower() not in output.lower()
-    
+
     return results
+
 ```
 
 These catch obvious failures fast and free. A response that isn't valid JSON when it should be, or that's 2000 words when it should be 200, is clearly broken regardless of content quality.
@@ -104,8 +106,8 @@ For quality dimensions that can't be checked structurally (helpfulness, accuracy
 
 ```python
 def judge_response(question, response, reference_answer, judge_model="claude-sonnet-4-20250514"):
-    judge_prompt = f"""You are evaluating an AI assistant's response. 
-    
+    judge_prompt = f"""You are evaluating an AI assistant's response.
+
 Question asked: {question}
 
 Reference answer (what a correct response should convey): {reference_answer}
@@ -131,6 +133,7 @@ Respond in JSON format:
         messages=[{"role": "user", "content": judge_prompt}]
     )
     return json.loads(result.choices[0].message.content)
+
 ```
 
 Key decisions:
@@ -153,15 +156,15 @@ def run_eval(system_under_test, test_cases):
     for case in test_cases:
         # Get the system's response
         output = system_under_test(case["input"])
-        
+
         # Structural scores
         structural = score_structural(output, case["expected_properties"])
-        
+
         # LLM judge scores
         judge = judge_response(
             case["input"], output, case["reference_answer"]
         )
-        
+
         results.append({
             "input": case["input"],
             "output": output,
@@ -169,7 +172,7 @@ def run_eval(system_under_test, test_cases):
             "judge": judge,
             "difficulty": case.get("difficulty", "unknown")
         })
-    
+
     return results
 
 # Run it
@@ -177,17 +180,18 @@ results = run_eval(my_rag_system, test_cases)
 
 # Summarize
 structural_pass_rate = sum(
-    all(v for v in r["structural"].values()) 
+    all(v for v in r["structural"].values())
     for r in results
 ) / len(results)
 
 accuracy_rate = sum(
-    r["judge"]["accurate"]["answer"] == "Yes" 
+    r["judge"]["accurate"]["answer"] == "Yes"
     for r in results
 ) / len(results)
 
 print(f"Structural pass rate: {structural_pass_rate:.0%}")
 print(f"Accuracy rate: {accuracy_rate:.0%}")
+
 ```
 
 ---
@@ -200,25 +204,26 @@ Now the real value: comparing two versions.
 def compare_versions(version_a, version_b, test_cases):
     results_a = run_eval(version_a, test_cases)
     results_b = run_eval(version_b, test_cases)
-    
+
     print("Case-by-case comparison:")
     regressions = 0
     improvements = 0
-    
+
     for i, (ra, rb) in enumerate(zip(results_a, results_b)):
         a_accurate = ra["judge"]["accurate"]["answer"] == "Yes"
         b_accurate = rb["judge"]["accurate"]["answer"] == "Yes"
-        
+
         if a_accurate and not b_accurate:
             regressions += 1
             print(f"  REGRESSION on case {i}: {test_cases[i]['input'][:50]}...")
         elif not a_accurate and b_accurate:
             improvements += 1
             print(f"  IMPROVEMENT on case {i}: {test_cases[i]['input'][:50]}...")
-    
+
     print(f"\nSummary: {improvements} improvements, {regressions} regressions")
     if regressions > 0:
         print("⚠️  Version B has regressions. Review before shipping.")
+
 ```
 
 Now change something — your prompt, your chunk size, your model — and run the comparison. This is how you make informed decisions about changes instead of guessing.
@@ -242,6 +247,7 @@ agreements = sum(
 )
 agreement_rate = agreements / len(my_ratings)
 print(f"Judge agrees with me {agreement_rate:.0%} of the time")
+
 ```
 
 If agreement is above 85%, your judge is probably reliable enough for automated use. If it's below 75%, you need to improve the judge prompt or use a better judge model.

@@ -50,6 +50,7 @@ Every tool has four parts: a name, a description, parameters, and a return value
     "required": ["customer_id"]
   }
 }
+
 ```
 
 A few principles that make tools work well:
@@ -94,6 +95,7 @@ When a tool call fails, return a structured error with a clear message:
 
 ```json
 {"error": "customer_id not found", "recovery": "Ask the user to verify the ID, or use search_customer_by_email"}
+
 ```
 
 The error message is a prompt to the model. Write it to help the model recover. Don't raise an exception and crash the agent. Don't return nothing and let the model assume success.
@@ -147,6 +149,7 @@ graph LR
     P --- S2
     P --- S3
     P --- S4
+
 ```
 
 ### What an MCP server exposes
@@ -211,6 +214,7 @@ def add(a: int, b: int) -> int:
 
 if __name__ == "__main__":
     mcp.run()
+
 ```
 
 That's a working MCP server. Plug it into Claude Desktop and Claude can call `add`.

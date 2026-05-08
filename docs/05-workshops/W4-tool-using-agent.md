@@ -77,6 +77,7 @@ tools = [
         }
     }
 ]
+
 ```
 
 Now implement fake versions of these tools (they don't need to hit real systems):
@@ -96,6 +97,7 @@ def execute_tool(name, arguments):
         return {"eligible": True, "reason": "Within 30-day return window", "refund_amount": "$49.99"}
     else:
         return {"error": f"Unknown tool: {name}"}
+
 ```
 
 ---
@@ -112,7 +114,7 @@ def run_agent(user_message, max_steps=10):
         {"role": "system", "content": "You are a helpful customer support agent. Use the available tools to help the user. If you can't help, say so clearly."},
         {"role": "user", "content": user_message}
     ]
-    
+
     for step in range(max_steps):
         # Call the model with tools available
         response = client.chat.completions.create(
@@ -121,24 +123,24 @@ def run_agent(user_message, max_steps=10):
             tools=tools,
             tool_choice="auto"  # model decides whether to use a tool
         )
-        
+
         message = response.choices[0].message
-        
+
         # If the model wants to call a tool
         if message.tool_calls:
             # Add the assistant's message (with tool call) to history
             messages.append(message)
-            
+
             # Execute each tool call
             for tool_call in message.tool_calls:
                 tool_name = tool_call.function.name
                 tool_args = json.loads(tool_call.function.arguments)
-                
+
                 print(f"  Step {step+1}: Calling {tool_name}({tool_args})")
-                
+
                 # Execute and get result
                 result = execute_tool(tool_name, tool_args)
-                
+
                 # Add tool result to messages
                 messages.append({
                     "role": "tool",
@@ -149,12 +151,13 @@ def run_agent(user_message, max_steps=10):
             # Model is done — return the final response
             print(f"  Done after {step+1} steps")
             return message.content
-    
+
     return "I wasn't able to complete this request within the step limit."
 
 # Try it
 answer = run_agent("I want to return my order. My email is alice@example.com")
 print(answer)
+
 ```
 
 Run this. Watch the steps. The model should:
@@ -174,27 +177,33 @@ Run this. Watch the steps. The model should:
 Now break things deliberately and see what happens:
 
 **Tool returns an error:**
+
 ```python
 # Modify execute_tool to sometimes fail
 def execute_tool(name, arguments):
     if name == "search_orders" and arguments.get("email") == "unknown@test.com":
         return {"error": "No customer found with this email"}
     # ... rest of implementation
+
 ```
 
 **Model hallucinates a tool name:**
 Add validation before executing:
+
 ```python
 valid_tool_names = {t["name"] for t in tools}
 if tool_name not in valid_tool_names:
     result = {"error": f"Tool '{tool_name}' does not exist. Available tools: {list(valid_tool_names)}"}
+
 ```
 
 **Model passes bad arguments:**
 Add type checking:
+
 ```python
 if name == "search_orders" and "email" not in arguments:
     result = {"error": "Missing required argument 'email'. Please provide the customer's email address."}
+
 ```
 
 **Agent loops forever:**
@@ -217,7 +226,7 @@ def run_agent_with_logging(user_message, max_steps=10):
         "final_response": None,
         "total_steps": 0
     }
-    
+
     # ... same loop as before, but record each step:
     trace["steps"].append({
         "step": step + 1,
@@ -225,12 +234,13 @@ def run_agent_with_logging(user_message, max_steps=10):
         "tool_results": results_for_this_step,
         "model_response": message.content if not message.tool_calls else None
     })
-    
+
     # Save trace
     with open(f"traces/{trace['timestamp']}.json", "w") as f:
         json.dump(trace, f, indent=2)
-    
+
     return trace
+
 ```
 
 Now when something goes wrong in production, you can look at the trace and see exactly what happened: what the model saw, what it decided, what the tools returned.

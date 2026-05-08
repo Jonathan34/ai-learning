@@ -53,6 +53,7 @@ This is why the advice in the prompting chapter to "put stable content first, va
 ```mermaid
 flowchart LR
     N[Network<br/>~50-200ms] --> Q[Queue<br/>variable] --> P[Prefill<br/>process input] --> G[Generation<br/>token by token]
+
 ```
 
 - **Network latency** — round trip to the provider. 50-200ms typically.
@@ -82,6 +83,7 @@ flowchart LR
     R[Request] --> C{Complexity<br/>classifier}
     C -->|simple| S[Small model<br/>fast, cheap]
     C -->|complex| L[Large model<br/>slow, expensive]
+
 ```
 
 The classifier can be:

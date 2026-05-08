@@ -30,6 +30,7 @@ flowchart LR
     F --> G[Append to sequence]
     G -->|repeat| D
     G -->|done?| H[Final output]
+
 ```
 
 ## Key concepts
@@ -80,6 +81,7 @@ flowchart TB
 
     IN[Token embeddings] --> ATT
     FF --> OUT[Next token probabilities]
+
 ```
 
 Other pieces:
@@ -114,6 +116,7 @@ flowchart LR
 
     Q --> |dot product with all Keys| W[Attention weights<br/>relevance scores]
     W --> |weighted sum of Values| O[Updated token<br/>representation]
+
 ```
 
 For each token, the model checks how well its Query matches every other token's Key (using a dot product — basically measuring similarity). High match = high attention weight. Then it takes a weighted average of all the Values.

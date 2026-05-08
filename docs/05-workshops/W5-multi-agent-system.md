@@ -28,6 +28,7 @@ flowchart TB
     W --> O
     D --> O
     O --> F[Final response to user]
+
 ```
 
 ---
@@ -37,28 +38,33 @@ flowchart TB
 Pick a scenario. A good one for this workshop: "Research assistant that can search, summarize, and produce a report."
 
 **Research specialist:**
+
 ```python
 research_agent = {
     "system_prompt": "You are a research specialist. Your job is to find relevant information on a topic. Use your tools to search and fetch content. Return a structured summary of what you found.",
     "tools": [web_search_tool, fetch_url_tool],
     "max_steps": 5
 }
+
 ```
 
 **Writer specialist:**
+
 ```python
 writer_agent = {
     "system_prompt": "You are a writing specialist. Given research notes, produce a clear, well-structured summary or report. You do not search for information — you work with what you're given.",
     "tools": [],  # no tools — just generation
     "max_steps": 1
 }
+
 ```
 
 **Orchestrator:**
+
 ```python
 orchestrator = {
     "system_prompt": """You coordinate a team of specialists to answer user requests.
-    
+
 Available specialists:
 
 - research: Can search the web and fetch content. Use when you need information.
@@ -76,6 +82,7 @@ or
     "tools": [],
     "max_steps": 8
 }
+
 ```
 
 ---
@@ -88,31 +95,31 @@ def run_multi_agent(user_request, max_rounds=5):
         {"role": "system", "content": orchestrator["system_prompt"]},
         {"role": "user", "content": user_request}
     ]
-    
+
     trace = {"rounds": []}
-    
+
     for round_num in range(max_rounds):
         # Ask orchestrator what to do next
         response = call_llm(orchestrator_messages)
         decision = json.loads(response)
-        
+
         trace["rounds"].append({"orchestrator_decision": decision})
-        
+
         if decision["action"] == "respond":
             return decision["final_answer"], trace
-        
+
         elif decision["action"] == "delegate":
             specialist = decision["specialist"]
             instruction = decision["instruction"]
             context = decision.get("context", "")
-            
+
             # Run the specialist
             specialist_result = run_specialist(
                 specialist, instruction, context
             )
-            
+
             trace["rounds"][-1]["specialist_result"] = specialist_result
-            
+
             # Feed result back to orchestrator
             orchestrator_messages.append(
                 {"role": "assistant", "content": json.dumps(decision)}
@@ -120,7 +127,7 @@ def run_multi_agent(user_request, max_rounds=5):
             orchestrator_messages.append(
                 {"role": "user", "content": f"Result from {specialist}: {specialist_result}"}
             )
-    
+
     return "Could not complete within round limit.", trace
 
 
@@ -138,6 +145,7 @@ def run_specialist(specialist_name, instruction, context):
             system=writer_agent["system_prompt"],
             user=f"{instruction}\n\nSource material:\n{context}"
         )
+
 ```
 
 ---
@@ -185,6 +193,7 @@ Now trigger the failure modes:
 Based on what broke, add:
 
 **Budget tracking:**
+
 ```python
 total_llm_calls = 0
 max_total_calls = 20
@@ -195,9 +204,11 @@ def call_llm_with_budget(messages, **kwargs):
     if total_llm_calls > max_total_calls:
         raise BudgetExceeded(f"Hit {max_total_calls} LLM calls limit")
     return call_llm(messages, **kwargs)
+
 ```
 
 **Loop detection:**
+
 ```python
 # If orchestrator makes the same delegation twice in a row, force it to respond
 if len(trace["rounds"]) >= 2:
@@ -207,14 +218,17 @@ if len(trace["rounds"]) >= 2:
         orchestrator_messages.append(
             {"role": "user", "content": "You've already tried this. Please provide your best answer with what you have."}
         )
+
 ```
 
 **Timeout per specialist:**
+
 ```python
 import signal
 
 def run_specialist_with_timeout(specialist_name, instruction, context, timeout=30):
     # ... add a timeout so a stuck specialist doesn't block forever
+
 ```
 
 ---

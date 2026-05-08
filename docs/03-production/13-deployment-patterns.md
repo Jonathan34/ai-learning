@@ -108,11 +108,13 @@ Don't let an AI outage take down your entire application. The AI feature should 
 Pin your model version in production. Don't use "latest" — model updates can change behavior in ways that break your prompts.
 
 ```
+
 # Bad
 model = "claude-sonnet"  # could change any time
 
-# Good  
+# Good
 model = "claude-sonnet-4-20250514"  # specific version
+
 ```
 
 ### Upgrade process

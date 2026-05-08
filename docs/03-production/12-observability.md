@@ -33,6 +33,7 @@ flowchart TB
         S4 --> S5[LLM call 2<br/>800ms]
         S5 --> S6[Return response<br/>5ms]
     end
+
 ```
 
 OpenTelemetry (the standard observability framework) has semantic conventions for LLM calls — standard attribute names for model, tokens, latency, etc. Using these means your traces are compatible with multiple observability backends.

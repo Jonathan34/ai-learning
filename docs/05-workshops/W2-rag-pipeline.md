@@ -34,6 +34,7 @@ flowchart LR
     C --> P[Build prompt with chunks as context]
     P --> M[LLM generates answer]
     M --> A[Answer with citations]
+
 ```
 
 ---
@@ -70,6 +71,7 @@ def chunk_text(text, chunk_size=500, overlap=50):
         chunks.append(chunk)
         start = end - overlap  # overlap with previous chunk
     return chunks
+
 ```
 
 **Try two strategies and compare:**
@@ -87,7 +89,7 @@ def chunk_by_sentences(text, max_chunk_size=500):
     chunks = []
     current_chunk = []
     current_size = 0
-    
+
     for sentence in sentences:
         words = len(sentence.split())
         if current_size + words > max_chunk_size and current_chunk:
@@ -96,10 +98,11 @@ def chunk_by_sentences(text, max_chunk_size=500):
             current_size = 0
         current_chunk.append(sentence)
         current_size += words
-    
+
     if current_chunk:
         chunks.append(' '.join(current_chunk))
     return chunks
+
 ```
 
 Process all your documents. Note how many chunks you get and their average size.
@@ -118,6 +121,7 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer('all-MiniLM-L6-v2')  # small, fast, decent quality
 embeddings = model.encode(chunks)
 print(f"Each chunk becomes a vector of {embeddings[0].shape[0]} dimensions")
+
 ```
 
 Install: `pip install sentence-transformers`
@@ -134,6 +138,7 @@ response = client.embeddings.create(
     input=chunks
 )
 embeddings = [item.embedding for item in response.data]
+
 ```
 
 For this workshop, local embeddings are fine. The quality difference matters less than you'd think for a first pass.
@@ -156,6 +161,7 @@ collection.add(
     ids=[f"chunk_{i}" for i in range(len(chunks))],
     metadatas=[{"source": "doc_name", "chunk_index": i} for i in range(len(chunks))]
 )
+
 ```
 
 Install: `pip install chromadb`
@@ -168,6 +174,7 @@ results = collection.query(
     n_results=5
 )
 print(results['documents'][0])  # top 5 most relevant chunks
+
 ```
 
 Try a few queries. Are the results relevant? This is your first taste of retrieval quality — and where most RAG problems live.
@@ -183,10 +190,10 @@ def ask(question, n_results=5):
     # Retrieve relevant chunks
     results = collection.query(query_texts=[question], n_results=n_results)
     context_chunks = results['documents'][0]
-    
+
     # Build the prompt
     context = "\n\n---\n\n".join(context_chunks)
-    prompt = f"""Answer the question based on the context below. 
+    prompt = f"""Answer the question based on the context below.
 If the context doesn't contain the answer, say "I don't have information about that."
 Cite which section you're drawing from.
 
@@ -196,7 +203,7 @@ Context:
 Question: {question}
 
 Answer:"""
-    
+
     # Call the model (adjust for your setup)
     response = client.chat.completions.create(
         model="llama3.2:3b",  # or "claude-sonnet-4-20250514" etc.
@@ -205,6 +212,7 @@ Answer:"""
     return response.choices[0].message.content
 
 print(ask("What is the refund policy?"))
+
 ```
 
 Try 10 questions. Note:
@@ -232,18 +240,19 @@ def ask_with_rerank(question, n_retrieve=20, n_use=5):
     # Retrieve more candidates than we'll use
     results = collection.query(query_texts=[question], n_results=n_retrieve)
     candidates = results['documents'][0]
-    
+
     # Re-rank with cross-encoder
     pairs = [[question, doc] for doc in candidates]
     scores = reranker.predict(pairs)
-    
+
     # Take top N after re-ranking
     ranked = sorted(zip(scores, candidates), reverse=True)
     top_chunks = [doc for _, doc in ranked[:n_use]]
-    
+
     # Generate (same as before)
     context = "\n\n---\n\n".join(top_chunks)
     # ... same prompt and generation as Part 5
+
 ```
 
 Compare answers with and without re-ranking on the same questions. You should see improvement, especially on ambiguous queries where the initial retrieval returns a mix of relevant and irrelevant chunks.
@@ -268,6 +277,7 @@ for case in test_cases:
     print(f"  Contains expected info: {contains_expected}")
     print(f"  Answer: {answer[:200]}...")
     print()
+
 ```
 
 This is a minimal eval. In production you'd use LLM-as-judge, check citation accuracy, and measure on hundreds of cases. But even 10 cases with manual review teaches you a lot about where your pipeline fails.

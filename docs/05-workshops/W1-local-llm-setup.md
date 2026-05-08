@@ -25,12 +25,14 @@ brew install ollama
 
 # Start the server
 ollama serve
+
 ```
 
 Pull your first model. Start small:
 
 ```bash
 ollama pull llama3.2:3b
+
 ```
 
 This downloads a 2 GB quantized model. Quantization means the model's numbers have been compressed from their original precision (32-bit floating point) down to 4-bit integers — trading a small amount of quality for a massive reduction in file size and memory use. The original Llama 3.2 3B in full precision is closer to 6 GB.
@@ -39,6 +41,7 @@ Run it:
 
 ```bash
 ollama run llama3.2:3b
+
 ```
 
 You're now talking to a language model running entirely on your laptop. Ask it something. Note the generation speed.
@@ -61,6 +64,7 @@ Pull three more models covering a range:
 ollama pull llama3.2:1b       # smaller
 ollama pull llama3.1:8b       # medium
 ollama pull qwen2.5:14b       # larger, different model family
+
 ```
 
 The 14B model needs 8+ GB of memory. If you don't have that, skip it and try `mistral:7b` instead.
@@ -85,6 +89,7 @@ Write down what you observed.
 
 ```bash
 ollama show llama3.2:3b --modelfile
+
 ```
 
 You'll see the parameter file. Notice the model is `Q4_K_M` or similar — that's 4-bit quantization with a specific compression scheme. The letters and numbers encode how aggressively the model was compressed and which algorithm was used.
@@ -94,6 +99,7 @@ Find where Ollama stored the actual model file:
 ```bash
 # macOS
 ls -lh ~/.ollama/models/blobs/
+
 ```
 
 Look at the file sizes. These are GGUF files — llama.cpp's binary format for storing quantized models. This is what's actually loaded into memory at runtime.
@@ -102,6 +108,7 @@ Try a different quantization level:
 
 ```bash
 ollama pull llama3.2:3b-instruct-q8_0    # 8-bit quantization
+
 ```
 
 Compare quality and speed against the default (Q4). You'll see the quality-vs-size trade-off directly. The 8-bit version is larger and slightly better; the 4-bit version is smaller and slightly worse. For most tasks, the difference is subtle.
@@ -116,6 +123,7 @@ Start the server if it's not already running:
 
 ```bash
 ollama serve
+
 ```
 
 In Python:
@@ -136,6 +144,7 @@ response = client.chat.completions.create(
     ]
 )
 print(response.choices[0].message.content)
+
 ```
 
 Now you have a local LLM reachable from code. Anything you can build against OpenAI or Anthropic, you can prototype locally for free.
@@ -149,6 +158,7 @@ Ollama is a wrapper. Going one level down gives you real understanding of what's
 ```bash
 # macOS via Homebrew
 brew install llama.cpp
+
 ```
 
 Download a GGUF model file directly from HuggingFace (a platform where people publish model files):
@@ -157,12 +167,14 @@ Download a GGUF model file directly from HuggingFace (a platform where people pu
 # Example: a small Llama 3.2 model
 # Check huggingface.co for current URLs
 wget https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+
 ```
 
 Run it:
 
 ```bash
 llama-cli -m Llama-3.2-3B-Instruct-Q4_K_M.gguf -p "Explain RAG in two sentences." -n 200
+
 ```
 
 Now you've seen the naked inference path. llama.cpp has knobs for everything — context length, temperature, sampling strategy, batching. Run `llama-cli --help` once just to see the scope.

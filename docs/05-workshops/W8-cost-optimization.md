@@ -30,16 +30,16 @@ def calculate_cost_per_request(log_file, pricing):
             trace_id = entry.get("trace_id")
             if not trace_id:
                 continue
-            
+
             if trace_id not in traces:
                 traces[trace_id] = {
-                    "input_tokens": 0, 
-                    "output_tokens": 0, 
+                    "input_tokens": 0,
+                    "output_tokens": 0,
                     "cached_tokens": 0,
                     "llm_calls": 0,
                     "tool_calls": 0
                 }
-            
+
             if entry.get("type") == "tool_call":
                 traces[trace_id]["tool_calls"] += 1
             else:
@@ -48,14 +48,14 @@ def calculate_cost_per_request(log_file, pricing):
                 traces[trace_id]["output_tokens"] += usage.get("output_tokens", 0)
                 traces[trace_id]["cached_tokens"] += usage.get("cached_tokens", 0)
                 traces[trace_id]["llm_calls"] += 1
-    
+
     # Calculate cost per trace
     for trace_id, stats in traces.items():
         input_cost = (stats["input_tokens"] - stats["cached_tokens"]) * pricing["input"] / 1_000_000
         cached_cost = stats["cached_tokens"] * pricing["cached"] / 1_000_000
         output_cost = stats["output_tokens"] * pricing["output"] / 1_000_000
         stats["cost_usd"] = input_cost + cached_cost + output_cost
-    
+
     return traces
 
 # Example pricing for Claude Sonnet (check current rates)
@@ -77,6 +77,7 @@ print(f"Avg LLM calls per request: {sum(t['llm_calls'] for t in traces.values())
 print(f"Avg tool calls per request: {sum(t['tool_calls'] for t in traces.values())/len(traces):.1f}")
 print(f"Avg input tokens: {sum(t['input_tokens'] for t in traces.values())/len(traces):.0f}")
 print(f"Avg output tokens: {sum(t['output_tokens'] for t in traces.values())/len(traces):.0f}")
+
 ```
 
 Write these numbers down. They're your baseline. Every optimization below will be measured against this.
@@ -123,6 +124,7 @@ messages = [
         "content": f"{dynamic_context}\n\nUser request: {user_message}"  # changes per request
     }
 ]
+
 ```
 
 Run your 20 test requests again. Compare:
@@ -142,21 +144,29 @@ Output tokens cost 3-5x more than input tokens. Generating 2000 tokens when 200 
 **Approaches:**
 
 **Explicit max_tokens limit:**
+
 ```python
 response = client.chat.completions.create(
     messages=messages,
     max_tokens=500,  # hard cap
 )
+
 ```
 
 **Prompt-level constraint:**
+
 ```
+
 Keep your response under 150 words. Be direct and concise.
+
 ```
 
 **Structured output (forces terse format):**
+
 ```
+
 Respond in JSON with only these fields: summary (one sentence), action (one word), confidence (0-1).
+
 ```
 
 Measure the impact. If your agent was generating 800-token reasoning chains before a final 100-token answer, you may cut output costs in half with tighter constraints. Quality often stays the same — verbose models aren't better models.
@@ -180,7 +190,7 @@ Complex: multi-step reasoning, ambiguous requests, requires judgment.
 Request: {user_request}
 
 Classification (one word):"""
-    
+
     response = call_llm(
         messages=[{"role": "user", "content": classifier_prompt}],
         model="claude-haiku-4",  # small, fast, cheap
@@ -194,6 +204,7 @@ def route_request(user_request):
         return run_agent(user_request, model="claude-haiku-4")
     else:
         return run_agent(user_request, model="claude-sonnet-4")
+
 ```
 
 Measure:
@@ -215,15 +226,16 @@ Agents accumulate context as they run. By step 10, you might be sending 15,000 t
 **Strategies:**
 
 **Summarize old steps:**
+
 ```python
 def prune_context_by_summarization(messages, keep_recent=4, summarize_model="claude-haiku-4"):
     if len(messages) < keep_recent + 2:
         return messages  # nothing to summarize
-    
+
     system_msg = messages[0]
     old_messages = messages[1:-keep_recent]
     recent_messages = messages[-keep_recent:]
-    
+
     # Summarize the old messages
     summary = call_llm(
         messages=[
@@ -233,12 +245,13 @@ def prune_context_by_summarization(messages, keep_recent=4, summarize_model="cla
         model=summarize_model,
         max_tokens=300
     )
-    
+
     return [
         system_msg,
         {"role": "assistant", "content": f"[Previous conversation summary:]\n{summary}"},
         *recent_messages
     ]
+
 ```
 
 **Drop old tool outputs:**
@@ -248,20 +261,21 @@ Tool outputs often take up massive context space. Once you've used a tool result
 def prune_old_tool_outputs(messages, keep_last_n_tool_results=3):
     # Replace old tool_results with short summaries
     tool_result_indices = [
-        i for i, m in enumerate(messages) 
+        i for i, m in enumerate(messages)
         if m.get("role") == "tool"
     ]
-    
+
     if len(tool_result_indices) <= keep_last_n_tool_results:
         return messages
-    
+
     # Summarize all but the most recent
     for i in tool_result_indices[:-keep_last_n_tool_results]:
         content = messages[i].get("content", "")
         if len(content) > 200:
             messages[i]["content"] = f"[Previous tool result — {len(content)} chars, summarized]"
-    
+
     return messages
+
 ```
 
 Measure the impact on context size and cost. A 10-step agent with good context pruning might use half the tokens of the same agent without pruning.
@@ -275,13 +289,16 @@ Agents loop. Sometimes they loop too much. Each loop iteration is at least one L
 **Strategies:**
 
 **Hard step limit (you probably have this already):**
+
 ```python
 max_steps = 10
 for step in range(max_steps):
     # agent loop
+
 ```
 
 **Per-tool call limit:**
+
 ```python
 tool_call_counts = {}
 
@@ -290,9 +307,11 @@ def execute_tool_limited(name, arguments, max_per_session=5):
     if tool_call_counts[name] > max_per_session:
         return {"error": f"Maximum {max_per_session} calls to {name} per session. Use what you have."}
     return execute_tool(name, arguments)
+
 ```
 
 **Detect repeated calls:**
+
 ```python
 recent_calls = []
 
@@ -302,15 +321,17 @@ def execute_tool_dedup(name, arguments):
         return {"error": "You just called this with the same arguments. Try something different or conclude."}
     recent_calls.append(call_key)
     return execute_tool(name, arguments)
+
 ```
 
 **Enforce a budget:**
+
 ```python
 class TokenBudget:
     def __init__(self, max_tokens):
         self.max_tokens = max_tokens
         self.used = 0
-    
+
     def consume(self, tokens):
         self.used += tokens
         if self.used > self.max_tokens:
@@ -324,10 +345,11 @@ def call_llm_with_budget(messages, **kwargs):
     if budget.used + estimated > budget.max_tokens:
         # Force a final response
         raise BudgetExceeded()
-    
+
     response = call_llm(messages, **kwargs)
     budget.consume(response.usage.prompt_tokens + response.usage.completion_tokens)
     return response
+
 ```
 
 ---

@@ -16,6 +16,7 @@ flowchart LR
     R -->|billing| B[Billing specialist<br/>has billing tools]
     R -->|technical| T[Tech specialist<br/>has tech tools]
     R -->|general| G[General agent]
+
 ```
 
 This works because each specialist has a smaller, more focused context. The router is cheap (often a single classification call). The specialists are more reliable because they have fewer tools and a clearer job.

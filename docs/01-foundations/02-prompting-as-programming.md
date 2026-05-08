@@ -11,6 +11,7 @@ Most production AI failures trace back to treating prompts as prose you can "twe
 A well-structured prompt has identifiable parts:
 
 ```
+
 ┌─────────────────────────────────────────┐
 │ SYSTEM PROMPT (who the model is)        │  ← stable, versioned
 │ TASK (what to do)                       │  ← stable, versioned
@@ -20,11 +21,13 @@ A well-structured prompt has identifiable parts:
 │ CONTEXT (retrieved docs, user state)    │  ← changes per request
 │ INPUT (the specific thing to process)   │  ← changes per request
 └─────────────────────────────────────────┘
+
 ```
 
 Example:
 
 ```
+
 SYSTEM:
 You are a compliance analyst. You summarize privacy incidents
 for executives. You are precise, factual, and never speculate.
@@ -53,6 +56,7 @@ INPUT:
 <incident_report>
 {report_text}
 </incident_report>
+
 ```
 
 The key insight: separate the stable parts (system, task, format) from the parts that change per request (context, input). Check the stable parts into source control. Version them. This isn't over-engineering — it's the minimum discipline for production.
@@ -106,12 +110,14 @@ There's a full chapter on security later. For now: system prompts are not secret
 Treat prompts like code:
 
 ```
+
 prompts/
   incident_summarizer/
     v1.md
     v2.md
     CHANGELOG.md
     test_cases.jsonl
+
 ```
 
 When you change a prompt, run your test cases and compare results. If v2 is worse on any case, you know before shipping. Many teams change prompts casually and discover weeks later that something broke. The cost of versioning is small; the cost of not versioning is painful.

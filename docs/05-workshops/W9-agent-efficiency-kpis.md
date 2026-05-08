@@ -65,34 +65,34 @@ def compute_efficiency(trace_events):
     """Given all events for one trace, compute efficiency metrics."""
     llm_calls = [e for e in trace_events if e.get("type") != "tool_call"]
     tool_calls = [e for e in trace_events if e.get("type") == "tool_call"]
-    
+
     # Step efficiency
     step_count = len(llm_calls)
-    
+
     # Tool efficiency
     tool_count = len(tool_calls)
     tool_names = [tc["tool_name"] for tc in tool_calls]
     unique_tools = len(set(tool_names))
     repeated_calls = tool_count - unique_tools
-    
+
     # Most-called tool
     from collections import Counter
     tool_counter = Counter(tool_names)
     most_common = tool_counter.most_common(1)
     most_common_tool = most_common[0] if most_common else ("none", 0)
-    
+
     # Token efficiency
     total_input = sum(e.get("usage", {}).get("input_tokens", 0) for e in llm_calls)
     total_output = sum(e.get("usage", {}).get("output_tokens", 0) for e in llm_calls)
     input_to_output_ratio = total_input / max(total_output, 1)
-    
+
     # Context growth (input tokens per step — how fast is context growing?)
     step_inputs = [e.get("usage", {}).get("input_tokens", 0) for e in llm_calls]
     context_growth = step_inputs[-1] - step_inputs[0] if len(step_inputs) > 1 else 0
-    
+
     # Time efficiency
     total_duration_ms = sum(e.get("duration_ms", 0) for e in trace_events)
-    
+
     return {
         "step_count": step_count,
         "tool_count": tool_count,
@@ -106,6 +106,7 @@ def compute_efficiency(trace_events):
         "context_growth_tokens": context_growth,
         "total_duration_ms": total_duration_ms,
     }
+
 ```
 
 Run this over your existing traces. Look at the distribution of each metric.
@@ -164,9 +165,10 @@ INEFFICIENCY_RULES = [
 
 def find_issues(metrics):
     return [
-        rule for rule in INEFFICIENCY_RULES 
+        rule for rule in INEFFICIENCY_RULES
         if rule["check"](metrics)
     ]
+
 ```
 
 Tune the thresholds for your system. If your typical request takes 6 steps, setting the threshold at 5 is too aggressive. If typical is 2, setting it at 10 is too lax.
@@ -180,20 +182,20 @@ Run the analysis over all your traces and find the worst cases:
 ```python
 def analyze_all_traces(log_file):
     traces = group_events_by_trace(log_file)  # from W6
-    
+
     results = []
     for trace_id, events in traces.items():
         metrics = compute_efficiency(events)
         issues = find_issues(metrics)
-        
+
         results.append({
             "trace_id": trace_id,
             "metrics": metrics,
             "issues": [i["name"] for i in issues],
-            "severity": max((i["severity"] for i in issues), default="ok", 
+            "severity": max((i["severity"] for i in issues), default="ok",
                           key=lambda s: ["ok", "info", "warning", "critical"].index(s))
         })
-    
+
     return results
 
 results = analyze_all_traces("llm_calls.jsonl")
@@ -206,6 +208,7 @@ worst_by_repeated_calls = sorted(results, key=lambda r: -r["metrics"]["repeated_
 print("Top 5 by step count:")
 for r in worst_by_steps:
     print(f"  {r['trace_id']}: {r['metrics']['step_count']} steps, issues: {r['issues']}")
+
 ```
 
 Pick the 3 worst traces. Open each one and read through it. What actually went wrong? Common patterns:
@@ -235,6 +238,7 @@ If the model keeps calling `search_X` with similar queries, tell it:
 """
 If you call the same tool 3 times without making progress, stop and explain to the user what you found and what you couldn't find. Do not keep retrying.
 """
+
 ```
 
 Or enforce it in code:
@@ -248,6 +252,7 @@ def execute_tool_with_loop_detection(name, arguments, history):
             "error": f"Already called {name} {len(recent_calls)} times recently. Please use what you have or try a different approach."
         }
     return execute_tool(name, arguments)
+
 ```
 
 ### Fix: Redundant calls
@@ -264,10 +269,11 @@ def execute_tool_cached(name, arguments, trace_id):
             **trace_tool_cache[cache_key],
             "_cache_note": "Result from earlier in this session"
         }
-    
+
     result = execute_tool(name, arguments)
     trace_tool_cache[cache_key] = result
     return result
+
 ```
 
 ### Fix: Not stopping
@@ -275,7 +281,9 @@ def execute_tool_cached(name, arguments, trace_id):
 Add an explicit "are you done?" check in the system prompt:
 
 ```
+
 Before each tool call, ask yourself: "Do I have enough information to answer the user's question?" If yes, stop calling tools and provide the answer. Do not use tools speculatively.
+
 ```
 
 ### Fix: Context bloat
@@ -285,6 +293,7 @@ Add periodic context pruning (from W8):
 ```python
 if step > 5 and context_size(messages) > 10_000:
     messages = prune_context_by_summarization(messages)
+
 ```
 
 ---
@@ -297,19 +306,19 @@ Set up a simple dashboard. Even just a script that prints metrics is a start:
 def generate_kpi_report(log_file, lookback_days=7):
     """Generate weekly KPI report."""
     traces = analyze_all_traces(log_file)
-    
+
     # Aggregate metrics
     total_requests = len(traces)
     avg_steps = sum(t["metrics"]["step_count"] for t in traces) / max(total_requests, 1)
     p95_steps = sorted(t["metrics"]["step_count"] for t in traces)[int(total_requests * 0.95)]
     avg_cost = sum(t["metrics"]["total_input_tokens"] * 3/1_000_000 + t["metrics"]["total_output_tokens"] * 15/1_000_000 for t in traces) / max(total_requests, 1)
-    
+
     # Issue rates
     issue_counts = {}
     for t in traces:
         for issue in t["issues"]:
             issue_counts[issue] = issue_counts.get(issue, 0) + 1
-    
+
     print(f"=== KPI Report (last {lookback_days} days) ===")
     print(f"Total requests: {total_requests}")
     print(f"Avg steps per request: {avg_steps:.2f}")
@@ -319,6 +328,7 @@ def generate_kpi_report(log_file, lookback_days=7):
     print("Issue frequency:")
     for issue, count in sorted(issue_counts.items(), key=lambda x: -x[1]):
         print(f"  {issue}: {count} ({100*count/total_requests:.1f}% of requests)")
+
 ```
 
 At scale, you'd push these metrics to Grafana, Datadog, or your existing monitoring stack. Set alerts:

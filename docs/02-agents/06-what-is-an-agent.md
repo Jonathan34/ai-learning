@@ -33,6 +33,7 @@ flowchart LR
         W2 -->|yes| W3[Route to on-call]
         W2 -->|no| W4[Draft reply<br/>LLM]
     end
+
 ```
 
 ```mermaid
@@ -44,6 +45,7 @@ flowchart LR
         A4 --> A2
         A4 -->|done| A5[Final answer]
     end
+
 ```
 
 Same task, different architecture. The workflow is cheap, reliable, easy to evaluate, easy to debug. The agent is more flexible and handles novel situations the workflow wasn't designed for. It's also harder to predict, harder to evaluate, harder to debug, and more expensive.
@@ -80,11 +82,13 @@ graph LR
     D --> A[Act]
     A --> O
     D -->|done| F[Return answer]
+
 ```
 
 In pseudocode:
 
 ```
+
 while not done:
     observation = read_current_state()
     decision = model(context + observation + tools)
@@ -95,6 +99,7 @@ while not done:
         context = append(context, decision, tool_result)
     if exceeded_budget():
         return graceful_failure()
+
 ```
 
 Everything else — frameworks, patterns, orchestrators — is variations on this loop.

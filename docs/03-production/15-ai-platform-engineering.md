@@ -9,7 +9,7 @@ Think of it as the shared infrastructure that sits between your product teams an
 ```mermaid
 flowchart TB
     subgraph "Product Teams"
-        T1[Team A] 
+        T1[Team A]
         T2[Team B]
         T3[Team C]
     end
@@ -28,6 +28,7 @@ flowchart TB
     end
     T1 & T2 & T3 --> PR & MR & EV & OB & CO & GV
     MR --> P1 & P2 & P3
+
 ```
 
 ### The components
