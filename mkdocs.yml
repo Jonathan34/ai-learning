@@ -13,7 +13,7 @@ exclude_docs: |
 theme:
   name: material
   features:
-    # Top tabs (for Home / Learning / About)
+    # Top tabs (Home / Learning / Workshops / About)
     - navigation.tabs
     - navigation.tabs.sticky
     # Sidebar tree (full hierarchy, left side)
@@ -91,7 +91,6 @@ extra:
       link: https://www.linkedin.com/in/delfour
 
 # Navigation structure
-# Top-level sections become tabs. Nested items become the left sidebar.
 nav:
   - Home: index.md
   - Learning:
@@ -123,21 +122,21 @@ nav:
           - AI Product Sense: 04-leadership/17-ai-product-sense.md
           - Team & Org Patterns: 04-leadership/18-team-and-org-patterns.md
           - Staying Current: 04-leadership/19-staying-current.md
-      - Workshops:
-          - 05-workshops/index.md
-          - W1 Local LLM Setup: 05-workshops/W1-local-llm-setup.md
-          - W2 RAG Pipeline: 05-workshops/W2-rag-pipeline.md
-          - W3 Real Evaluation: 05-workshops/W3-real-evaluation.md
-          - W4 Tool-Using Agent: 05-workshops/W4-tool-using-agent.md
-          - W5 Multi-Agent System: 05-workshops/W5-multi-agent-system.md
-          - W6 Observability Setup: 05-workshops/W6-observability-setup.md
-          - W7 Red-Team Exercise: 05-workshops/W7-red-team-exercise.md
-          - W8 Cost Optimization: 05-workshops/W8-cost-optimization.md
-          - W9 Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
       - Reference:
           - reference/index.md
           - Glossary: reference/glossary.md
           - Papers to Know: reference/papers-to-know.md
           - Tools and Models: reference/tools-and-models.md
           - Gotchas: reference/gotchas-consolidated.md
+  - Workshops:
+      - 05-workshops/index.md
+      - W1 Local LLM Setup: 05-workshops/W1-local-llm-setup.md
+      - W2 RAG Pipeline: 05-workshops/W2-rag-pipeline.md
+      - W3 Real Evaluation: 05-workshops/W3-real-evaluation.md
+      - W4 Tool-Using Agent: 05-workshops/W4-tool-using-agent.md
+      - W5 Multi-Agent System: 05-workshops/W5-multi-agent-system.md
+      - W6 Observability Setup: 05-workshops/W6-observability-setup.md
+      - W7 Red-Team Exercise: 05-workshops/W7-red-team-exercise.md
+      - W8 Cost Optimization: 05-workshops/W8-cost-optimization.md
+      - W9 Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
   - About: about.md
