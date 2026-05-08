@@ -86,7 +86,35 @@ Sometimes the answer after these questions is "yes, let's build it". Sometimes i
 
 The political reality: "AI feature" sells better than "rule engine" in budget discussions, even when the rule engine is the right answer. Part of the PE role is being honest about this tension without being dismissive of organizational incentives.
 
-## The demo trap
+## Choosing the right level: API call vs LLM vs agent
+
+Once you've decided AI fits the problem, the next question is how much AI. Most architects over-apply it. The rule: use the cheapest, most deterministic approach that works for each step.
+
+**Level 0: No AI needed.** The data is available from an API, a database, or a rule. An agent that scrapes a website to get data you could fetch with an HTTP call is burning money and adding failure modes. If the information is structured and accessible, just call the API.
+
+**Level 1: Single LLM call.** The task is one input → one output. Classification, extraction, summarization, translation. No loops, no decisions, no tool use. Cheapest LLM approach.
+
+**Level 2: LLM-powered workflow.** Multiple steps, but the steps are predetermined. "Fetch document → extract entities → classify → route." The LLM handles the fuzzy parts (extraction, classification), deterministic code handles the rest (fetching, routing, storing). Most production systems should live here.
+
+**Level 3: Agent with tools.** The LLM decides what steps to take. Necessary when the path isn't known in advance — "answer this question using whatever tools you need." More capable, more expensive, less predictable.
+
+**Level 4: Multi-agent.** Multiple LLMs coordinating. Rarely necessary. Usually a sign you haven't thought hard enough about the workflow decomposition.
+
+The architecture mistake I see most often: teams build a Level 3 agent for a task that's really Level 2. They give the LLM 10 tools and let it figure out the sequence, when the sequence is actually the same every time. That costs 5-10x more, fails more often, and is harder to debug.
+
+Ask for each step in your workflow: **"Could this be a function call, a database query, or a rule instead of an LLM call?"** If yes, do that. Save the LLM for the parts that genuinely need language understanding.
+
+```
+# Bad: agent scrapes website for data
+agent.run("Find the current EUR/USD exchange rate")  # 5 tool calls, $0.03, 8 seconds
+
+# Good: API call for structured data, LLM only where needed
+rate = forex_api.get_rate("EUR", "USD")  # 1 HTTP call, free, 200ms
+```
+
+This isn't about avoiding AI — it's about using it where it's the right tool and using cheaper tools everywhere else. The best AI systems have surprisingly little AI in them. The LLM handles the parts humans used to do (reading, writing, deciding in ambiguous situations). Everything else is normal software engineering.
+
+
 
 A great demo doesn't mean a shippable product. The gap between "works on 5 examples" and "works reliably on the distribution of real inputs" is enormous. Teams that ship based on demos discover this the hard way.
 
