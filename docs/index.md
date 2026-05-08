@@ -8,7 +8,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 
 ## Curriculum
 
-### Phase 1: Foundations (~50 min reading)
+### Phase 1: Foundations (~60 min reading)
 
 | # | Chapter |
 |---|---|
@@ -17,35 +17,36 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | 03 | [Context Engineering](01-foundations/03-context-engineering.md) |
 | 04 | [Evaluation: The Hardest Unsolved Problem](01-foundations/04-evaluation.md) |
 | 05 | [Security and Safety](01-foundations/05-security-and-safety.md) |
+| 06 | [Structured Output and Type Safety](01-foundations/06-structured-output.md) |
 
 ### Phase 2: Agents (~50 min reading)
 
 | # | Chapter |
 |---|---|
-| 06 | [What an Agent Actually Is](02-agents/06-what-is-an-agent.md) |
-| 07 | [Agent Frameworks Landscape](02-agents/07-framework-landscape.md) |
-| 08 | [MCP and Tool Interfaces](02-agents/08-mcp-and-tools.md) |
-| 09 | [Multi-Agent Patterns](02-agents/09-multi-agent-patterns.md) |
-| 10 | [State, Memory, and Long-Running Agents](02-agents/10-state-memory-durability.md) |
+| 07 | [What an Agent Actually Is](02-agents/07-what-is-an-agent.md) |
+| 08 | [Agent Frameworks Landscape](02-agents/08-framework-landscape.md) |
+| 09 | [MCP and Tool Interfaces](02-agents/09-mcp-and-tools.md) |
+| 10 | [Multi-Agent Patterns](02-agents/10-multi-agent-patterns.md) |
+| 11 | [State, Memory, and Long-Running Agents](02-agents/11-state-memory-durability.md) |
 
 ### Phase 3: Production (~50 min reading)
 
 | # | Chapter |
 |---|---|
-| 11 | [Inference Economics](03-production/11-inference-economics.md) |
-| 12 | [Observability for AI](03-production/12-observability.md) |
-| 13 | [Deployment Patterns](03-production/13-deployment-patterns.md) |
-| 14 | [Local and Edge Inference](03-production/14-local-and-edge.md) |
-| 15 | [AI Platform Engineering](03-production/15-ai-platform-engineering.md) |
+| 12 | [Inference Economics](03-production/12-inference-economics.md) |
+| 13 | [Observability for AI](03-production/13-observability.md) |
+| 14 | [Deployment Patterns](03-production/14-deployment-patterns.md) |
+| 15 | [Local and Edge Inference](03-production/15-local-and-edge.md) |
+| 16 | [AI Platform Engineering](03-production/16-ai-platform-engineering.md) |
 
 ### Phase 4: Leadership (~40 min reading)
 
 | # | Chapter |
 |---|---|
-| 16 | [Deciding What to Build with AI](04-leadership/16-deciding-what-to-build.md) |
-| 17 | [AI Product Sense](04-leadership/17-ai-product-sense.md) |
-| 18 | [Team and Org Patterns](04-leadership/18-team-and-org-patterns.md) |
-| 19 | [Staying Current](04-leadership/19-staying-current.md) |
+| 17 | [Deciding What to Build with AI](04-leadership/17-deciding-what-to-build.md) |
+| 18 | [AI Product Sense](04-leadership/18-ai-product-sense.md) |
+| 19 | [Team and Org Patterns](04-leadership/19-team-and-org-patterns.md) |
+| 20 | [Staying Current](04-leadership/20-staying-current.md) |
 
 ### Phase 5: Workshops (hands-on)
 
@@ -60,6 +61,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W7 | [Red-Team Exercise](05-workshops/W7-red-team-exercise.md) |
 | W8 | [Cost Optimization](05-workshops/W8-cost-optimization.md) |
 | W9 | [Agent Efficiency & KPIs](05-workshops/W9-agent-efficiency-kpis.md) |
+| W10 | [Structured Output in Practice](05-workshops/W10-structured-output-in-practice.md) |
 
 ### Reference
 

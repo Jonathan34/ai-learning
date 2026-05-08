@@ -120,4 +120,4 @@ The organizations doing best are the ones that treat AI as an engineering discip
 
 - [Eugene Yan's "Patterns for Building LLM-based Systems"](https://eugeneyan.com/writing/llm-patterns/) — practical patterns from industry
 
-- [Chapter 19](19-staying-current.md) covers staying current as the field evolves
+- [Chapter 20](20-staying-current.md) covers staying current as the field evolves

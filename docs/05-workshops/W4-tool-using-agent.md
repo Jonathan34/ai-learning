@@ -325,4 +325,4 @@ This comparison is the best way to form an opinion about frameworks — not from
 
 - [OpenAI's function calling guide](https://platform.openai.com/docs/guides/function-calling) — same concept, different API
 
-- [Chapter 06 (What an Agent Is)](../02-agents/06-what-is-an-agent.md) and [Chapter 08 (MCP and Tools)](../02-agents/08-mcp-and-tools.md) cover the theory
+- [Chapter 07 (What an Agent Is)](../02-agents/07-what-is-an-agent.md) and [Chapter 09 (MCP and Tools)](../02-agents/09-mcp-and-tools.md) cover the theory

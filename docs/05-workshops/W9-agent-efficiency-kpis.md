@@ -393,6 +393,6 @@ The goal: reduce waste without hurting task success. If success rate dropped, ba
 
 - [Arize Phoenix](https://docs.arize.com/phoenix) — open-source observability with agent-specific metrics
 
-- [Chapter 12 (Observability)](../03-production/12-observability.md) covers the monitoring theory
+- [Chapter 13 (Observability)](../03-production/13-observability.md) covers the monitoring theory
 
-- [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the cost dimensions
+- [Chapter 12 (Inference Economics)](../03-production/12-inference-economics.md) covers the cost dimensions

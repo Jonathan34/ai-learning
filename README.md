@@ -28,7 +28,7 @@ This curriculum is designed for that gap.
 reference/                   (Glossary, papers, tools, gotchas)
 ```
 
-### Phase 1: Foundations (~50 min reading)
+### Phase 1: Foundations (~60 min reading)
 
 The conceptual layer. You won't build production systems without these.
 
@@ -43,30 +43,30 @@ The conceptual layer. You won't build production systems without these.
 
 The specific systems that will define the next five years of infrastructure.
 
-- **06. What an Agent Actually Is** — the spectrum from tool use to autonomy
-- **07. Agent Frameworks Landscape** — LangChain, LangGraph, AutoGen, Claude Agent SDK, CrewAI
-- **08. MCP and Tool Interfaces** — the interoperability layer
-- **09. Multi-Agent Patterns** — when useful, when snake oil
-- **10. State, Memory, and Long-Running Agents** — the durability problem
+- **07. What an Agent Actually Is** — the spectrum from tool use to autonomy
+- **08. Agent Frameworks Landscape** — LangChain, LangGraph, AutoGen, Claude Agent SDK, CrewAI
+- **09. MCP and Tool Interfaces** — the interoperability layer
+- **10. Multi-Agent Patterns** — when useful, when snake oil
+- **11. State, Memory, and Long-Running Agents** — the durability problem
 
 ### Phase 3: Production (~50 min reading)
 
 Running AI systems at scale, with cost and latency and reliability.
 
-- **11. Inference Economics** — tokens, latency, capacity, caching
-- **12. Observability for AI** — tracing, metrics, eval-in-production
-- **13. Deployment Patterns** — hosted vs self-hosted, managed vs custom
-- **14. Local and Edge Inference** — Ollama, llama.cpp, vLLM, TensorRT
-- **15. AI Platform Engineering** — the LLMOps layer that doesn't exist yet
+- **12. Inference Economics** — tokens, latency, capacity, caching
+- **13. Observability for AI** — tracing, metrics, eval-in-production
+- **14. Deployment Patterns** — hosted vs self-hosted, managed vs custom
+- **15. Local and Edge Inference** — Ollama, llama.cpp, vLLM, TensorRT
+- **16. AI Platform Engineering** — the LLMOps layer that doesn't exist yet
 
 ### Phase 4: Leadership (~40 min reading)
 
 The architect and Principal Engineer scope.
 
-- **16. Deciding What to Build with AI** — when it's worth it, when it isn't
-- **17. AI Product Sense** — what good AI UX looks like
-- **18. Team and Org Patterns** — shape of an AI team, career ladders, hiring
-- **19. Staying Current** — how to not drown in the firehose
+- **17. Deciding What to Build with AI** — when it's worth it, when it isn't
+- **18. AI Product Sense** — what good AI UX looks like
+- **19. Team and Org Patterns** — shape of an AI team, career ladders, hiring
+- **20. Staying Current** — how to not drown in the firehose
 
 ### Phase 5: Workshops (hands-on)
 

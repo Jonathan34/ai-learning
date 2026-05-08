@@ -276,7 +276,7 @@ This pattern — extract, validate, handle failure, measure — is the backbone 
 
 ## Go deeper
 
-- [Chapter 06 (Structured Output)](../01-foundations/06-structured-output.md) — the theory behind what you just built
+- [Structured Output and Type Safety](../01-foundations/06-structured-output.md) — the theory behind what you just built
 - [Instructor library](https://github.com/jxnl/instructor) — production-grade structured output with retries
 - [Anthropic's tool use docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
 - [Workshop W3 (Real Evaluation)](W3-real-evaluation.md) — expanding the eval approach used here

@@ -407,4 +407,4 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 
 - [LiteLLM cost tracking](https://docs.litellm.ai/docs/proxy/cost_tracking) — multi-provider cost tracking
 
-- [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the theory behind these optimizations
+- [Chapter 12 (Inference Economics)](../03-production/12-inference-economics.md) covers the theory behind these optimizations

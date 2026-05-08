@@ -167,4 +167,4 @@ The hybrid pattern (hosted frontier for complex tasks, self-hosted small model f
 
 - [LiteLLM](https://github.com/BerriAI/litellm) — unified interface across providers with fallback support
 
-- [Chapter 14](14-local-and-edge.md) covers local/edge inference specifically
+- [Chapter 15](15-local-and-edge.md) covers local/edge inference specifically
