@@ -176,7 +176,7 @@ For each, look at the trace:
 
 Now trigger the failure modes:
 
-**Orchestrator loops:** Give a vague request like "Help me." Watch if the orchestrator keeps delegating without converging.
+**Orchestrator loops:** Give a vague request like "Help me". Watch if the orchestrator keeps delegating without converging.
 
 **Specialist fails:** Make the research tool return an error. Does the orchestrator handle it gracefully or get stuck?
 

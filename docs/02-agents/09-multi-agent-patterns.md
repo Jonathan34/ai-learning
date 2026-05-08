@@ -53,7 +53,7 @@ This is often the right architecture for high-stakes workflows where full autono
 
 ## Anti-patterns
 
-**Role-playing theater.** "You are a product manager. You are an engineer. You are a designer. Now discuss this feature." Looks impressive in demos. Rarely produces better output than a single well-prompted agent. The "discussion" is just the model talking to itself with different system prompts.
+**Role-playing theater.** "You are a product manager. You are an engineer. You are a designer. Now discuss this feature". Looks impressive in demos. Rarely produces better output than a single well-prompted agent. The "discussion" is just the model talking to itself with different system prompts.
 
 **Deep agent hierarchies.** An orchestrator calls a sub-orchestrator that calls workers. Each level adds latency, cost, and failure modes. Keep hierarchies flat — one level of delegation is usually enough.
 

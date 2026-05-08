@@ -106,6 +106,8 @@ def execute_tool(name, arguments):
 
 This is the core. A loop that calls the model, checks if it wants to use a tool, executes the tool, and feeds the result back.
 
+**Important:** The code below uses the OpenAI SDK format (`client.chat.completions.create`, `tool_calls`, `function.name`). This works with OpenAI models directly, or with Claude/other models via compatibility layers like LiteLLM or OpenRouter. If you're using the Anthropic SDK directly, the tool use structure is different (content blocks with `type: "tool_use"`) — see [Anthropic's tool use docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use). The agent pattern is the same either way; only the API shape differs.
+
 ```python
 import json
 
@@ -116,7 +118,7 @@ def run_agent(user_message, max_steps=10):
     ]
 
     for step in range(max_steps):
-        # Call the model with tools available
+        # Call the model with tools available (OpenAI SDK format)
         response = client.chat.completions.create(
             model="claude-sonnet-4-20250514",  # or your model
             messages=messages,

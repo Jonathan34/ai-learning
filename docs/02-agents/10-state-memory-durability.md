@@ -40,7 +40,7 @@ Most production systems use a combination: keep recent messages in full, summari
 
 When a user comes back tomorrow, what should the agent remember?
 
-**User facts.** "Prefers concise responses." "Works in healthcare." "Has a dog named Max." These are extracted from conversations and stored as structured data.
+**User facts.** "Prefers concise responses". "Works in healthcare". "Has a dog named Max". These are extracted from conversations and stored as structured data.
 
 **Prior interactions.** Relevant past conversations, retrieved when they're useful for the current one.
 

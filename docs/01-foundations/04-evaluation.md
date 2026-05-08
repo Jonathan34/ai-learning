@@ -4,7 +4,7 @@ This is the chapter most people skip and then regret.
 
 Evaluation is how you know your AI system works. In traditional software, you write unit tests with expected outputs. In LLM systems, you can't do that — a summary can be correct in a hundred different ways and wrong in a million subtle ones. There's no single "right answer" to compare against.
 
-Every team I've seen ship LLM features in production hits the same wall: "we changed the prompt and we think it's better, but we can't actually prove it." That's an evaluation problem.
+Every team I've seen ship LLM features in production hits the same wall: "we changed the prompt and we think it's better, but we can't actually prove it". That's an evaluation problem.
 
 ## Why it's hard
 
@@ -28,11 +28,11 @@ Most of this chapter is about task evaluation — the one you have to build your
 
 Three pieces:
 
-**1. A test set.** A collection of inputs paired with some definition of "correct." This could be:
+**1. A test set.** A collection of inputs paired with some definition of "correct". This could be:
 
 - Exact expected outputs (for classification or extraction)
 
-- Properties the output must have ("must be valid JSON," "must mention the source document," "must be under 200 words")
+- Properties the output must have ("must be valid JSON", "must mention the source document", "must be under 200 words")
 
 - Human judgments ("is this response helpful? yes/no")
 
@@ -42,17 +42,17 @@ Start with 20-50 examples. That's enough to catch obvious regressions. Grow to 2
 
 **3. A scorer.** Something that looks at each output and decides: good or bad?
 
-## Scoring approaches (from cheapest to most expensive)
+## Scoring approaches
 
-**Exact match.** Does the output equal the expected string? Works for classification, extraction, structured outputs. Cheap and reliable. Add tolerance for whitespace, casing, and minor formatting differences.
+From cheapest to most expensive — and in practice you'll stack several of these:
 
-**Property checks.** Is it valid JSON? Does it contain a citation? Is it under 200 words? Does it avoid forbidden phrases? These are deterministic — fast and free. Run them first as a cheap filter.
+**Exact match** and **property checks** are your first line. Does it return valid JSON? Does it contain a citation? Is the classification label correct? These are deterministic, free, instant. Run them on every single output. Most teams under-invest here — you can catch 40% of failures with string matching alone.
 
-**Embedding similarity.** Convert the output and a reference answer into vectors (using an embedding model) and measure how similar they are. Better than string matching for open-ended text, but still a rough signal.
+**Embedding similarity** compares the output vector to a reference answer vector. Better than string matching for open-ended text, but it's a blunt instrument. Two paragraphs can mean roughly the same thing and one is still wrong on a key detail. I'd use it as a smoke test, not as your quality bar.
 
-**LLM-as-judge.** Use a language model to evaluate the output. "Given this input and this output, is the response accurate and helpful? Rate 1-5." Flexible and powerful, but has its own failure modes (see below).
+**LLM-as-judge** is where most teams end up for open-ended scoring. You ask a model: "Given this input and output, is the response accurate and helpful?" It's flexible and powerful but has its own failure modes (next section). This is the scorer I've seen teams iterate on most.
 
-**Human review.** A person reads the output and rates it. The gold standard, but slow and expensive. Use it to calibrate your automated scorers, not as your primary eval.
+**Human review** is the gold standard. Slow, expensive, doesn't scale. Use it to calibrate your automated scorers — sample 50-100 outputs per week and have someone rate them. If your automated scores diverge from human ratings, the automated scorer is broken, not the humans.
 
 In practice, stack these: property checks first (cheap, catches obvious failures), then LLM-as-judge or embedding similarity for quality, with periodic human review to make sure your automated scores are trustworthy.
 
@@ -66,7 +66,7 @@ Using one LLM to evaluate another LLM's output is now the standard approach for 
 
 **Verbosity bias.** Longer responses get rated higher even when they're not better. The judge confuses "more words" with "more helpful."
 
-**Vague rubrics fail.** "Rate this 1-10" gives inconsistent, clustered scores. Specific questions work much better: "Does this response cite at least one source document? Yes/No." "Does this response answer the user's actual question? Yes/No."
+**Vague rubrics fail.** "Rate this 1-10" gives inconsistent, clustered scores. Specific questions work much better: "Does this response cite at least one source document? Yes/No". "Does this response answer the user's actual question? Yes/No."
 
 To check if your judge is trustworthy: have humans rate 50-100 examples, then compare the judge's ratings to the human ratings. If they agree 85%+ of the time, the judge is probably reliable enough. If agreement is below 75%, the judge needs work.
 
@@ -88,9 +88,9 @@ You need both. Offline eval for fast iteration; online eval for catching things 
 
 Your system's quality can degrade over time even if you don't change anything:
 
-- **Model drift** — the provider updates the model. Even "same version" can shift subtly.
+- **Model drift** — the provider updates the model. Even with a pinned version, minor infrastructure changes (different GPU batching, updated safety filters) can shift behavior subtly. If you're not pinning versions at all, this is worse.
 
-- **Prompt drift** — someone tweaks the prompt without running the eval. Small changes accumulate.
+- **Prompt drift** — someone tweaks the prompt without running the eval. Small changes accumulate. Three months of "just a quick fix" later, the prompt is unrecognizable.
 
 - **Data drift** — users start asking different questions than they used to. Your test set no longer represents real traffic.
 
@@ -126,11 +126,11 @@ Most teams evaluate agents on final output quality plus a few instrumented check
 
 **Underestimating the cost.** On a mature system, evaluation can take 20-40% of engineering time. That's normal. It's the cost of reliability in a domain where you can't write unit tests.
 
-## Where things stand
+## The uncomfortable truth
 
-Evaluation is the least mature part of the AI stack. Tools are improving (Braintrust, Langfuse, Promptfoo, Arize Phoenix) but there's no "just use X" answer. Every team builds custom infrastructure.
+Evaluation is the least mature part of the AI stack. Tools are improving (Braintrust, Langfuse, Promptfoo, Arize Phoenix) but there's no "just use X" answer. Every team ends up building something custom.
 
-The upside: if you invest in eval early, it becomes a real advantage. Teams with good eval iterate faster because they can tell what's working. Teams without it are guessing.
+Here's the upside most people miss: eval is a competitive advantage precisely because it's hard and most teams skip it. If you invest early, you iterate faster — you can tell what's working. Teams without eval are making prompt changes and hoping. I've watched teams ship "improvements" that were actually regressions because nobody checked. Don't be that team.
 
 ## Go deeper
 

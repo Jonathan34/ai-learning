@@ -140,7 +140,7 @@ Key decisions:
 
 - **Use a different model as the judge** than the one you're evaluating. Same-model judging is biased.
 
-- **Ask specific Yes/No questions**, not "rate 1-10." Specific questions give more reliable results.
+- **Ask specific Yes/No questions**, not "rate 1-10". Specific questions give more reliable results.
 
 - **Include the reference answer** so the judge has something to compare against.
 

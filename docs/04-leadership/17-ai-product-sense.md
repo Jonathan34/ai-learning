@@ -45,25 +45,11 @@ If your system can't meet the latency budget for the interaction type you've cho
 
 ## Trust engineering
 
-Users trust AI systems that are:
+Trust is built on calibration, consistency, transparency, and correctability. Users trust a system that admits "I'm not sure about this" and are immediately suspicious of one that states everything with equal confidence. They build mental models of how the AI works — and when it behaves differently each time (because of temperature, context differences, or model updates), those mental models break and trust evaporates.
 
-- **Calibrated.** They admit uncertainty when uncertain and are confident when confident.
+The most under-invested one is correctability. When a user says "that's wrong", the system should acknowledge it and not repeat the mistake in the same session. Most systems today just ignore the correction and say the same wrong thing on the next turn. Users notice, and they stop trusting.
 
-- **Consistent.** Same question gets similar answers across sessions.
-
-- **Transparent.** They show their sources, explain their reasoning when asked, and don't pretend to be human.
-
-- **Correctable.** When wrong, the user can fix it and the system learns (or at least doesn't repeat the mistake in the same session).
-
-Users distrust AI systems that are:
-
-- **Overconfident.** Stating wrong things as fact.
-
-- **Inconsistent.** Different answers to the same question on different days.
-
-- **Opaque.** No way to understand why it said what it said.
-
-- **Uncorrectable.** User says "that's wrong" and the system ignores it or repeats the error.
+Show your sources. Let users verify. Make it obvious when the AI is uncertain vs. when it's confident. None of this is technically hard — it's just often deprioritized because the happy path looks fine without it.
 
 ## Designing for failure
 

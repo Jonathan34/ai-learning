@@ -26,7 +26,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Chat-tuned / Assistant model** — a model further tuned for conversational interaction
 
-- **Frontier model** — the current most-capable class (Claude 4, GPT-5, Gemini 2.5, etc.)
+- **Frontier model** — the current most-capable class (Claude 4, GPT-4o/o3, Gemini 2.5, etc.)
 
 ## Inference
 
@@ -202,7 +202,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - DPO — Direct Preference Optimization
 
-- GGUF — GPT-Generated Unified Format (llama.cpp quantized format)
+- GGUF — GGML Unified Format (llama.cpp quantized format; GGML = Georgi Gerganov's ML library)
 
 - HHH — Helpful, Harmless, Honest
 

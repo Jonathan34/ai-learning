@@ -5,17 +5,11 @@ You don't need to understand backpropagation to be a good AI architect. But you 
 Here's the core of it: an LLM takes a sequence of tokens and predicts what the next token should be. That's it. Chat, instruction following, tool use, agents, "reasoning" — all built on top of that one operation, repeated in a loop.
 
 When you send a prompt:
-
 1. Your text gets split into tokens (sub-word chunks)
-
 2. The model processes all those tokens through its layers
-
 3. It outputs probabilities for what the next token should be
-
 4. A sampling strategy picks one token
-
 5. That token gets appended to the sequence
-
 6. Go back to step 3, repeat until done
 
 That's the generation loop. Everything else in this curriculum is about controlling, constraining, or augmenting it.
@@ -30,7 +24,6 @@ flowchart LR
     F --> G[Append to sequence]
     G -->|repeat| D
     G -->|done?| H[Final output]
-
 ```
 
 ## Key concepts
@@ -52,7 +45,7 @@ Terms you'll see throughout. Brief definitions here; deeper explanations below.
 
 Once you have the generation loop in your head, a lot of LLM behavior becomes predictable:
 
-**Why are LLMs slow?** Each new token requires a forward pass through every layer. Thanks to the KV cache, the model doesn't reprocess earlier tokens — but it still has to run the new token through all layers sequentially. A 500-token response means 500 sequential forward passes. You can stream tokens to the user as they're generated, but you can't skip the computation.
+**Why are LLMs slow?** Each new token requires a full forward pass — the input goes through every layer of the network once. A 500-token response means 500 forward passes. You can stream tokens to the user as they're generated, but you can't skip the computation.
 
 **Why does context length cost money?** The attention mechanism compares every token to every other token. Double the context length and the computation roughly quadruples. That's why a 128K-token call costs significantly more than a 4K-token call.
 
@@ -68,7 +61,7 @@ A transformer model is made of layers stacked on top of each other (dozens to hu
 
 **Attention layer** — this is where tokens look at each other. Each token asks "which other tokens are relevant to me?" and pulls information from them. Explained in detail in the next section.
 
-**Feed-forward layer** — a simple neural network that processes each token independently after attention. Think of it as a learned compression of patterns — not an exact lookup table, but a function that transforms tokens based on patterns seen during training. Most of the model's factual "knowledge" lives here, encoded as numerical weights. When people say a model "knows" something, what they really mean is that the feed-forward layers have weights that produce the right tokens in the right context.
+**Feed-forward layer** — a simple neural network that processes each token independently after attention. Think of it as a lookup table with billions of entries. Most of the model's factual "knowledge" is stored here — patterns it learned during training, encoded as numerical weights. When people say a model "knows" something, what they really mean is that the feed-forward layers have weights that produce the right tokens in the right context.
 
 These two layers alternate: attention (tokens talk to each other) → feed-forward (each token gets processed individually) → attention → feed-forward → ... repeated many times. By the final layer, the model has enough information to predict the next token.
 
@@ -81,15 +74,11 @@ flowchart TB
 
     IN[Token embeddings] --> ATT
     FF --> OUT[Next token probabilities]
-
 ```
 
 Other pieces:
-
 - **Tokenizer** — splits text into token IDs before anything else happens. Different models use different tokenizers, so the same text produces different token counts.
-
 - **Embedding layer** — converts each token ID into a vector (a list of numbers) that the network can work with.
-
 - **Output layer** — converts the final vector back into probabilities over all possible next tokens.
 
 ## Attention: how tokens talk to each other
@@ -99,11 +88,8 @@ This is the mechanism that makes transformers special. Older architectures (RNNs
 Here's how it works:
 
 Each token gets transformed into three vectors:
-
 - **Query (Q)** — "what am I looking for?"
-
 - **Key (K)** — "what do I contain?"
-
 - **Value (V)** — "what information do I provide if you pick me?"
 
 ```mermaid
@@ -116,7 +102,6 @@ flowchart LR
 
     Q --> |dot product with all Keys| W[Attention weights<br/>relevance scores]
     W --> |weighted sum of Values| O[Updated token<br/>representation]
-
 ```
 
 For each token, the model checks how well its Query matches every other token's Key (using a dot product — basically measuring similarity). High match = high attention weight. Then it takes a weighted average of all the Values.
@@ -132,11 +117,8 @@ Example: in "The cat sat on the mat. It was tired". — the token "It" will atte
 ### Why this matters for you
 
 - **Cost scales quadratically.** Every token attends to every other token. Double the context = ~4x the attention computation. This is why long contexts are expensive.
-
 - **"Lost in the middle."** In practice, tokens at the start and end of the context get more attention than those in the middle. Put important information near the end of your context, close to the query.
-
 - **Memory is the real limit.** The KV cache (stored Keys and Values from previous tokens) grows with context length. On a GPU, this memory is often what limits how long a context you can use — not the compute itself.
-
 - **Position isn't built in.** Attention just compares vectors — it doesn't inherently know position. Position information gets added separately (via techniques called RoPE or ALiBi). This is why extending a model's context window requires specific engineering.
 
 ## Training (what you need to know)
@@ -144,19 +126,13 @@ Example: in "The cat sat on the mat. It was tired". — the token "It" will atte
 Three stages, each building on the last:
 
 1. **Pretraining** — the model learns to predict the next token on massive text (books, web, code). Costs hundreds of millions of dollars. Produces a "base model" that can complete text but doesn't follow instructions well.
-
 2. **Supervised fine-tuning (SFT)** — train on curated instruction/response pairs. This teaches the model to be helpful and follow directions.
-
 3. **RLHF / preference tuning** — train the model to prefer outputs that humans rate highly. This is where safety behavior, personality, and refusal patterns come from.
 
 What this means for you:
-
 - Model behavior comes from training. You can't easily override it from outside.
-
 - Refusals and safety are trained preferences, not hard rules — they can be bypassed (hence prompt injection).
-
 - Different providers (Anthropic, OpenAI, Google) make different training choices, which is why models feel different.
-
 - You work with what the training gave you. Your job is to steer it, not reprogram it.
 
 ## Common jargon, translated
@@ -176,7 +152,7 @@ What this means for you:
 
 **Token ≠ word.** 1,000 tokens ≈ 750 English words ≈ 500 French words. Code tokenizes differently. Use the actual tokenizer when estimating costs.
 
-**Non-determinism is the default.** Same prompt, different outputs (at temperature > 0). Even at temperature 0, you'll see minor variance in practice — not from the sampling itself (which is deterministic) but from tiny floating-point rounding differences in how GPUs parallelize the math. Design for it.
+**Non-determinism is the default.** Same prompt, different outputs (at temperature > 0). Even at temperature 0, there's some variance. Design for it.
 
 **Instruction-following is soft.** The model is biased toward following your instructions, not guaranteed to. 99% success rate = fails 1 in 100 times in production.
 
@@ -184,14 +160,12 @@ What this means for you:
 
 ## Where the field actually is
 
-We don't fully understand why LLMs do what they do. Research on interpretability (what's happening inside the model) is active but incomplete. What this means for you: you can't reason about LLM behavior the way you reason about deterministic code. You have to treat it empirically — test, measure, iterate.
+We don't fully understand why LLMs do what they do. Research on interpretability (what's happening inside the model) is active but incomplete. The practical implication: you can't reason about LLM behavior the way you reason about deterministic code. You have to treat it empirically — test, measure, iterate.
 
 This is uncomfortable for engineers used to reading source code to understand behavior. Get comfortable with it. The whole curriculum is built around this reality.
 
 ## Go deeper
 
-- [Andrej Karpathy's Deep Dive into LLMs](https://www.youtube.com/watch?v=7xTGNNLPyMI) — 3 hours, excellent
-
-- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) by Jay Alammar — visual architecture walkthrough
-
-- [Anthropic's Mapping the Mind of a Large Language Model](https://www.anthropic.com/research/mapping-mind-language-model) — interpretability research
+- **Andrej Karpathy's "Deep Dive into LLMs like ChatGPT"** on YouTube (3 hours, excellent)
+- **"The Illustrated Transformer" by Jay Alammar** — visual architecture walkthrough
+- **Anthropic's "Mapping the Mind of a Large Language Model"** — interpretability research

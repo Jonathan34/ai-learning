@@ -35,7 +35,7 @@ ollama pull llama3.2:3b
 
 ```
 
-This downloads a 2 GB quantized model. Quantization means the model's numbers have been compressed from their original precision (32-bit floating point) down to 4-bit integers — trading a small amount of quality for a massive reduction in file size and memory use. The original Llama 3.2 3B in full precision is closer to 6 GB.
+This downloads a 2 GB quantized model. Quantization means the model's numbers have been compressed from their distribution precision (BF16 — 16-bit brain float) down to 4-bit integers — trading a small amount of quality for a massive reduction in file size and memory use. The original Llama 3.2 3B in BF16 is about 6 GB.
 
 Run it:
 
@@ -48,7 +48,7 @@ You're now talking to a language model running entirely on your laptop. Ask it s
 
 What to observe:
 
-- Time to first token (should be ~100ms on a fast CPU, longer on first load)
+- Time to first token (should be ~100ms on Apple Silicon or fast GPU, 300-500ms+ on CPU-only x86 machines, longer on first load)
 
 - Tokens per second (write it down — this is your baseline)
 
@@ -79,7 +79,7 @@ Ask each model the same prompts. Things to compare:
 
 4. **Code** — e.g., "Write a Python function that checks if a string is a palindrome, handling whitespace and case."
 
-You'll notice patterns. Small models hallucinate more. Large models are slower but more reliable. Different model families have different "personalities." Instruction-following varies a lot.
+You'll notice patterns. Small models hallucinate more. Large models are slower but more reliable. Different model families have different "personalities". Instruction-following varies a lot.
 
 Write down what you observed.
 
@@ -173,7 +173,7 @@ wget https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Ll
 Run it:
 
 ```bash
-llama-cli -m Llama-3.2-3B-Instruct-Q4_K_M.gguf -p "Explain RAG in two sentences." -n 200
+llama-cli -m Llama-3.2-3B-Instruct-Q4_K_M.gguf -p "Explain RAG in two sentences". -n 200
 
 ```
 

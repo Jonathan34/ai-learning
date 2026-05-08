@@ -10,7 +10,7 @@ Most hosted LLM providers charge per token, with different rates for input and o
 
 - **Output tokens** (what the model generates): more expensive, typically $1–$15 per million tokens
 
-Output tokens cost 3-5x more than input tokens because generating each one requires a full forward pass through the model, while input tokens are processed in a single batch.
+Output tokens cost 3-5x more than input tokens because generation is sequential — each token must be produced one at a time, which can't be parallelized. Input tokens, by contrast, are all processed in a single parallel batch. The hardware utilization is much worse for sequential generation, hence the price difference.
 
 For a typical production call:
 
@@ -36,7 +36,7 @@ Most providers now offer prompt caching — they store the computation for the b
 
 How it works: if the first N tokens of your prompt are identical across requests (your system prompt + task spec), the provider caches that computation. Subsequent requests only pay full price for the tokens that differ (the per-request context and user input).
 
-Savings can be 50-90% on input token costs for systems with long, stable system prompts.
+Savings can be 50-90% on the cached portion of input token costs for systems with long, stable system prompts. The bigger your stable prefix relative to the variable suffix, the bigger the saving.
 
 Requirements:
 
@@ -160,7 +160,7 @@ That last option is valid. Some features are too expensive for AI at current pri
 
 ## Where things stand
 
-Inference costs are dropping roughly 10x every 18 months (through better hardware, better models, and competition). Features that are too expensive today may be viable in a year. But "it'll be cheaper later" isn't a shipping strategy — you need to make the economics work now or wait.
+Inference costs have been dropping roughly 10x every 18 months from 2023-2025 (through better hardware, better models, and competition). Whether that rate continues is unclear — it may slow as the easy optimizations are exhausted. Features that are too expensive today may be viable in a year. But "it'll be cheaper later" isn't a shipping strategy — you need to make the economics work now or wait.
 
 The most impactful optimizations in order: prompt caching, model routing, output length constraints, agent loop budgets. Do these before anything exotic.
 

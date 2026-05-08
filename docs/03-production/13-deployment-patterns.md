@@ -19,7 +19,7 @@ Same models, but accessed through your cloud provider. The provider handles the 
 
 | | |
 |---|---|
-| Good for | Easier compliance (data stays in your cloud account), consolidated billing, sometimes better rate limits, VPC integration |
+| Good for | Easier compliance (data flows through your cloud account under your provider's data processing agreement), consolidated billing, sometimes better rate limits, VPC integration |
 | Watch out for | Slightly different feature sets than calling the model vendor directly, sometimes lagging on newest model versions |
 
 ### Self-hosted open-weights models
@@ -29,7 +29,7 @@ You run the model yourself on your own hardware (or rented GPUs). Models like Ll
 | | |
 |---|---|
 | Good for | Full data control, no per-token cost (just infrastructure), offline/air-gapped requirements, customization (fine-tuning) |
-| Watch out for | Significant ops burden, GPU procurement, model quality lags frontier by 6-18 months, you own uptime |
+| Watch out for | Significant ops burden, GPU procurement, model quality still lags frontier (gap narrowing but real), you own uptime |
 
 ### Hybrid
 
@@ -43,7 +43,7 @@ Different models for different use cases. Common pattern: frontier hosted model 
 | Latency | Hosted (optimized infrastructure) | Self-hosted (no network hop to provider) |
 | Scale | Hosted at low volume | Self-hosted at very high volume |
 | Compliance | Cloud-managed (certifications) | Self-hosted (full control) |
-| Model quality | Hosted (frontier models) | Self-hosted lags 6-18 months |
+| Model quality | Hosted (frontier models) | Self-hosted lags 3-6 months (narrowing) |
 | Offline requirement | — | Self-hosted (only option) |
 | Budget | Hosted (no upfront cost) | Self-hosted (lower marginal cost at scale) |
 

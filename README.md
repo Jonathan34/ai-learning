@@ -20,11 +20,11 @@ This curriculum is designed for that gap.
 ## Curriculum map
 
 ```
-01-foundations/              (Core mental models — 5 chapters, ~50 min)
+01-foundations/              (Core mental models — 6 chapters, ~60 min)
 02-agents/                   (Agentic systems in depth — 5 chapters, ~50 min)
 03-production/               (Running AI in real systems — 5 chapters, ~50 min)
 04-leadership/               (Architect and PE-level concerns — 4 chapters, ~40 min)
-05-workshops/                (Hands-on practice — 7 workshops, multi-hour each)
+05-workshops/                (Hands-on practice — 10 workshops, multi-hour each)
 reference/                   (Glossary, papers, tools, gotchas)
 ```
 
@@ -37,6 +37,7 @@ The conceptual layer. You won't build production systems without these.
 - **03. Context Engineering** — the broader discipline that includes RAG, memory, tools
 - **04. Evaluation: The Hardest Unsolved Problem** — why ship decisions are hard
 - **05. Security and Safety** — two very different things, both critical
+- **06. Structured Output and Type Safety** — bridging LLM text to typed code
 
 ### Phase 2: Agents (~50 min reading)
 
@@ -78,6 +79,9 @@ You can't reason about a field you haven't built in.
 - **W5. Multi-Agent System** — orchestrator + specialists
 - **W6. Observability Setup** — tracing an agent end-to-end
 - **W7. Red-Team Exercise** — break your own system
+- **W8. Cost Optimization** — measure, route, cache, budget
+- **W9. Agent Efficiency KPIs** — instrument and benchmark agent performance
+- **W10. Structured Output in Practice** — extraction, validation, retry, eval
 
 ### Reference
 

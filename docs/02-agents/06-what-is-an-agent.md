@@ -126,7 +126,7 @@ Most agent engineering is getting these parameters right for your specific task.
 
 **Plan-and-Execute** separates planning from execution. The model generates a full plan first, then executes step by step. More predictable cost. Less flexible — harder to recover if a step fails in a way the plan didn't anticipate.
 
-**Reflexion / self-correction** has the agent review its own work and retry. "Here's my answer. Let me check if it's right. Actually, it's wrong because X. Let me try again." Adds cost but can improve quality on tasks where verification is easier than generation — like code, where you can run tests.
+**Reflexion / self-correction** has the agent review its own work and retry. "Here's my answer. Let me check if it's right. Actually, it's wrong because X. Let me try again". Adds cost but can improve quality on tasks where verification is easier than generation — like code, where you can run tests.
 
 What actually works in production: basic ReAct with solid tool descriptions, clear stop conditions, good error handling, and eval-driven iteration. Fancy patterns rarely pay for themselves on routine tasks.
 
@@ -150,7 +150,7 @@ Teams often default to "let's build an agent" because it sounds more impressive.
 
 Most "agents" in production are loops around tool-using LLMs. That's not dismissive — it's accurate. The loop, the tools, the stop conditions *are* the agent.
 
-Agent reliability is often below 80%. Not "the model is wrong 20% of the time" — "the full agent trajectory gets to the right outcome 80% of the time." For many use cases, 80% isn't good enough. The path to 95% is engineering (eval, iteration, human-in-the-loop), not a better model.
+Agent reliability is often below 80%. Not "the model is wrong 20% of the time" — "the full agent trajectory gets to the right outcome 80% of the time". For many use cases, 80% isn't good enough. The path to 95% is engineering (eval, iteration, human-in-the-loop), not a better model.
 
 Cost scales with loop depth. A 10-step agent is at least 10x the cost of a single call. Longer contexts on each step make it worse.
 

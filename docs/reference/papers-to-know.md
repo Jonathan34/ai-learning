@@ -58,7 +58,7 @@ For each, the guidance is:
 
 - **"Universal and Transferable Adversarial Attacks on Aligned Language Models"** (Zou et al., 2023) — the "GCG" jailbreak paper. **[Know of]** — shows that alignment is not a solved problem.
 
-- **"Prompt Injection: Parameterization of Fixed Inputs"** (Liu et al., 2023) — foundational work on prompt injection. **[Skim]**.
+- **"Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"** (Greshake et al., 2023) — the key academic paper on indirect prompt injection in real systems. **[Skim]**. Also follow Simon Willison's ongoing coverage (he coined the term and has the best practical analysis).
 
 ## Interpretability (for context)
 

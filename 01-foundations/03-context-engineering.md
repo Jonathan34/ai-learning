@@ -3,17 +3,11 @@
 Prompts get all the attention, but in real systems the prompt is usually the smallest part of what the model sees. The bigger challenge is assembling the full input — called the **context** — that the model receives on each call.
 
 A typical production call includes:
-
 - A system prompt (stable, versioned)
-
 - Retrieved documents (pulled from a knowledge base based on the user's question)
-
 - Conversation history (what was said before in this session)
-
 - Tool outputs (results from functions the agent called)
-
 - User state (profile, permissions, preferences)
-
 - The current user input
 
 The model sees all of this as one long sequence of tokens. Its response depends on the entire sequence. Context engineering is about assembling that sequence well — deciding what goes in, in what form, and in what order.
@@ -33,13 +27,9 @@ The model has no way to know which parts of its context are relevant, trustworth
 The context window is a budget. Even with 200K tokens available, you have to choose what's worth spending tokens on.
 
 Trade-offs you'll face:
-
 - More retrieved documents → better chance of including the right answer, but more cost and more risk of the model getting confused
-
 - More conversation history → better continuity, but old messages can conflict with current instructions
-
 - Tool outputs → essential when fresh, noise when stale
-
 - Examples → helpful for unfamiliar tasks, wasteful for routine ones
 
 A context assembly strategy is a design decision worth documenting. Most teams don't, and end up with ad-hoc assembly that works until it doesn't.
@@ -49,26 +39,19 @@ A context assembly strategy is a design decision worth documenting. Most teams d
 Same information, different format, different results.
 
 What works:
-
 - Clear boundaries between sections (`<document id="42">...</document>`)
-
 - Metadata on retrieved documents (title, date, source) — helps the model cite correctly
-
 - Important content near the end of the context, close to the user's question — models pay more attention to recent tokens
-
 - Structured data (JSON, tables) for factual information
 
 What doesn't:
-
 - Dumping raw documents without structure
-
 - Mixing instructions and data without clear boundaries
-
 - Burying critical information in the middle of a 100K-token context
 
 ### 3. Keeping context coherent
 
-The model can't detect contradictions. If one document says "policy X was retired" and another says "policy X applies to all users" the model may cite either one or try to merge them into something confused.
+The model can't detect contradictions. If one document says "policy X was retired" and another says "policy X applies to all users", the model may cite either one or try to merge them into something confused.
 
 This is why retrieval quality matters so much. You're not just finding relevant documents — you're trying to produce a coherent input that supports a correct answer.
 
@@ -84,23 +67,15 @@ flowchart LR
     R --> P[Assemble into prompt<br/>with system instructions]
     P --> M[Send to model]
     M --> A[Generated answer]
-
 ```
 
 The steps:
-
 1. **Split your documents into chunks** (paragraphs or sections, typically 200-500 tokens each)
-
 2. **Convert each chunk into a vector** (a list of numbers that represents its meaning) using an embedding model
-
 3. **Store those vectors** in a vector database
-
 4. **When a user asks a question**, convert their question into a vector too
-
 5. **Find the chunks whose vectors are most similar** to the question vector (nearest neighbor search)
-
 6. **Put those chunks into the prompt** as context
-
 7. **Generate the answer** based on the retrieved context
 
 This is called "naive RAG". It works well for straightforward questions and fails predictably for harder ones.
@@ -111,7 +86,7 @@ This is called "naive RAG". It works well for straightforward questions and fail
 
 **Bad queries.** Users ask short, ambiguous questions. "What's the policy?" could match dozens of documents. Rewriting the user's question into a better search query (sometimes using the LLM itself) is a cheap improvement most teams skip.
 
-**Wrong results ranked high.** Vector similarity isn't perfect. Modern embeddings handle obvious word-overlap cases fine (they won't confuse "apple pie" with "Apple stock") — but they fail on subtler ones: a medical "discharge summary" matching a query about battery "discharge", or two documents that mean the same thing but use different words. Adding a **re-ranking step** — a second, more precise model that re-scores the top results — is often the single biggest quality improvement you can make.
+**Wrong results ranked high.** Vector similarity isn't perfect. A document about "apple pie recipes" might score high for "Apple stock price" because the word "apple" is in both. Adding a **re-ranking step** — a second, more precise model that re-scores the top results — is often the single biggest quality improvement you can make.
 
 **Keyword misses.** Vector search finds semantically similar content, but can miss exact keyword matches. Combining vector search with traditional keyword search (called **hybrid search**) usually beats either alone.
 
@@ -125,20 +100,18 @@ An agent that runs across multiple turns needs to remember what happened. But th
 
 **Long-term memory** (across sessions): user preferences, facts learned in prior conversations, past decisions. Usually stored in a database or vector store, retrieved at the start of each session.
 
-The gotcha: memory decays in quality over time. Old facts become stale. Preferences change. Contradictions accumulate. If you add memory to your system, you also need memory maintenance — TTLs on stored facts, periodic re-validation against source data, letting users correct or delete memories explicitly, and a conflict resolution strategy for when old memory contradicts fresh context. Most teams skip this and pay for it later when the agent confidently acts on information from six months ago that's no longer true.
+The gotcha: memory decays in quality over time. Old facts become stale. Preferences change. Contradictions accumulate. If you add memory to your system, you also need memory cleanup, correction, and conflict resolution. Most teams skip this and pay for it later.
 
 ## The "lost in the middle" problem
 
-Research shows that LLMs pay more attention to tokens at the beginning and end of their context than those in the middle. If critical information is buried in the middle of a long context, the model may miss it.
+Research has shown that LLMs pay more attention to tokens at the beginning and end of their context than those in the middle. If critical information is buried in the middle of a long context, the model may miss it.
 
-So: put the most important retrieved documents near the end of the context, close to the user's question. Don't just dump them in order of retrieval score — think about position.
+Practical takeaway: put the most important retrieved documents near the end of the context, close to the user's question. Don't just dump them in order of retrieval score — think about position.
 
 ## When to use RAG vs other approaches
 
 - **Use RAG** when the knowledge is factual, changes over time, or is specific to your organization. You want the model to cite sources and stay current.
-
 - **Use fine-tuning** when you want to change how the model behaves (its style, format, or approach to a task). Fine-tuning doesn't add knowledge well — it changes behavior.
-
 - **Use agents** when the task requires multiple steps, decisions, or tool use that unfolds over time.
 
 Most real systems combine all three: a fine-tuned or instruction-tuned model, driven by an agent, using RAG for knowledge.
@@ -161,10 +134,7 @@ If you take one thing from this chapter: the model is only as good as the contex
 
 ## Go deeper
 
-- [Workshop W2 — First RAG Pipeline](../05-workshops/W2-rag-pipeline.md) — build one end-to-end
-
-- [Anthropic's Contextual Retrieval blog post](https://www.anthropic.com/news/contextual-retrieval) — practical technique that improves RAG quality
-
-- [Lost in the Middle](https://arxiv.org/abs/2307.03172) (Liu et al., 2023) — the research on attention and position
-
-- [LangChain's RAG documentation](https://python.langchain.com/docs/tutorials/rag/) — concrete patterns and code
+- **Workshop W2 — First RAG Pipeline.** Build one end-to-end.
+- **Anthropic's "Contextual Retrieval" blog post** — practical technique that improves RAG quality
+- **"Lost in the Middle" paper** (Liu et al., 2023) — the research on attention and position
+- **LangChain's RAG documentation** — concrete patterns and code

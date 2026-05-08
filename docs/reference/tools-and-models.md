@@ -7,7 +7,7 @@
 | Model | Provider | Good at | Notes |
 |---|---|---|---|
 | Claude 4 family (Opus, Sonnet, Haiku) | Anthropic | Reasoning, coding, long context, safety | Strong default for production |
-| GPT-5 | OpenAI | Broad capability, tool use | Widely available |
+| GPT-4o / o3 | OpenAI | Broad capability, tool use, reasoning (o3) | Widely available |
 | Gemini 2.5 Pro / Flash | Google | Long context, multimodal | Strong at images, 1M+ context |
 | Grok | xAI | Less aligned; use case specific | Less mature ecosystem |
 

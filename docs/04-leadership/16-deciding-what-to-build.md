@@ -82,7 +82,7 @@ The hardest part of this role is often pushing back. "Can we add AI to X?" is a 
 
 - What's the ongoing cost at expected volume?
 
-Sometimes the answer after these questions is "yes, let's build it." Sometimes it's "actually, a rule-based system would be better." Sometimes it's "the cost of errors is too high without human review." All of these are good outcomes.
+Sometimes the answer after these questions is "yes, let's build it". Sometimes it's "actually, a rule-based system would be better". Sometimes it's "the cost of errors is too high without human review". All of these are good outcomes.
 
 The political reality: "AI feature" sells better than "rule engine" in budget discussions, even when the rule engine is the right answer. Part of the PE role is being honest about this tension without being dismissive of organizational incentives.
 
@@ -110,7 +110,7 @@ Budget ongoing maintenance time. An AI feature isn't "done" when it ships — it
 
 ## Things that trip people up
 
-**Building AI because it's in the strategy deck.** If the only reason to use AI is "leadership wants AI features," push for specificity. Which features? For which users? Solving which problems?
+**Building AI because it's in the strategy deck.** If the only reason to use AI is "leadership wants AI features", push for specificity. Which features? For which users? Solving which problems?
 
 **Not accounting for eval cost.** Building the feature is half the work. Building the eval harness, maintaining the test set, running continuous quality checks — that's the other half. Budget for it.
 

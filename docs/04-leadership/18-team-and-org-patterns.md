@@ -80,17 +80,11 @@ For most applied AI teams (using pre-trained models, not training their own), yo
 
 ## Career ladders
 
-How do you evaluate and promote AI engineers? The same way you evaluate other engineers, with AI-specific additions:
+Most companies get this wrong by making the ladder too AI-specific too early. At junior and mid levels, the job is software engineering that happens to involve LLMs — the same skills that make someone a good engineer (testing, debugging, production thinking) make them a good AI engineer. Don't create a separate "AI engineer" ladder that diverges from your existing one.
 
-- **Junior:** Can implement AI features given clear specifications. Writes prompts, builds basic eval sets, integrates with APIs.
+Where AI-specific skills become the differentiator is at senior+ levels. The question stops being "can you implement this feature?" and becomes "can you tell the organization where AI should and shouldn't be used?" Can you predict which approaches will work before building them? Can you design systems that stay reliable as models and patterns evolve underneath you?
 
-- **Mid:** Can design AI features end-to-end. Chooses appropriate patterns (workflow vs agent), designs eval strategies, handles production concerns.
-
-- **Senior:** Can architect AI systems across multiple features. Makes build-vs-buy decisions, designs platform components, mentors others, influences product direction.
-
-- **Principal/Staff:** Sets technical direction for AI across the organization. Defines standards, evaluates new technologies, represents the org externally, makes decisions with long-term consequences.
-
-The AI-specific dimension at senior+ levels: can you tell the organization where AI should and shouldn't be used? Can you predict which approaches will work before building them? Can you design systems that stay reliable as models and patterns evolve?
+The Principal/Staff AI engineer's hardest job isn't technical — it's saying "no, this shouldn't use AI" to a leadership team that's excited about AI everything. That judgment call, backed by experience with what actually works in production vs. what looks good in a demo, is the rare skill.
 
 ## Scaling the team
 

@@ -18,13 +18,13 @@ Especially relevant if you're looking at roles focused on making AI run efficien
 
 ## Why not run locally
 
-- **Model quality.** The best open-weights models lag frontier hosted models (Claude, GPT-5) by 6-18 months in capability.
+- **Model quality.** The best open-weights models still lag frontier hosted models (Claude, GPT-4o) in capability — though the gap has narrowed to 3-6 months on many tasks as of 2025.
 
 - **Hardware requirements.** Large models need expensive GPUs or lots of RAM.
 
 - **Operational burden.** You manage updates, compatibility, hardware failures.
 
-- **No prompt caching.** You don't get the provider-side optimizations that hosted APIs offer.
+- **No cross-request prompt caching.** You still get KV-cache reuse for repeated prefixes within a session, but you don't get the provider-managed caching that persists across users and requests.
 
 ## The runtime landscape
 
@@ -134,7 +134,7 @@ The tension: local models are less capable than frontier hosted models. An agent
 
 **Battery impact on laptops.** Running inference continuously drains battery fast. For mobile/laptop applications, consider when to run locally vs. when to fall back to a hosted API.
 
-**Model licenses vary.** Llama has a license that restricts some commercial uses. Mistral models are more permissive. Some models are research-only. Check the license before shipping a product with an embedded model.
+**Model licenses vary.** Llama 3's license is permissive for most commercial use (free under 700M monthly active users), but earlier versions were more restrictive. Mistral models are Apache 2.0. Some models are research-only. Always check the specific license for the version you're using before shipping.
 
 **Cold start latency.** Users don't expect to wait 10 seconds before an AI feature responds. Either keep models warm or set expectations in the UI.
 
@@ -148,7 +148,7 @@ For now: use local inference when privacy, offline capability, or cost at scale 
 
 ## Go deeper
 
-- [Workshop W1 — Local LLM Setup (hands-on with Ollama and llama](../05-workshops/W1-local-llm-setup.md).cpp)
+- [Workshop W1 — Local LLM Setup (hands-on with Ollama and llama.cpp)](../05-workshops/W1-local-llm-setup.md)
 
 - [Ollama](https://ollama.com) — easiest way to get started
 

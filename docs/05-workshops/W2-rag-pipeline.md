@@ -147,7 +147,9 @@ For this workshop, local embeddings are fine. The quality difference matters les
 
 ## Part 4: Vector store (30 min)
 
-Store the embeddings so you can search them. Use Chroma (simple, local, no server needed):
+Store the embeddings so you can search them. Use Chroma (simple, local, no server needed).
+
+Note: Chroma has a built-in default embedding model — when you add `documents` directly (without passing `embeddings`), it computes embeddings for you automatically using a small built-in model. Part 3 showed you how embedding works under the hood; here we let Chroma handle it for simplicity. In production, you'd typically pass your own embeddings (from a better model) instead of relying on the default.
 
 ```python
 import chromadb
@@ -155,7 +157,7 @@ import chromadb
 client = chromadb.Client()
 collection = client.create_collection("my_docs")
 
-# Add all chunks with their embeddings
+# Add all chunks — Chroma embeds them automatically with its default model
 collection.add(
     documents=chunks,
     ids=[f"chunk_{i}" for i in range(len(chunks))],

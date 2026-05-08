@@ -160,7 +160,7 @@ Three things:
 
 - **Resources** — data the LLM can read. Files, database rows, API responses.
 
-- **Prompts** — templates the client can surface to the user. "Summarize this document," "Review this PR."
+- **Prompts** — templates the client can surface to the user. "Summarize this document", "Review this PR."
 
 A single server can expose any combination. A filesystem MCP server exposes tools for reading/writing files and resources for the file tree. A database MCP server exposes tools for querying and resources for schema introspection.
 

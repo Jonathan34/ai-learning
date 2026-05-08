@@ -74,7 +74,7 @@ The platform should make it easy for product engineers to build AI features with
 
 Most teams end up with a mix: buy the observability and cost tracking (commodity problems), build the eval pipelines and governance (specific to your organization).
 
-The integration layer — the thing that ties all these pieces together and presents a coherent developer experience — is almost always custom. No vendor sells "your AI platform." They sell components of it.
+The integration layer — the thing that ties all these pieces together and presents a coherent developer experience — is almost always custom. No vendor sells "your AI platform". They sell components of it.
 
 ## When to invest
 

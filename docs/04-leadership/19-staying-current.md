@@ -50,15 +50,7 @@ For most papers, reading the abstract, introduction, and conclusion gets you 80%
 
 ## A sustainable routine
 
-**2 hours per week.** That's enough to stay current without drowning. Split it:
-
-- 30 min: skim newsletters and lab blogs from the week
-
-- 30 min: read one paper or long blog post in depth
-
-- 30 min: try something hands-on (new tool, new model, new technique)
-
-- 30 min: write down what you learned (even just notes to yourself)
+**About 2 hours per week.** That's enough to stay current without drowning. In practice mine looks something like: skim the newsletters that landed this week (15-20 min), read one thing properly — a paper, a long blog post, a new tool's docs (30-45 min), and then spend whatever time is left actually trying something. Some weeks the "trying" eats the whole two hours because I go down a rabbit hole. Some weeks I just read. The point is consistency, not a perfectly balanced allocation.
 
 **A personal knowledge base.** Keep a simple document (markdown file, Notion page, whatever) where you note things you've learned. Date them. When you need to reference something later, you'll have it.
 

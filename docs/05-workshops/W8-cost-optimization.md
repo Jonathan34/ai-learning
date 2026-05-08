@@ -377,7 +377,7 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 
 **Cache invalidation from small changes.** A single extra space in your system prompt breaks caching. Your prompt construction needs to produce byte-identical output every time.
 
-**Model routing that doesn't actually route.** If your classifier always returns "complex," you're paying for the classifier AND the big model. Verify the actual routing distribution.
+**Model routing that doesn't actually route.** If your classifier always returns "complex", you're paying for the classifier AND the big model. Verify the actual routing distribution.
 
 **Context pruning that drops critical information.** Aggressive summarization can lose facts the agent needed later. Test with your eval harness after every pruning change.
 
