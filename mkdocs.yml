@@ -96,31 +96,31 @@ nav:
       - Start Here: 00-how-to-use-this.md
       - 01 — Foundations:
           - Overview: 01-foundations/index.md
-          - 01 · How LLMs Actually Work: 01-foundations/01-llm-mental-model.md
-          - 02 · Prompting as Programming: 01-foundations/02-prompting-as-programming.md
-          - 03 · Context Engineering: 01-foundations/03-context-engineering.md
-          - 04 · Evaluation: 01-foundations/04-evaluation.md
-          - 05 · Security and Safety: 01-foundations/05-security-and-safety.md
+          - How LLMs Actually Work: 01-foundations/01-llm-mental-model.md
+          - Prompting as Programming: 01-foundations/02-prompting-as-programming.md
+          - Context Engineering: 01-foundations/03-context-engineering.md
+          - Evaluation: 01-foundations/04-evaluation.md
+          - Security and Safety: 01-foundations/05-security-and-safety.md
       - 02 — Agents:
           - Overview: 02-agents/index.md
-          - 06 · What an Agent Is: 02-agents/06-what-is-an-agent.md
-          - 07 · Framework Landscape: 02-agents/07-framework-landscape.md
-          - 08 · MCP and Tools: 02-agents/08-mcp-and-tools.md
-          - 09 · Multi-Agent Patterns: 02-agents/09-multi-agent-patterns.md
-          - 10 · State, Memory, Durability: 02-agents/10-state-memory-durability.md
+          - What an Agent Is: 02-agents/06-what-is-an-agent.md
+          - Framework Landscape: 02-agents/07-framework-landscape.md
+          - MCP and Tools: 02-agents/08-mcp-and-tools.md
+          - Multi-Agent Patterns: 02-agents/09-multi-agent-patterns.md
+          - State, Memory, Durability: 02-agents/10-state-memory-durability.md
       - 03 — Production:
           - Overview: 03-production/index.md
-          - 11 · Inference Economics: 03-production/11-inference-economics.md
-          - 12 · Observability: 03-production/12-observability.md
-          - 13 · Deployment Patterns: 03-production/13-deployment-patterns.md
-          - 14 · Local and Edge: 03-production/14-local-and-edge.md
-          - 15 · Platform Engineering: 03-production/15-ai-platform-engineering.md
+          - Inference Economics: 03-production/11-inference-economics.md
+          - Observability: 03-production/12-observability.md
+          - Deployment Patterns: 03-production/13-deployment-patterns.md
+          - Local and Edge: 03-production/14-local-and-edge.md
+          - Platform Engineering: 03-production/15-ai-platform-engineering.md
       - 04 — Leadership:
           - Overview: 04-leadership/index.md
-          - 16 · Deciding What to Build: 04-leadership/16-deciding-what-to-build.md
-          - 17 · AI Product Sense: 04-leadership/17-ai-product-sense.md
-          - 18 · Team & Org Patterns: 04-leadership/18-team-and-org-patterns.md
-          - 19 · Staying Current: 04-leadership/19-staying-current.md
+          - Deciding What to Build: 04-leadership/16-deciding-what-to-build.md
+          - AI Product Sense: 04-leadership/17-ai-product-sense.md
+          - Team & Org Patterns: 04-leadership/18-team-and-org-patterns.md
+          - Staying Current: 04-leadership/19-staying-current.md
       - 05 — Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md
@@ -129,13 +129,13 @@ nav:
           - Gotchas: reference/gotchas-consolidated.md
   - Workshops:
       - Overview: 05-workshops/index.md
-      - W1 · Local LLM Setup: 05-workshops/W1-local-llm-setup.md
-      - W2 · RAG Pipeline: 05-workshops/W2-rag-pipeline.md
-      - W3 · Real Evaluation: 05-workshops/W3-real-evaluation.md
-      - W4 · Tool-Using Agent: 05-workshops/W4-tool-using-agent.md
-      - W5 · Multi-Agent System: 05-workshops/W5-multi-agent-system.md
-      - W6 · Observability Setup: 05-workshops/W6-observability-setup.md
-      - W7 · Red-Team Exercise: 05-workshops/W7-red-team-exercise.md
-      - W8 · Cost Optimization: 05-workshops/W8-cost-optimization.md
-      - W9 · Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
+      - Local LLM Setup: 05-workshops/W1-local-llm-setup.md
+      - RAG Pipeline: 05-workshops/W2-rag-pipeline.md
+      - Real Evaluation: 05-workshops/W3-real-evaluation.md
+      - Tool-Using Agent: 05-workshops/W4-tool-using-agent.md
+      - Multi-Agent System: 05-workshops/W5-multi-agent-system.md
+      - Observability Setup: 05-workshops/W6-observability-setup.md
+      - Red-Team Exercise: 05-workshops/W7-red-team-exercise.md
+      - Cost Optimization: 05-workshops/W8-cost-optimization.md
+      - Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
   - About: about.md
