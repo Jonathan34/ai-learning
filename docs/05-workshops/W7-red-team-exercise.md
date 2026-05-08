@@ -264,4 +264,4 @@ After implementing mitigations, re-run the attacks. Did they help? Which attacks
 - [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — consensus security categories
 - [Simon Willison's prompt injection archive](https://simonwillison.net/series/prompt-injection/) — real-world examples
 - [Garak](https://github.com/leondz/garak) — automated LLM vulnerability scanner
-- Chapter 05 (Security and Safety) covers the theory and defense patterns
+- [Chapter 05 (Security and Safety)](../01-foundations/05-security-and-safety.md) covers the theory and defense patterns

@@ -246,4 +246,4 @@ Write down your findings. In many cases, the single agent is simpler, cheaper, a
 
 - [AutoGen documentation](https://microsoft.github.io/autogen/) — framework designed for multi-agent
 - [LangGraph multi-agent patterns](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/) — graph-based coordination
-- Chapter 09 (Multi-Agent Patterns) covers the theory and anti-patterns
+- [Chapter 09 (Multi-Agent Patterns)](../02-agents/09-multi-agent-patterns.md) covers the theory and anti-patterns

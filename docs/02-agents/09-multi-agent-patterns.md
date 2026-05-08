@@ -94,4 +94,4 @@ The field is moving fast. New coordination patterns, better frameworks (LangGrap
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — includes multi-agent patterns
 - [AutoGen documentation](https://microsoft.github.io/autogen/) — the framework most focused on multi-agent
-- Workshop W5 — Multi-Agent System. Build one and experience the failure modes.
+- [Workshop W5 — Multi-Agent System](../05-workshops/W5-multi-agent-system.md). Build one and experience the failure modes.

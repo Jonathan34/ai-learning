@@ -105,4 +105,4 @@ The organizations doing best are the ones that treat AI as an engineering discip
 
 - [Anthropic's team structure](https://www.anthropic.com/careers) — how a frontier AI company organizes (research + applied + policy)
 - [Eugene Yan's "Patterns for Building LLM-based Systems"](https://eugeneyan.com/writing/llm-patterns/) — practical patterns from industry
-- Chapter 19 covers staying current as the field evolves
+- [Chapter 19](19-staying-current.md) covers staying current as the field evolves

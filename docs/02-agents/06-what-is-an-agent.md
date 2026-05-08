@@ -165,5 +165,5 @@ Expect the field to change substantially over the next 2-3 years. The mental mod
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — the single most useful contemporary piece on agent architecture
 - ["ReAct: Synergizing Reasoning and Acting in Language Models"](https://arxiv.org/abs/2210.03629) (Yao et al., 2022) — the paper that kicked off the current wave
-- Workshop W4 — Tool-Using Agent. Build one from scratch without a framework.
+- [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build one from scratch without a framework.
 - [HuggingFace's agents course](https://huggingface.co/learn/agents-course) — practical, free, code-heavy

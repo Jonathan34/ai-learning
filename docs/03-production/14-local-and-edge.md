@@ -32,7 +32,7 @@ These are the main tools for running models locally:
 | **MLX** | Apple's framework for Apple silicon | Best performance on M-series Macs |
 | **MLC-LLM** | Cross-platform including mobile | Broadest hardware reach |
 
-If you're just getting started: use Ollama. It handles model downloads, quantization selection, and gives you an API with one command. Workshop W1 walks through this.
+If you're just getting started: use Ollama. It handles model downloads, quantization selection, and gives you an API with one command. [Workshop W1](../05-workshops/W1-local-llm-setup.md) walks through this.
 
 If you need production performance on NVIDIA hardware: TensorRT-LLM. On Apple hardware: MLX. For server-side self-hosting: vLLM.
 
@@ -127,7 +127,7 @@ For now: use local inference when privacy, offline capability, or cost at scale 
 
 ## Go deeper
 
-- Workshop W1 — Local LLM Setup (hands-on with Ollama and llama.cpp)
+- [Workshop W1 — Local LLM Setup (hands-on with Ollama and llama](../05-workshops/W1-local-llm-setup.md).cpp)
 - [Ollama](https://ollama.com) — easiest way to get started
 - [llama.cpp](https://github.com/ggerganov/llama.cpp) — the foundation most local runtimes build on
 - [HuggingFace model hub](https://huggingface.co/models) — where quantized models are published

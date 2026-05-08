@@ -185,5 +185,5 @@ My bet: in 2-3 years, a small number of frameworks will have matured into what E
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — still the best practical guide, framework-agnostic
 - [LangGraph documentation](https://langchain-ai.github.io/langgraph/) — read the real docs, not tutorials
-- Workshop W4 — Tool-Using Agent. Build an agent from scratch, then port to a framework.
+- [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build an agent from scratch, then port to a framework.
 - Each framework's source code — if you're going to adopt one seriously, read enough of the source to know what's really happening

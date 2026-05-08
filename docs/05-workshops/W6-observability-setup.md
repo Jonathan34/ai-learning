@@ -253,4 +253,4 @@ Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spo
 
 - [Langfuse documentation](https://langfuse.com/docs) — open-source observability for LLMs
 - [OpenTelemetry for GenAI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) — the emerging standard
-- Chapter 12 (Observability) covers the theory and production patterns
+- [Chapter 12 (Observability)](../03-production/12-observability.md) covers the theory and production patterns

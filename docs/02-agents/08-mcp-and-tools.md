@@ -271,4 +271,4 @@ Watch for:
 - [modelcontextprotocol.io](https://modelcontextprotocol.io) — the official MCP spec and server directory
 - [Anthropic's "Tool use with Claude" docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — practical patterns that apply to any LLM
 - [MCP source code on GitHub](https://github.com/modelcontextprotocol) — reading the SDK source is one of the best ways to understand the protocol
-- Workshop W4 — Tool-Using Agent. Build an agent with proper tool design, see the failure modes directly.
+- [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build an agent with proper tool design, see the failure modes directly.

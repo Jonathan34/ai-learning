@@ -140,4 +140,4 @@ The hybrid pattern (hosted frontier for complex tasks, self-hosted small model f
 - [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/) — cloud-managed multi-model access
 - [vLLM documentation](https://docs.vllm.ai/) — the standard for self-hosted GPU inference
 - [LiteLLM](https://github.com/BerriAI/litellm) — unified interface across providers with fallback support
-- Chapter 14 covers local/edge inference specifically
+- [Chapter 14](14-local-and-edge.md) covers local/edge inference specifically

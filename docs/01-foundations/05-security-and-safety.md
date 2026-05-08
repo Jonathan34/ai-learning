@@ -127,7 +127,7 @@ The current consensus: don't deploy an LLM where a successful prompt injection c
 
 ## Go deeper
 
-- **Workshop W7 — Red-Team Exercise.** Attack your own system.
+- **[Workshop W7 — Red-Team Exercise](../05-workshops/W7-red-team-exercise.md).** Attack your own system.
 - **Simon Willison's blog** — best ongoing commentary on prompt injection
 - **OWASP LLM Top 10** — consensus security categories for LLM applications
 - **Anthropic's red-teaming materials** — publicly available, well-thought-out

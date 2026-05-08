@@ -134,7 +134,7 @@ If you take one thing from this chapter: the model is only as good as the contex
 
 ## Go deeper
 
-- **Workshop W2 — First RAG Pipeline.** Build one end-to-end.
+- **[Workshop W2 — First RAG Pipeline](../05-workshops/W2-rag-pipeline.md).** Build one end-to-end.
 - **Anthropic's "Contextual Retrieval" blog post** — practical technique that improves RAG quality
 - **"Lost in the Middle" paper** (Liu et al., 2023) — the research on attention and position
 - **LangChain's RAG documentation** — concrete patterns and code

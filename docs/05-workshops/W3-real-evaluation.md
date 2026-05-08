@@ -255,4 +255,4 @@ If agreement is above 85%, your judge is probably reliable enough for automated 
 
 - [Promptfoo](https://www.promptfoo.dev/) — CLI tool that does much of this with less custom code
 - [Braintrust](https://www.braintrust.dev/) — hosted eval platform
-- Chapter 04 (Evaluation) covers the theory behind what you just built
+- [Chapter 04 (Evaluation)](../01-foundations/04-evaluation.md) covers the theory behind what you just built

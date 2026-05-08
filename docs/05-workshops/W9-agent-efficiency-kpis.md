@@ -361,5 +361,5 @@ The goal: reduce waste without hurting task success. If success rate dropped, ba
 
 - [Langfuse metrics documentation](https://langfuse.com/docs/analytics) — built-in dashboards for agent metrics
 - [Arize Phoenix](https://docs.arize.com/phoenix) — open-source observability with agent-specific metrics
-- Chapter 12 (Observability) covers the monitoring theory
-- Chapter 11 (Inference Economics) covers the cost dimensions
+- [Chapter 12 (Observability)](../03-production/12-observability.md) covers the monitoring theory
+- [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the cost dimensions

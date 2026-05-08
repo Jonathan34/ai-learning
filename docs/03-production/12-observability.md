@@ -123,7 +123,7 @@ Start simple: log every LLM call with full context, model, and metadata. Add tra
 
 ## Go deeper
 
-- Workshop W6 — Observability Setup. Instrument an agent end-to-end.
+- [Workshop W6 — Observability Setup](../05-workshops/W6-observability-setup.md). Instrument an agent end-to-end.
 - [Langfuse documentation](https://langfuse.com/docs) — open-source, good starting point
 - [OpenTelemetry semantic conventions for LLMs](https://opentelemetry.io/docs/specs/semconv/gen-ai/) — the emerging standard
 - [Braintrust blog](https://www.braintrust.dev/blog) — production observability patterns

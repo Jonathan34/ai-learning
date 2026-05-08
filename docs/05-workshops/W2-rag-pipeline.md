@@ -284,4 +284,4 @@ After building this, you should be able to answer:
 - [Anthropic's "Contextual Retrieval" blog post](https://www.anthropic.com/news/contextual-retrieval) — technique that improves chunk quality
 - [Chroma documentation](https://docs.trychroma.com/) — the vector DB used here
 - [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard) — compare embedding models
-- Chapter 03 (Context Engineering) covers the theory behind what you just built
+- [Chapter 03 (Context Engineering)](../01-foundations/03-context-engineering.md) covers the theory behind what you just built

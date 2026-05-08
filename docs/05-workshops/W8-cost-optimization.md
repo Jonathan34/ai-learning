@@ -370,4 +370,4 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 - [Anthropic prompt caching docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) — the highest-impact optimization
 - [OpenAI prompt caching docs](https://platform.openai.com/docs/guides/prompt-caching) — OpenAI's implementation
 - [LiteLLM cost tracking](https://docs.litellm.ai/docs/proxy/cost_tracking) — multi-provider cost tracking
-- Chapter 11 (Inference Economics) covers the theory behind these optimizations
+- [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the theory behind these optimizations

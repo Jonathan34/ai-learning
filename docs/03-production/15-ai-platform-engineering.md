@@ -38,7 +38,7 @@ flowchart TB
 
 **Eval pipelines.** Shared infrastructure for running evaluations — both offline (on test sets) and online (on production samples). Ideally triggered automatically on prompt or model changes.
 
-**Observability.** Centralized tracing, logging, and metrics for all AI calls across all teams. Covered in chapter 12.
+**Observability.** Centralized tracing, logging, and metrics for all AI calls across all teams. Covered in [chapter 12](12-observability.md).
 
 **Cost attribution.** Tracking which team, feature, and user is responsible for which costs. Without this, you get surprise bills and no accountability.
 

@@ -279,4 +279,4 @@ This comparison is the best way to form an opinion about frameworks — not from
 
 - [Anthropic's tool use documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — the API reference for Claude's tool use
 - [OpenAI's function calling guide](https://platform.openai.com/docs/guides/function-calling) — same concept, different API
-- Chapter 06 (What an Agent Is) and Chapter 08 (MCP and Tools) cover the theory
+- [Chapter 06 (What an Agent Is)](../02-agents/06-what-is-an-agent.md) and [Chapter 08 (MCP and Tools)](../02-agents/08-mcp-and-tools.md) cover the theory

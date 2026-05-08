@@ -98,4 +98,4 @@ As a PE or architect, your job is to bring that discipline. Not to be the person
 ## Go deeper
 
 - [Anthropic's "When to use AI" guidance](https://docs.anthropic.com/en/docs/overview) — practical framing
-- Chapter 17 covers AI product sense — what good AI UX looks like once you've decided to build
+- [Chapter 17](17-ai-product-sense.md) covers AI product sense — what good AI UX looks like once you've decided to build

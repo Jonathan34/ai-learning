@@ -121,7 +121,7 @@ The upside: if you invest in eval early, it becomes a real advantage. Teams with
 
 ## Go deeper
 
-- **Workshop W3 — Real Evaluation.** Build an eval harness end-to-end.
+- **[Workshop W3 — Real Evaluation](../05-workshops/W3-real-evaluation.md).** Build an eval harness end-to-end.
 - **"Judging LLM-as-a-Judge"** (Zheng et al., 2023) — research on LLM judge failure modes
 - **Anthropic's evaluation docs** — practical patterns
 - **Braintrust blog** — production eval patterns

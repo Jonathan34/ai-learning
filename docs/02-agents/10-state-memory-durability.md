@@ -121,4 +121,4 @@ The key insight: memory is not a feature you bolt on. It's an architectural deci
 - [Mem0 documentation](https://docs.mem0.ai/) — managed memory layer
 - [LangGraph persistence docs](https://langchain-ai.github.io/langgraph/concepts/persistence/) — checkpointing and state management
 - [Letta (formerly MemGPT)](https://www.letta.com/) — research on memory-augmented agents
-- Workshop W4 and W5 both involve state management in practice
+- [Workshop W4](../05-workshops/W4-tool-using-agent.md) and W5 both involve state management in practice
