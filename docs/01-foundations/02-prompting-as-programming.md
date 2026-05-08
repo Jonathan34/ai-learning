@@ -4,7 +4,7 @@ Here's a useful reframe: a prompt is a program written in natural language, exec
 
 It's not magic. It's not "just text". It's a specification that steers the model toward the outputs you want. The more you treat prompts like code — with inputs, outputs, contracts, versioning, testing — the better your systems will be.
 
-Most production AI failures trace back to treating prompts as prose you can "tweak" rather than contracts you can test. I've seen teams ship a prompt that works for months, then a model update breaks 5% of responses because nobody had a regression test.
+Most production AI failures trace back to treating prompts as casual text you can "tweak" rather than contracts you can test. I've seen teams ship a prompt that works for months, then a model update breaks 5% of responses because nobody had a regression test.
 
 ## What a production prompt looks like
 
@@ -63,7 +63,7 @@ Separate the stable parts (system, task, format) from the parts that change per 
 
 ## What actually works
 
-After seeing a lot of prompting advice, most of it noise, these are the principles that hold up in real systems:
+I've seen a lot of prompting advice, some of it is noise, these are the principles that I think hold up in real systems:
 
 **Be specific about output format.** "Return JSON" is weak. "Return JSON with keys `impact`, `root_cause`, `remediation`, each a string of 1-3 sentences" is strong. The more precise you need the output, the more precise your specification needs to be.
 
@@ -77,13 +77,13 @@ After seeing a lot of prompting advice, most of it noise, these are the principl
 
 **Examples in the prompt are powerful but expensive.** Showing the model 2-3 input/output examples (called "few-shot prompting") can dramatically improve performance on unfamiliar tasks. Each example uses tokens though, which means cost and latency. Curate them carefully — bad examples actively hurt.
 
-## What doesn't work (despite what tutorials say)
+## What doesn't work (at least for me)
 
 - **"Act as an expert in X"** — minimal effect on modern frontier models. There's some evidence it helps on specific tasks, but the gains are small compared to describing the task clearly and giving examples.
 
 - **Emotional appeals** ("This is very important") — marginal effect, ethically questionable.
 
-- **"Take a deep breath"** — was briefly popular, mostly superstition.
+- **"Take a deep breath"** — was briefly popular, I think it's now mostly superstition.
 
 The real improvements come from structure, specificity, and examples. Not clever phrasing.
 
@@ -128,7 +128,7 @@ A prompt tuned for Claude Sonnet may behave differently on Claude Haiku, and ver
 
 This means:
 
-- Pin your model version in production (don't just say "latest")
+- Pin your model version in production (don't just say "latest"), like you do with other dependencies, right?
 
 - When you upgrade models, run your test cases first
 
