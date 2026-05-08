@@ -12,7 +12,9 @@ I'm Jonathan Delfour. Principal Architect at Amazon, currently working on cloud 
 
 Past work:
 - **Amazon (current):** Shipping production LLM systems on Amazon Bedrock for Amazon Luna. Prompt engineering, retrieval, evaluation harnesses, human-in-the-loop design.
+
 - **AWS (4+ years):** Founded the first Enterprise Support team for the Energy vertical in North America (zero to 20+ engineers). Principal TAM for Fortune 500 accounts. Featured speaker at AWS re:Invent 2024.
+
 - **Schlumberger/SLB (13 years):** From C++ engineer to cloud and data architect. Pioneered the first cloud-native application at SLB. Designed ML-based logistics optimization saving $3.5M–$5M/month.
 
 I'm interested in applied AI and agentic systems — mostly from an architecture point of view. This curriculum is both my learning notes and a way to contribute to the broader engineering community figuring this out.
