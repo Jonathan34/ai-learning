@@ -56,7 +56,7 @@ For each, the guidance is:
 
 - **"Red Teaming Language Models with Language Models"** (Perez et al., 2022) — automated red-teaming. **[Know of]**.
 
-- **"Universal and Transferable Adversarial Attacks on Aligned Language Models"** (Zou et al., 2023) — the "GCG" jailbreak paper. **[Know of]** — demonstrates that alignment is not a solved problem.
+- **"Universal and Transferable Adversarial Attacks on Aligned Language Models"** (Zou et al., 2023) — the "GCG" jailbreak paper. **[Know of]** — shows that alignment is not a solved problem.
 
 - **"Prompt Injection: Parameterization of Fixed Inputs"** (Liu et al., 2023) — foundational work on prompt injection. **[Skim]**.
 

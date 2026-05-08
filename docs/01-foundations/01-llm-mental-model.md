@@ -184,14 +184,14 @@ What this means for you:
 
 ## Where the field actually is
 
-We don't fully understand why LLMs do what they do. Research on interpretability (what's happening inside the model) is active but incomplete. The practical implication: you can't reason about LLM behavior the way you reason about deterministic code. You have to treat it empirically — test, measure, iterate.
+We don't fully understand why LLMs do what they do. Research on interpretability (what's happening inside the model) is active but incomplete. What this means for you: you can't reason about LLM behavior the way you reason about deterministic code. You have to treat it empirically — test, measure, iterate.
 
 This is uncomfortable for engineers used to reading source code to understand behavior. Get comfortable with it. The whole curriculum is built around this reality.
 
 ## Go deeper
 
-- **Andrej Karpathy's "Deep Dive into LLMs like ChatGPT"** on YouTube (3 hours, excellent)
+- [Andrej Karpathy's Deep Dive into LLMs](https://www.youtube.com/watch?v=7xTGNNLPyMI) — 3 hours, excellent
 
-- **"The Illustrated Transformer" by Jay Alammar** — visual architecture walkthrough
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) by Jay Alammar — visual architecture walkthrough
 
-- **Anthropic's "Mapping the Mind of a Large Language Model"** — interpretability research
+- [Anthropic's Mapping the Mind of a Large Language Model](https://www.anthropic.com/research/mapping-mind-language-model) — interpretability research

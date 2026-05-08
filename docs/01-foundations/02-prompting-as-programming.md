@@ -59,7 +59,7 @@ INPUT:
 
 ```
 
-The key insight: separate the stable parts (system, task, format) from the parts that change per request (context, input). Check the stable parts into source control. Version them. This isn't over-engineering — it's the minimum discipline for production.
+Separate the stable parts (system, task, format) from the parts that change per request (context, input). Check the stable parts into source control. Version them. This isn't over-engineering — it's the minimum discipline for production.
 
 ## What actually works
 
@@ -154,8 +154,8 @@ The people who are good at this tend to be good at writing clear specifications 
 
 ## Go deeper
 
-- **Anthropic's prompt engineering guide** — practical, current
+- [Anthropic's prompt engineering guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — practical, current
 
-- **OpenAI's prompt engineering best practices** — different voice, complementary
+- [OpenAI's prompt engineering best practices](https://platform.openai.com/docs/guides/prompt-engineering) — different voice, complementary
 
-- **"The Prompt Report"** (Schulhoff et al., 2024) — academic survey of techniques
+- [The Prompt Report](https://arxiv.org/abs/2406.06608) (Schulhoff et al., 2024) — academic survey of techniques

@@ -134,10 +134,10 @@ The upside: if you invest in eval early, it becomes a real advantage. Teams with
 
 ## Go deeper
 
-- **[Workshop W3 — Real Evaluation](../05-workshops/W3-real-evaluation.md).** Build an eval harness end-to-end.
+- [Workshop W3 — Real Evaluation](../05-workshops/W3-real-evaluation.md) — build an eval harness end-to-end
 
-- **"Judging LLM-as-a-Judge"** (Zheng et al., 2023) — research on LLM judge failure modes
+- [Judging LLM-as-a-Judge](https://arxiv.org/abs/2306.05685) (Zheng et al., 2023) — research on LLM judge failure modes
 
-- **Anthropic's evaluation docs** — practical patterns
+- [Anthropic's evaluation docs](https://docs.anthropic.com/en/docs/build-with-claude/develop-tests) — practical patterns
 
-- **Braintrust blog** — production eval patterns
+- [Braintrust blog](https://www.braintrust.dev/blog) — production eval patterns

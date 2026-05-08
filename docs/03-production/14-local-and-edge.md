@@ -2,7 +2,7 @@
 
 Running LLMs on your own hardware — including consumer laptops — has become practical through quantization (compressing model weights) and efficient runtimes. It's a different design space from hosted inference, with real advantages and real constraints.
 
-This chapter is especially relevant if you're interested in roles at companies like NVIDIA that focus on making AI run efficiently on local hardware.
+Especially relevant if you're looking at roles focused on making AI run efficiently on local hardware (NVIDIA, Apple, etc.).
 
 ## Why run locally
 

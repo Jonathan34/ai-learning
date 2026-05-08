@@ -166,7 +166,7 @@ The most impactful optimizations in order: prompt caching, model routing, output
 
 ## Go deeper
 
-- Provider pricing pages (Anthropic, OpenAI, Google) — check current rates
+- [Provider pricing pages](https://docs.anthropic.com/en/docs/about-claude/models) (Anthropic, OpenAI, Google) — check current rates
 
 - [LiteLLM](https://github.com/BerriAI/litellm) — multi-provider routing and cost tracking
 

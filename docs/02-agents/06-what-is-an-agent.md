@@ -16,7 +16,7 @@ Here's a spectrum that helps:
 
 6. **Multi-agent systems** — multiple LLMs in different roles, coordinating via messages or shared state.
 
-The operational definition I find most useful comes from Anthropic's taxonomy: an agent is a system where an LLM dynamically controls its own process and tool usage. If the steps are predetermined and the LLM just fills in slots, it's a workflow, not an agent.
+The definition I find most useful comes from Anthropic's taxonomy: an agent is a system where an LLM dynamically controls its own process and tool usage. If the steps are predetermined and the LLM just fills in slots, it's a workflow, not an agent.
 
 Knowing where your system sits on this spectrum is the most important architectural decision you'll make. Many teams drift toward the complex end when something simpler would work — and pay for it in latency, cost, and reliability.
 

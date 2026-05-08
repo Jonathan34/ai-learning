@@ -82,7 +82,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Context** — everything in the input: system prompt + history + retrieved docs + tool output + user message
 
-- **Few-shot / Few-shot prompting** — including examples in the prompt to demonstrate the task
+- **Few-shot / Few-shot prompting** — including examples in the prompt to show the model what you want
 
 - **Zero-shot** — giving only instructions, no examples
 

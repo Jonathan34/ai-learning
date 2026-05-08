@@ -129,9 +129,9 @@ The gotcha: memory decays in quality over time. Old facts become stale. Preferen
 
 ## The "lost in the middle" problem
 
-Research has shown that LLMs pay more attention to tokens at the beginning and end of their context than those in the middle. If critical information is buried in the middle of a long context, the model may miss it.
+Research shows that LLMs pay more attention to tokens at the beginning and end of their context than those in the middle. If critical information is buried in the middle of a long context, the model may miss it.
 
-Practical takeaway: put the most important retrieved documents near the end of the context, close to the user's question. Don't just dump them in order of retrieval score — think about position.
+So: put the most important retrieved documents near the end of the context, close to the user's question. Don't just dump them in order of retrieval score — think about position.
 
 ## When to use RAG vs other approaches
 
@@ -161,10 +161,10 @@ If you take one thing from this chapter: the model is only as good as the contex
 
 ## Go deeper
 
-- **[Workshop W2 — First RAG Pipeline](../05-workshops/W2-rag-pipeline.md).** Build one end-to-end.
+- [Workshop W2 — First RAG Pipeline](../05-workshops/W2-rag-pipeline.md) — build one end-to-end
 
-- **Anthropic's "Contextual Retrieval" blog post** — practical technique that improves RAG quality
+- [Anthropic's Contextual Retrieval blog post](https://www.anthropic.com/news/contextual-retrieval) — practical technique that improves RAG quality
 
-- **"Lost in the Middle" paper** (Liu et al., 2023) — the research on attention and position
+- [Lost in the Middle](https://arxiv.org/abs/2307.03172) (Liu et al., 2023) — the research on attention and position
 
-- **LangChain's RAG documentation** — concrete patterns and code
+- [LangChain's RAG documentation](https://python.langchain.com/docs/tutorials/rag/) — concrete patterns and code

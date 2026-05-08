@@ -6,7 +6,7 @@ The tool interface is one of the most consequential design decisions in an agent
 
 Model Context Protocol (MCP) is an open protocol from Anthropic, released in late 2024 and gaining traction through 2025. It standardizes how AI applications connect to tools and data sources. Think of it the way USB-C standardized physical connections — MCP is attempting to standardize LLM-to-tool connections.
 
-The thing to remember about tools: the model never sees your code. It sees the natural-language description of what the tool does and when to use it. Tool descriptions are part of the prompt. Tools are prose first, code second.
+Here's what matters about tools: the model never sees your code. It sees the natural-language description of what the tool does and when to use it. Tool descriptions are part of the prompt. Tools are prose first, code second.
 
 ## Why tool problems dominate agent debugging
 

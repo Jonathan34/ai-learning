@@ -93,7 +93,7 @@ Debugging is harder by an order of magnitude. When something goes wrong, you nee
 
 Multi-agent systems are still experimental for most production use cases. The router + specialists pattern is the most mature and widely deployed. Full orchestrator + workers systems work for specific narrow cases but are fragile at scale.
 
-The field is moving fast. New coordination patterns, better frameworks (LangGraph, AutoGen), and better observability tools are making multi-agent more practical. But the default should still be: start with the simplest thing that works, and only add agents when you've demonstrated that a single agent can't handle the task.
+The field is moving fast. New coordination patterns, better frameworks (LangGraph, AutoGen), and better observability tools are making multi-agent more practical. But the default should still be: start with the simplest thing that works, and only add agents when you've shown that a single agent can't handle the task.
 
 ## Go deeper
 

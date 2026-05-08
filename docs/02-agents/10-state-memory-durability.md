@@ -124,7 +124,7 @@ Memory is one of the less mature parts of the agent stack. Short-term memory (co
 
 The tools are improving — Mem0, Zep, LangGraph checkpointing — but best practices are still emerging. If you're building memory into a system today, expect to iterate on the design as the field matures.
 
-The key insight: memory is not a feature you bolt on. It's an architectural decision that affects privacy, cost, reliability, and user trust. Treat it with the same seriousness as your database schema.
+Memory is not a feature you bolt on. It's an architectural decision that affects privacy, cost, reliability, and user trust. Treat it with the same seriousness as your database schema.
 
 ## Go deeper
 
