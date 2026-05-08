@@ -46,15 +46,23 @@ If your system can't meet the latency budget for the interaction type you've cho
 ## Trust engineering
 
 Users trust AI systems that are:
+
 - **Calibrated.** They admit uncertainty when uncertain and are confident when confident.
+
 - **Consistent.** Same question gets similar answers across sessions.
+
 - **Transparent.** They show their sources, explain their reasoning when asked, and don't pretend to be human.
+
 - **Correctable.** When wrong, the user can fix it and the system learns (or at least doesn't repeat the mistake in the same session).
 
 Users distrust AI systems that are:
+
 - **Overconfident.** Stating wrong things as fact.
+
 - **Inconsistent.** Different answers to the same question on different days.
+
 - **Opaque.** No way to understand why it said what it said.
+
 - **Uncorrectable.** User says "that's wrong" and the system ignores it or repeats the error.
 
 ## Designing for failure
@@ -90,5 +98,7 @@ The teams building the best AI products are the ones that start with the user's 
 ## Go deeper
 
 - [Anthropic's design guidelines for Claude](https://docs.anthropic.com/en/docs/build-with-claude) — practical UX patterns
+
 - [Nielsen Norman Group on AI UX](https://www.nngroup.com/topic/artificial-intelligence/) — research-backed design guidance
+
 - [Apple's Human Interface Guidelines for AI](https://developer.apple.com/design/human-interface-guidelines/machine-learning) — platform-specific but principles transfer

@@ -9,9 +9,13 @@ Chapters are not all structured the same way. Some start with a concept, some wi
 Most chapters include:
 
 - The mental model you need
+
 - Why it matters in production
+
 - What experienced people know that doesn't show up in tutorials
+
 - Common traps and failure modes
+
 - Links to deeper reading
 
 Workshops are hands-on. Every workshop has you build something real and compare it to what you expected.
@@ -23,9 +27,13 @@ The goal is to be credible in architecture reviews with people who've been doing
 That looks like:
 
 - You can design a system that works and explain *why* it will work, not just that it will
+
 - You can predict the failure modes before you ship
+
 - You know what you don't know, and you say so without performing humility
+
 - Buzzwords don't impress or intimidate you — you translate them into concrete components
+
 - You can work with ML engineers as peers
 
 You're not here to become an ML researcher. You're here to become someone ML engineers want in the room when architecture gets decided.
@@ -49,7 +57,9 @@ A lot of AI content is fluff. Your filter from other domains is good — "is thi
 Three moves that work:
 
 1. **Sleep on it.** Concepts often click overnight.
+
 2. **Build the concrete version.** Jump to the relevant workshop.
+
 3. **Read real production code.** Anthropic's docs, LangChain's source, the Claude Agent SDK — reading real prompts and eval harnesses is one of the fastest ways to build taste.
 
 Don't get stuck perfecting one chapter. Keep moving. The chapters reinforce each other.

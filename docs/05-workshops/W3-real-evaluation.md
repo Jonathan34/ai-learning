@@ -11,8 +11,11 @@
 ## What you're building
 
 An eval harness that can answer: "Did this change make things better or worse?" You'll build:
+
 1. A golden test set with expected properties
+
 2. Automated scorers (structural checks + LLM-as-judge)
+
 3. A regression runner that compares two versions
 
 ---
@@ -20,12 +23,17 @@ An eval harness that can answer: "Did this change make things better or worse?" 
 ## Part 1: Pick a task and build a test set (45 min)
 
 Choose one of:
+
 - Your RAG system from W2 (evaluate answer quality)
+
 - A classification task (evaluate accuracy)
+
 - A summarization task (evaluate completeness and conciseness)
 
 Build 20-30 test cases. Each case needs:
+
 - An input (the question or text to process)
+
 - Expected properties (not necessarily an exact answer — properties you can check)
 
 ```python
@@ -107,8 +115,11 @@ Actual response to evaluate: {response}
 Evaluate on these dimensions. For each, answer Yes or No and give a one-sentence reason.
 
 1. ACCURATE: Does the response convey the same key facts as the reference answer?
+
 2. COMPLETE: Does it cover the main points without major omissions?
+
 3. GROUNDED: Does it only state things supported by the reference, without making things up?
+
 4. CONCISE: Is it appropriately brief without unnecessary filler?
 
 Respond in JSON format:
@@ -123,9 +134,13 @@ Respond in JSON format:
 ```
 
 Key decisions:
+
 - **Use a different model as the judge** than the one you're evaluating. Same-model judging is biased.
+
 - **Ask specific Yes/No questions**, not "rate 1-10." Specific questions give more reliable results.
+
 - **Include the reference answer** so the judge has something to compare against.
+
 - **Ask for reasons** — they help you debug when the judge disagrees with your intuition.
 
 ---
@@ -236,8 +251,11 @@ If agreement is above 85%, your judge is probably reliable enough for automated 
 ## Gotchas
 
 - **LLM-as-judge is not free.** Each judgment is an LLM call. For 30 test cases with 4 dimensions each, that's 30 judge calls. Budget for it.
+
 - **Position bias in pairwise comparison.** If you compare two responses ("which is better, A or B?"), the judge tends to prefer whichever comes first. Randomize order.
+
 - **The eval set ages.** Your test cases from today may not represent user queries in 3 months. Refresh periodically with real production examples.
+
 - **Overfitting to the eval set.** If you tune your prompt until it aces all 30 cases, you've probably overfit. Hold 10 cases back for validation.
 
 ---
@@ -245,14 +263,21 @@ If agreement is above 85%, your judge is probably reliable enough for automated 
 ## What you should have after this workshop
 
 - A test set of 20-30 cases with expected properties
+
 - Structural scorers that catch obvious failures
+
 - An LLM-as-judge that scores quality dimensions
+
 - A regression comparison tool
+
 - Calibration data showing how reliable your judge is
+
 - The ability to answer "did this change help or hurt?" before shipping
 
 ## Go deeper
 
 - [Promptfoo](https://www.promptfoo.dev/) — CLI tool that does much of this with less custom code
+
 - [Braintrust](https://www.braintrust.dev/) — hosted eval platform
+
 - [Chapter 04 (Evaluation)](../01-foundations/04-evaluation.md) covers the theory behind what you just built

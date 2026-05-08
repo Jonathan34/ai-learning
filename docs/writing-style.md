@@ -11,9 +11,13 @@ Write for someone smart who is new to this specific domain.
 ## Voice
 
 - Write like an experienced engineer explaining something to a peer over coffee — not like a textbook, not like a blog post optimized for SEO, not like a curriculum document.
+
 - First person is fine. "I've seen teams..." or "Here's how I think about it..." when it adds credibility.
+
 - Be direct. Say what you mean in the fewest words that are still clear.
+
 - Be opinionated where you have a basis for it. "This usually doesn't work" is more useful than "results may vary."
+
 - Be honest about uncertainty. "Nobody knows yet" is a valid statement.
 
 ## Language rules
@@ -54,12 +58,19 @@ Good: "The attention mechanism computes a weighted sum over all tokens in the co
 ### No filler phrases
 
 Delete these on sight:
+
 - "It's worth noting that..."
+
 - "It's important to understand that..."
+
 - "In order to..."
+
 - "At the end of the day..."
+
 - "The key takeaway here is..."
+
 - "Let's dive into..."
+
 - "As we discussed earlier..."
 
 Just say the thing.
@@ -69,9 +80,13 @@ Just say the thing.
 ### No rigid template across chapters
 
 Chapters should NOT all follow the same structure. Vary based on what the content needs:
+
 - Some chapters open with a concept, then examples
+
 - Some open with a problem, then the solution
+
 - Some are mostly a survey (frameworks chapter)
+
 - Some are mostly practical (workshops)
 
 The reader should not be able to predict the section headers of the next chapter based on the current one.
@@ -83,8 +98,11 @@ Some sections are two sentences. Some are a full page. Match the length to the c
 ### Use diagrams when they help
 
 Mermaid diagrams for:
+
 - Flows and sequences (generation loop, RAG pipeline, agent loop)
+
 - Architecture (layer stacks, system components)
+
 - Decision trees (when to use X vs Y)
 
 Don't use diagrams for things that are clearer as prose or tables.
@@ -102,12 +120,19 @@ Show real code or prompt examples when they clarify. Keep them short — 5-15 li
 ### No AI-generated patterns
 
 Avoid these tells:
+
 - Bolded thesis statements at the start of sections ("**The key insight is:**")
+
 - "Senior move:" or "Pro tip:" callouts (just say it inline)
+
 - Three-item parallel lists with identical sentence structure
+
 - Rhetorical questions immediately answered ("Why does this matter? Because...")
+
 - Every section ending with a neat summary sentence
+
 - "Let's explore..." / "Let's dive into..."
+
 - Overly clean transitions between sections
 
 ### Be comfortable with incomplete thoughts
@@ -117,22 +142,31 @@ Not everything needs a conclusion. Sometimes "this is still messy and nobody has
 ### Honest hedging over false confidence
 
 - "This usually works" not "This is the best approach"
+
 - "In my experience" not "It is well established that"
+
 - "Nobody knows yet" not "Further research is needed"
+
 - "This might not apply to your case" not "Results may vary"
 
 ### No performative humility or enthusiasm
 
 - Don't say "I'm excited to share..." 
+
 - Don't say "This is just my humble opinion..."
+
 - Don't say "This is a game-changer!"
+
 - Just state things plainly.
 
 ## Navigation
 
 Every chapter ends with:
+
 1. A "Go deeper" section with 3-5 links (papers, docs, videos)
+
 2. A horizontal rule
+
 3. Previous/Next navigation links
 
 Format:
@@ -154,5 +188,7 @@ parent: "Section name"
 ## File naming
 
 - Lowercase with hyphens: `01-llm-mental-model.md`
+
 - Numbered for ordering within sections
+
 - Workshops prefixed with W: `W1-local-llm-setup.md`

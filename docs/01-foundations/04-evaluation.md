@@ -29,8 +29,11 @@ Most of this chapter is about task evaluation — the one you have to build your
 Three pieces:
 
 **1. A test set.** A collection of inputs paired with some definition of "correct." This could be:
+
 - Exact expected outputs (for classification or extraction)
+
 - Properties the output must have ("must be valid JSON," "must mention the source document," "must be under 200 words")
+
 - Human judgments ("is this response helpful? yes/no")
 
 Start with 20-50 examples. That's enough to catch obvious regressions. Grow to 200+ as the system matures.
@@ -72,8 +75,11 @@ To check if your judge is trustworthy: have humans rate 50-100 examples, then co
 **Offline eval** runs your test set before you ship changes. It's fast, repeatable, and catches most regressions. But it only tests the cases you thought of — it's blind to everything else.
 
 **Online eval** measures quality on real traffic after you ship:
+
 - **Shadow mode** — run the new version alongside the old one, compare outputs without showing users the new version
+
 - **Canary** — send a small percentage of traffic to the new version, monitor quality
+
 - **Sampling for human review** — randomly pick 1-5% of production responses and have someone rate them over time
 
 You need both. Offline eval for fast iteration; online eval for catching things your test set missed.
@@ -83,8 +89,11 @@ You need both. Offline eval for fast iteration; online eval for catching things 
 Your system's quality can degrade over time even if you don't change anything:
 
 - **Model drift** — the provider updates the model. Even "same version" can shift subtly.
+
 - **Prompt drift** — someone tweaks the prompt without running the eval. Small changes accumulate.
+
 - **Data drift** — users start asking different questions than they used to. Your test set no longer represents real traffic.
+
 - **Eval drift** — your test set itself changes as people add and remove cases.
 
 If your quality score drops, it could be any of these. Track them separately so you know what to fix.
@@ -94,9 +103,13 @@ If your quality score drops, it could be any of these. Track them separately so 
 Everything above assumes a simple input → output system. Agents are different — they take multiple steps, call tools, make decisions along the way.
 
 To evaluate an agent, you need to think about:
+
 - **Final output quality** — did it get the right answer?
+
 - **Efficiency** — did it take 3 steps when 1 would have worked?
+
 - **Safety** — did it avoid calling tools it shouldn't have? Did it stay within its budget?
+
 - **Robustness** — what happens when a tool call fails?
 
 Most teams evaluate agents on final output quality plus a few instrumented checks (step count, tools used, errors encountered). Full trajectory evaluation — scoring every decision the agent made — is still an open research problem.
@@ -122,6 +135,9 @@ The upside: if you invest in eval early, it becomes a real advantage. Teams with
 ## Go deeper
 
 - **[Workshop W3 — Real Evaluation](../05-workshops/W3-real-evaluation.md).** Build an eval harness end-to-end.
+
 - **"Judging LLM-as-a-Judge"** (Zheng et al., 2023) — research on LLM judge failure modes
+
 - **Anthropic's evaluation docs** — practical patterns
+
 - **Braintrust blog** — production eval patterns

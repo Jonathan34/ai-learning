@@ -5,10 +5,15 @@
 Here's a spectrum that helps:
 
 1. **Augmented generation** — an LLM plus retrieval. No tool use, no decisions. Not really an agent, but often labeled as one.
+
 2. **Tool use** — the LLM can call functions to get information or take action. It decides which tools to call and with what arguments.
+
 3. **Reason-and-act loops** — the model alternates between thinking and doing. Each step depends on the result of the previous one.
+
 4. **Goal-directed agent** — the model breaks a high-level goal into steps, executes them, and revises the plan when things change.
+
 5. **Autonomous agent** — the model operates in a loop with memory, tools, and initiative over long time horizons. Still rare in production.
+
 6. **Multi-agent systems** — multiple LLMs in different roles, coordinating via messages or shared state.
 
 The operational definition I find most useful comes from Anthropic's taxonomy: an agent is a system where an LLM dynamically controls its own process and tool usage. If the steps are predetermined and the LLM just fills in slots, it's a workflow, not an agent.
@@ -46,14 +51,21 @@ Same task, different architecture. The workflow is cheap, reliable, easy to eval
 Both are valid. The question is which fits your problem.
 
 Use a workflow when:
+
 - The task decomposes cleanly into known steps
+
 - The same steps work for most inputs
+
 - You need predictable cost and latency
+
 - You need behavior you can guarantee
 
 Use an agent when:
+
 - The right sequence of steps depends on the input
+
 - You can't anticipate all the cases at design time
+
 - The flexibility is worth the complexity
 
 Many real systems are hybrids. The top-level flow is a workflow; one node of the workflow is an agent that handles the open-ended part.
@@ -90,10 +102,15 @@ Everything else — frameworks, patterns, orchestrators — is variations on thi
 The parameters that matter:
 
 - **Budget** — max loop iterations, max tokens consumed, max wall-clock time, max dollars spent.
+
 - **Stop conditions** — when does the agent decide it's done? When do you force it to stop?
+
 - **Tool set** — what can the agent call? What can't it?
+
 - **Context management** — how do you keep the context from growing without bound as the loop runs?
+
 - **Memory** — what persists across loop iterations? Across sessions?
+
 - **Error handling** — what happens when a tool call fails? When the model produces malformed output?
 
 Most agent engineering is getting these parameters right for your specific task.
@@ -111,10 +128,15 @@ What actually works in production: basic ReAct with solid tool descriptions, cle
 ## When not to use an agent
 
 - When a workflow is simpler. This is most tasks.
+
 - When predictable cost matters. Agent loops have highly variable token consumption.
+
 - When low latency matters. Each loop iteration is a round trip to the model.
+
 - When reliability is critical. Agents fail in more ways than workflows.
+
 - When you can't afford to debug exotic failure modes.
+
 - When the task has a clear structure. If you can write the steps down, you probably shouldn't ask the model to figure them out.
 
 Teams often default to "let's build an agent" because it sounds more impressive. The simpler architecture that solves the problem is usually the right one.
@@ -150,13 +172,19 @@ Agents need eval harnesses even more than single calls do. Because the trajector
 Agent architecture is the most active area of applied AI engineering as of late 2025.
 
 What's settled:
+
 - Workflows with LLMs at nodes are a strong, cheap, reliable pattern for many tasks
+
 - Simple tool-using agents work well for tasks that need flexibility
+
 - Multi-agent systems are still experimental; they work for some narrow use cases
 
 What's not settled:
+
 - How to evaluate agents at scale
+
 - How to guarantee agents stay safe across long horizons
+
 - Whether "autonomous" agents are a meaningful production category yet
 
 Expect the field to change substantially over the next 2-3 years. The mental model of "where on the spectrum" will remain useful even as the specific techniques evolve.
@@ -164,6 +192,9 @@ Expect the field to change substantially over the next 2-3 years. The mental mod
 ## Go deeper
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — the single most useful contemporary piece on agent architecture
+
 - ["ReAct: Synergizing Reasoning and Acting in Language Models"](https://arxiv.org/abs/2210.03629) (Yao et al., 2022) — the paper that kicked off the current wave
+
 - [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build one from scratch without a framework.
+
 - [HuggingFace's agents course](https://huggingface.co/learn/agents-course) — practical, free, code-heavy

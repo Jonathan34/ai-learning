@@ -90,8 +90,11 @@ This is almost always the highest-impact optimization. If your system has a stab
 **How caching works:** the provider stores the computation for a prefix of your prompt. On subsequent requests with the same prefix, you only pay full price for the tokens that differ. Cache hits are typically 10% the cost of fresh input tokens.
 
 **Requirements:**
+
 - Cached prefix must be byte-identical across requests
+
 - Minimum prefix length varies (Anthropic: 1024 tokens, OpenAI: 1024 tokens, adjust per provider)
+
 - Cache TTL is usually 5 minutes (your prefix needs to be used that often to stay warm)
 
 **Restructure your prompt:**
@@ -123,7 +126,9 @@ messages = [
 ```
 
 Run your 20 test requests again. Compare:
+
 - What percentage of your input tokens now come from cache?
+
 - How much did cost per request drop?
 
 For systems with large stable prompts (agent tool descriptions, detailed instructions), caching can cut input costs by 70-90%.
@@ -192,8 +197,11 @@ def route_request(user_request):
 ```
 
 Measure:
+
 - What percentage of requests route to the small model?
+
 - How much does that save per request?
+
 - Did quality drop on simple requests? (Use your W3 eval harness to check.)
 
 Typical savings: 50-70% on traffic that's classified as simple, usually 40-60% of total traffic. Net savings: 20-40% of your total bill.
@@ -360,14 +368,21 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 ## What you should have after this workshop
 
 - A measured baseline cost for your system
+
 - Applied 4-5 cost optimization techniques
+
 - Measured impact of each technique individually
+
 - A cost profile reduced by 40-70% vs baseline
+
 - Understanding of which levers matter most for your specific workload
 
 ## Go deeper
 
 - [Anthropic prompt caching docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) — the highest-impact optimization
+
 - [OpenAI prompt caching docs](https://platform.openai.com/docs/guides/prompt-caching) — OpenAI's implementation
+
 - [LiteLLM cost tracking](https://docs.litellm.ai/docs/proxy/cost_tracking) — multi-provider cost tracking
+
 - [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the theory behind these optimizations

@@ -131,19 +131,29 @@ For teams with senior engineers, "write it yourself" is often the right call up 
 ## Deciding
 
 When to use a framework:
+
 - Your patterns align well with the framework's abstractions
+
 - You need a specific feature the framework provides well (graph orchestration, state persistence, tracing)
+
 - Your team will grow and consistency matters
+
 - You're prototyping and want to move fast
 
 When to skip and write it yourself:
+
 - Your needs are simple enough that the framework adds complexity
+
 - Your patterns don't match and you'd fight abstractions
+
 - You need maximum debuggability
+
 - You care about long-term lock-in risk
 
 When to mix:
+
 - Use a framework for one layer (tool orchestration) and raw code for another (prompt management)
+
 - Use a lightweight helper (Pydantic for schemas, `instructor` for structured output) without committing to a full framework
 
 Whatever you pick, keep your business logic — prompts, tool definitions, domain logic — separable from framework code. Use the framework as middleware, not as the application. If the framework changes or you need to swap it, the core of your system should survive the migration.
@@ -153,10 +163,15 @@ Whatever you pick, keep your business logic — prompts, tool definitions, domai
 All of these are yours regardless of what framework you pick:
 
 - **Prompt quality and versioning.** No framework writes good prompts for you.
+
 - **Evaluation.** No framework gives you test cases or quality rubrics.
+
 - **Observability beyond traces.** Frameworks provide traces; understanding them is your job.
+
 - **Cost management.** No framework forces you to respect a budget.
+
 - **Security.** No framework sandboxes your tools for you.
+
 - **Product sense.** No framework tells you which tools to build.
 
 Frameworks solve syntax and glue. The hard parts are still yours.
@@ -184,6 +199,9 @@ My bet: in 2-3 years, a small number of frameworks will have matured into what E
 ## Go deeper
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — still the best practical guide, framework-agnostic
+
 - [LangGraph documentation](https://langchain-ai.github.io/langgraph/) — read the real docs, not tutorials
+
 - [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build an agent from scratch, then port to a framework.
+
 - Each framework's source code — if you're going to adopt one seriously, read enough of the source to know what's really happening

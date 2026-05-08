@@ -13,10 +13,15 @@ The thing to remember about tools: the model never sees your code. It sees the n
 Most "the agent is broken" complaints trace to tool issues:
 
 - Bad tool descriptions → the model picks the wrong tool or doesn't recognize when to use one
+
 - Bad tool schemas → the model hallucinates arguments
+
 - Too many tools → the model gets confused or picks suboptimally
+
 - Too few tools → the agent can't complete the task
+
 - Tools that fail loudly → the model sees an error and gives up
+
 - Tools that fail silently → the model proceeds on bad data
 
 Tool engineering is 40-60% of agent engineering. It's worth taking seriously.
@@ -64,8 +69,11 @@ A few principles that make tools work well:
 The model never sees your implementation. It sees the name and description. So:
 
 - Name a tool for what it does, not how it works. `check_refund_eligibility` not `call_stripe_api`.
+
 - Describe side effects explicitly. If a tool sends email, say so. If it's read-only, say so.
+
 - Include usage constraints. "Only call this for orders less than 30 days old."
+
 - Anti-examples help. "Do not use this for general product questions; use `search_product_catalog` instead."
 
 Time spent writing tool descriptions is prompt engineering. Write them carefully, test them, iterate.
@@ -75,7 +83,9 @@ Time spent writing tool descriptions is prompt engineering. Write them carefully
 The return format shapes what the model can do next.
 
 - Return everything the model might need. If orders have status, date, and total, return all three even if the user only asked about status. Fetching once is cheaper than fetching twice.
+
 - Handle "nothing to return" gracefully. An empty result should say "No orders found for customer X" not return `[]`, which the model may misinterpret.
+
 - Truncate sensibly. Returning 10MB of data to the model blows the context. Default to reasonable page sizes. Return counts and truncation metadata.
 
 ## Error handling
@@ -97,8 +107,11 @@ A rough heuristic: 5-15 tools is the sweet spot for most agents. Below 5 and you
 When you have too many:
 
 - **Hierarchical tool sets.** A "meta-tool" the agent calls first that returns a relevant subset.
+
 - **Dynamic tool selection.** Use embeddings (vector representations of text) to retrieve the most relevant tools for the current query before giving them to the agent.
+
 - **Multi-agent routing.** Specialist agents, each with their own tool subset; a router picks which specialist handles the query.
+
 - **Just cut some tools.** Often the right answer. Many tools were added "in case" and aren't pulling their weight.
 
 ## Model Context Protocol (MCP)
@@ -141,7 +154,9 @@ graph LR
 Three things:
 
 - **Tools** — functions the LLM can call. Same concept as provider-native tool use, but portable across clients.
+
 - **Resources** — data the LLM can read. Files, database rows, API responses.
+
 - **Prompts** — templates the client can surface to the user. "Summarize this document," "Review this PR."
 
 A single server can expose any combination. A filesystem MCP server exposes tools for reading/writing files and resources for the file tree. A database MCP server exposes tools for querying and resources for schema introspection.
@@ -149,8 +164,11 @@ A single server can expose any combination. A filesystem MCP server exposes tool
 ### Transport and protocol
 
 - **Transport:** stdio (subprocess), HTTP/SSE, or newer streamable HTTP. Stdio is common for local dev; HTTP for remote servers.
+
 - **Capabilities negotiation:** client and server exchange what they support on connect.
+
 - **Tool invocation:** client sends a tool call; server executes and returns the result.
+
 - **Resource fetch:** client requests a resource; server returns content.
 
 The protocol handles discovery ("what tools do you have?") and invocation, with metadata for schemas, descriptions, and pagination.
@@ -158,9 +176,13 @@ The protocol handles discovery ("what tools do you have?") and invocation, with 
 ### The ecosystem as of late 2025
 
 - Reference MCP servers exist for filesystem, fetch, GitHub, Slack, Google Drive, Postgres, SQLite, Puppeteer, and more
+
 - Client support in Claude Desktop, several IDE assistants, Cursor, Cline, Warp, and growing
+
 - Third-party servers for most popular SaaS tools (Notion, Linear, Jira, etc.)
+
 - OpenAI added MCP support to their Agents SDK in 2025
+
 - The modelcontextprotocol.io directory lists hundreds of servers
 
 ### Why it matters
@@ -198,8 +220,11 @@ That's a working MCP server. Plug it into Claude Desktop and Claude can call `ad
 MCP lowers the bar to connecting tools to agents. That's good and dangerous.
 
 - **No default authentication or authorization.** Servers you run locally trust the client. Servers over HTTP need you to add auth yourself.
+
 - **Once connected, MCP tools are privileged.** The protocol doesn't enforce capability constraints; that's the application's job.
+
 - **Untrusted MCP servers are a supply chain risk.** Running a random MCP server from the community is like running a random script from the internet. Audit before adopting.
+
 - **Indirect prompt injection via MCP resources.** Content returned by an MCP server can contain injection payloads. Same defenses as with any tool that returns untrusted content.
 
 Treat MCP servers like browser extensions. You wouldn't install a random browser extension; don't run a random MCP server. Check the source, understand the scope of what it can do, run with minimum privileges.
@@ -219,6 +244,7 @@ For many production systems, both coexist: some tools defined natively (custom b
 Separate them mentally and often physically. Read tools are safe to call speculatively. Write tools need guardrails.
 
 - Read: `get_customer`, `search_products`, `list_tickets`
+
 - Write: `update_customer`, `cancel_order`, `send_email`
 
 Give the model read tools freely. Gate write tools with confirmations, budgets, or human checks depending on stakes.
@@ -228,8 +254,11 @@ Give the model read tools freely. Gate write tools with confirmations, budgets, 
 An agent can use tool output from one call as input to the next.
 
 Design for this:
+
 - If `search_customers` returns a list, each item should have a stable ID the agent can pass to `get_customer_details`.
+
 - Return a cursor the model can use to fetch more, not just "there's more."
+
 - If a common flow requires 4 tool calls, consider a higher-level tool that does all 4.
 
 ### Idempotency
@@ -261,14 +290,21 @@ If the agent calls `update_customer_email` twice with the same arguments, the se
 Tool design is mature as a discipline — the principles above are well-established, and tool-using LLMs work well in production today. MCP is younger but has strong momentum; it's reasonable to bet on it for new systems.
 
 Watch for:
+
 - MCP security practices to formalize (auth, capability scoping)
+
 - Tool schema standards to stabilize across providers
+
 - Tool discovery and marketplace patterns to mature
+
 - Evaluation tooling for tool-using agents to improve
 
 ## Go deeper
 
 - [modelcontextprotocol.io](https://modelcontextprotocol.io) — the official MCP spec and server directory
+
 - [Anthropic's "Tool use with Claude" docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — practical patterns that apply to any LLM
+
 - [MCP source code on GitHub](https://github.com/modelcontextprotocol) — reading the SDK source is one of the best ways to understand the protocol
+
 - [Workshop W4 — Tool-Using Agent](../05-workshops/W4-tool-using-agent.md). Build an agent with proper tool design, see the failure modes directly.

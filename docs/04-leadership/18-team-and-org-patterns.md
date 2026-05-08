@@ -17,7 +17,9 @@ How you organize AI work determines how well it scales. The most common pattern 
 The most common successful pattern:
 
 - A **central platform team** builds shared infrastructure: model routing, observability, eval tooling, prompt registry, cost tracking, governance.
+
 - **Product teams** build features on top of the platform. They own their prompts, their tools, their eval sets, their domain logic.
+
 - Optionally, **embedded AI engineers** sit within product teams to bridge the gap — they know the platform and the product domain.
 
 This is the same pattern that worked for DevOps (central platform, product teams use it) and for data engineering (central data platform, product teams build on it).
@@ -25,10 +27,15 @@ This is the same pattern that worked for DevOps (central platform, product teams
 ### Community of practice
 
 Across all teams, a community of practice shares knowledge:
+
 - Internal Slack channel for AI questions and wins
+
 - Monthly demo day where teams show what they've built
+
 - Shared eval harness templates and prompt patterns
+
 - Paper reading group (optional, for those interested)
+
 - Regular architecture reviews for new AI features (like security reviews, but for AI concerns)
 
 This doesn't require a formal org structure. It just requires someone to organize it and leadership to support the time investment.
@@ -48,16 +55,25 @@ For most applied AI teams (using pre-trained models, not training their own), yo
 ## Hiring
 
 **What to screen for:**
+
 - Has built something with LLMs (work, side project, or significant experimentation)
+
 - Can reason about failure modes and trade-offs (not just "it works in the demo")
+
 - Writes good prompts (give them a prompt engineering exercise in the interview)
+
 - Thinks about evaluation naturally ("how would you know if this is working?")
+
 - Learns fast in new domains (AI changes quickly; you need people who adapt)
 
 **What to avoid:**
+
 - People who only know the hype ("agents will replace all software engineers")
+
 - People who can't write code (prompt engineering without engineering is fragile)
+
 - People who've only done demos, never shipped to production
+
 - People who are rigid about one framework or one provider
 
 **A useful signal:** generalist software engineers who've gotten interested in AI and built things on their own often make better applied AI engineers than ML specialists who've never shipped a product. The engineering fundamentals (testing, debugging, production operations) transfer directly. The AI-specific knowledge can be learned.
@@ -67,8 +83,11 @@ For most applied AI teams (using pre-trained models, not training their own), yo
 How do you evaluate and promote AI engineers? The same way you evaluate other engineers, with AI-specific additions:
 
 - **Junior:** Can implement AI features given clear specifications. Writes prompts, builds basic eval sets, integrates with APIs.
+
 - **Mid:** Can design AI features end-to-end. Chooses appropriate patterns (workflow vs agent), designs eval strategies, handles production concerns.
+
 - **Senior:** Can architect AI systems across multiple features. Makes build-vs-buy decisions, designs platform components, mentors others, influences product direction.
+
 - **Principal/Staff:** Sets technical direction for AI across the organization. Defines standards, evaluates new technologies, represents the org externally, makes decisions with long-term consequences.
 
 The AI-specific dimension at senior+ levels: can you tell the organization where AI should and shouldn't be used? Can you predict which approaches will work before building them? Can you design systems that stay reliable as models and patterns evolve?
@@ -104,5 +123,7 @@ The organizations doing best are the ones that treat AI as an engineering discip
 ## Go deeper
 
 - [Anthropic's team structure](https://www.anthropic.com/careers) — how a frontier AI company organizes (research + applied + policy)
+
 - [Eugene Yan's "Patterns for Building LLM-based Systems"](https://eugeneyan.com/writing/llm-patterns/) — practical patterns from industry
+
 - [Chapter 19](19-staying-current.md) covers staying current as the field evolves

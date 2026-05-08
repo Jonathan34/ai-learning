@@ -53,8 +53,11 @@ flowchart TB
 The platform should make it easy for product engineers to build AI features without becoming AI infrastructure experts:
 
 - **Prompt playground.** A UI where engineers can test prompts against different models, see token counts, and compare outputs.
+
 - **SDKs / wrappers.** A thin layer around provider APIs that automatically adds observability, retries, fallbacks, and cost tracking. Engineers import your SDK instead of calling the provider directly.
+
 - **Templates.** Starter patterns for common use cases (chat, RAG, classification, extraction). Not frameworks — just well-documented starting points.
+
 - **Local dev with production parity.** Engineers should be able to test against the same models and prompts locally that run in production.
 
 ## Buy vs build
@@ -103,6 +106,9 @@ In 2-3 years, this will likely consolidate the way DevOps tooling did — a few 
 ## Go deeper
 
 - [LiteLLM](https://github.com/BerriAI/litellm) — multi-provider proxy with cost tracking
+
 - [Langfuse](https://langfuse.com) — open-source observability + eval
+
 - [Braintrust](https://www.braintrust.dev) — eval-focused platform
+
 - [Humanloop](https://humanloop.com) — prompt management and eval

@@ -11,8 +11,11 @@
 ## What you're building
 
 A system with multiple agents coordinating on a task:
+
 - An **orchestrator** that receives the user's request and decides which specialist to call
+
 - 2-3 **specialist agents**, each with their own tools and focused prompts
+
 - A coordination mechanism (shared state or message passing)
 
 ```mermaid
@@ -57,7 +60,9 @@ orchestrator = {
     "system_prompt": """You coordinate a team of specialists to answer user requests.
     
 Available specialists:
+
 - research: Can search the web and fetch content. Use when you need information.
+
 - writer: Can produce polished text from notes. Use when you have information and need it formatted.
 
 Your job: break the user's request into steps, delegate to specialists, and combine their outputs into a final answer.
@@ -142,13 +147,19 @@ def run_specialist(specialist_name, instruction, context):
 Try these requests:
 
 1. "Research the current state of AI agents and write a 3-paragraph summary"
+
 2. "Find information about MCP (Model Context Protocol) and explain it simply"
+
 3. "Compare LangChain and LangGraph — what are the trade-offs?"
 
 For each, look at the trace:
+
 - How many rounds did the orchestrator take?
+
 - Did it delegate to the right specialist?
+
 - Did the specialist produce useful output?
+
 - Did the orchestrator combine things well?
 
 ---
@@ -211,13 +222,19 @@ def run_specialist_with_timeout(specialist_name, instruction, context, timeout=3
 ## Part 6: Compare cost and quality (30 min)
 
 Run the same 3 requests through:
+
 1. Your multi-agent system
+
 2. A single agent with all tools available (from W4, but with research + writing tools combined)
 
 Compare:
+
 - **Quality:** Is the multi-agent output actually better?
+
 - **Cost:** How many LLM calls total? How many tokens?
+
 - **Latency:** How long does each approach take?
+
 - **Debuggability:** Which is easier to understand when something goes wrong?
 
 Write down your findings. In many cases, the single agent is simpler, cheaper, and produces comparable quality. That's a valid conclusion — it means multi-agent wasn't needed for this task.
@@ -227,9 +244,13 @@ Write down your findings. In many cases, the single agent is simpler, cheaper, a
 ## Gotchas
 
 - **Multi-agent multiplies cost.** Every delegation is at least 2 LLM calls (orchestrator decides + specialist executes). A 3-round multi-agent flow is 6+ calls minimum.
+
 - **Context gets lost between agents.** The orchestrator summarizes before passing to the next specialist. Important details can be dropped. Consider passing raw outputs when feasible.
+
 - **Debugging is hard.** When the final output is wrong, you need to trace back through multiple agents to find where things went wrong. Good logging from the start is essential.
+
 - **The orchestrator is a single point of failure.** If it misroutes, everything downstream is wrong.
+
 - **"Let them discuss" doesn't converge.** If you try having two agents debate, they'll loop. LLMs don't have genuine disagreements — they have different sampling paths.
 
 ---
@@ -237,13 +258,19 @@ Write down your findings. In many cases, the single agent is simpler, cheaper, a
 ## What you should have after this workshop
 
 - A working multi-agent system with orchestrator + specialists
+
 - Experience with the coordination overhead and failure modes
+
 - Cost comparison between multi-agent and single-agent approaches
+
 - An informed opinion about when multi-agent is worth the complexity
+
 - Guardrails (budget, loop detection, timeouts) that prevent runaway behavior
 
 ## Go deeper
 
 - [AutoGen documentation](https://microsoft.github.io/autogen/) — framework designed for multi-agent
+
 - [LangGraph multi-agent patterns](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/) — graph-based coordination
+
 - [Chapter 09 (Multi-Agent Patterns)](../02-agents/09-multi-agent-patterns.md) covers the theory and anti-patterns

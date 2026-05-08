@@ -7,13 +7,17 @@ Every LLM request has three costs: input tokens, output tokens, and time. Whethe
 Most hosted LLM providers charge per token, with different rates for input and output:
 
 - **Input tokens** (your prompt + context): cheaper, typically $0.25–$5 per million tokens for frontier models
+
 - **Output tokens** (what the model generates): more expensive, typically $1–$15 per million tokens
 
 Output tokens cost 3-5x more than input tokens because generating each one requires a full forward pass through the model, while input tokens are processed in a single batch.
 
 For a typical production call:
+
 - 2,000 input tokens (system prompt + context + user message)
+
 - 500 output tokens (the response)
+
 - At $3/M input and $15/M output: that's $0.006 + $0.0075 = ~$0.014 per request
 
 Sounds cheap. At 100K requests/day, that's $1,400/day or ~$42K/month. And that's before agent loops multiply things.
@@ -35,8 +39,11 @@ How it works: if the first N tokens of your prompt are identical across requests
 Savings can be 50-90% on input token costs for systems with long, stable system prompts.
 
 Requirements:
+
 - The cached prefix must be identical across requests (byte-for-byte)
+
 - Put stable content first, variable content last
+
 - Minimum prefix length varies by provider (usually 1K-2K tokens)
 
 This is why the advice in the prompting chapter to "put stable content first, variable content last" matters for cost, not just quality.
@@ -49,8 +56,11 @@ flowchart LR
 ```
 
 - **Network latency** — round trip to the provider. 50-200ms typically.
+
 - **Queue time** — waiting for capacity. Usually small, can spike during high demand.
+
 - **Prefill** — processing all input tokens. Roughly proportional to input length. Fast for short prompts, noticeable for 100K+ token contexts.
+
 - **Generation** — producing output tokens one at a time. This is the slow part. Proportional to output length.
 
 **Time to first token (TTFT)** = network + queue + prefill. This is what the user waits before seeing anything.
@@ -75,8 +85,11 @@ flowchart LR
 ```
 
 The classifier can be:
+
 - A small LLM that estimates difficulty
+
 - A rule-based system (short queries → small model, long queries → large model)
+
 - A trained classifier based on historical data
 
 This can cut costs 50-70% if most of your traffic is simple requests. The trade-off: you need to handle cases where the small model fails and needs to be escalated to the large one.
@@ -84,13 +97,19 @@ This can cut costs 50-70% if most of your traffic is simple requests. The trade-
 ## Capacity and rate limits
 
 Providers impose limits:
+
 - **TPM (Tokens Per Minute)** — how many tokens you can process per minute
+
 - **RPM (Requests Per Minute)** — how many API calls per minute
 
 At scale, you'll hit these. Strategies:
+
 - **Queuing** — buffer requests and process them within your rate limit
+
 - **Multi-provider** — spread load across providers (but behavior differs between models)
+
 - **Batching** — some providers offer batch APIs that are cheaper but slower (hours, not seconds)
+
 - **Caching responses** — if the same question comes up repeatedly, cache the answer
 
 ## Cost estimation before building
@@ -98,18 +117,29 @@ At scale, you'll hit these. Strategies:
 Before building an AI feature, estimate the cost:
 
 1. Estimate average input tokens per request (system prompt + typical context + user input)
+
 2. Estimate average output tokens per request
+
 3. Multiply by expected request volume
+
 4. Multiply by agent loop depth if applicable
+
 5. Apply prompt caching discount to the stable prefix portion
+
 6. Add 2-3x buffer for edge cases and growth
 
 If the number is too high, your options are:
+
 - Shorter prompts or context
+
 - Shorter outputs (constrain response length)
+
 - Smaller models for some or all traffic
+
 - Caching repeated queries
+
 - Reducing agent loop depth
+
 - Deciding the feature isn't worth building with AI
 
 That last option is valid. Some features are too expensive for AI at current prices. Prices drop over time, so "not now" doesn't mean "never."
@@ -135,5 +165,7 @@ The most impactful optimizations in order: prompt caching, model routing, output
 ## Go deeper
 
 - Provider pricing pages (Anthropic, OpenAI, Google) — check current rates
+
 - [LiteLLM](https://github.com/BerriAI/litellm) — multi-provider routing and cost tracking
+
 - [OpenRouter](https://openrouter.ai/) — model routing across providers

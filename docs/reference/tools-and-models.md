@@ -105,9 +105,13 @@
 ## Where to find updates
 
 - HuggingFace (models, daily papers)
+
 - modelcontextprotocol.io (MCP ecosystem)
+
 - The lab blogs directly (Anthropic, OpenAI, Google DeepMind, Meta AI)
+
 - GitHub trending for AI/ML repos
+
 - arxiv-sanity, Papers With Code
 
 ## Cost ballpark (late 2025, USD)
@@ -115,7 +119,11 @@
 Prices change. This is a rough order-of-magnitude for thinking.
 
 - Frontier hosted output tokens: ~$1-$15 per million tokens
+
 - Frontier hosted input tokens: ~$0.25-$5 per million tokens
+
 - Open-weights self-hosted on GPUs: ~$0.05-$2 per million output tokens depending on model size and utilization
+
 - Embedding: ~$0.02-$0.15 per million tokens
+
 - Fine-tuning: varies widely; budget $100-$10k for a reasonable-scale fine-tune

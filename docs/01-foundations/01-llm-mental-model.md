@@ -5,11 +5,17 @@ You don't need to understand backpropagation to be a good AI architect. But you 
 Here's the core of it: an LLM takes a sequence of tokens and predicts what the next token should be. That's it. Chat, instruction following, tool use, agents, "reasoning" — all built on top of that one operation, repeated in a loop.
 
 When you send a prompt:
+
 1. Your text gets split into tokens (sub-word chunks)
+
 2. The model processes all those tokens through its layers
+
 3. It outputs probabilities for what the next token should be
+
 4. A sampling strategy picks one token
+
 5. That token gets appended to the sequence
+
 6. Go back to step 3, repeat until done
 
 That's the generation loop. Everything else in this curriculum is about controlling, constraining, or augmenting it.
@@ -77,8 +83,11 @@ flowchart TB
 ```
 
 Other pieces:
+
 - **Tokenizer** — splits text into token IDs before anything else happens. Different models use different tokenizers, so the same text produces different token counts.
+
 - **Embedding layer** — converts each token ID into a vector (a list of numbers) that the network can work with.
+
 - **Output layer** — converts the final vector back into probabilities over all possible next tokens.
 
 ## Attention: how tokens talk to each other
@@ -88,8 +97,11 @@ This is the mechanism that makes transformers special. Older architectures (RNNs
 Here's how it works:
 
 Each token gets transformed into three vectors:
+
 - **Query (Q)** — "what am I looking for?"
+
 - **Key (K)** — "what do I contain?"
+
 - **Value (V)** — "what information do I provide if you pick me?"
 
 ```mermaid
@@ -117,8 +129,11 @@ Example: in "The cat sat on the mat. It was tired." — the token "It" will atte
 ### Why this matters for you
 
 - **Cost scales quadratically.** Every token attends to every other token. Double the context = ~4x the attention computation. This is why long contexts are expensive.
+
 - **"Lost in the middle."** In practice, tokens at the start and end of the context get more attention than those in the middle. Put important information near the end of your context, close to the query.
+
 - **Memory is the real limit.** The KV cache (stored Keys and Values from previous tokens) grows with context length. On a GPU, this memory is often what limits how long a context you can use — not the compute itself.
+
 - **Position isn't built in.** Attention just compares vectors — it doesn't inherently know position. Position information gets added separately (via techniques called RoPE or ALiBi). This is why extending a model's context window requires specific engineering.
 
 ## Training (what you need to know)
@@ -126,13 +141,19 @@ Example: in "The cat sat on the mat. It was tired." — the token "It" will atte
 Three stages, each building on the last:
 
 1. **Pretraining** — the model learns to predict the next token on massive text (books, web, code). Costs hundreds of millions of dollars. Produces a "base model" that can complete text but doesn't follow instructions well.
+
 2. **Supervised fine-tuning (SFT)** — train on curated instruction/response pairs. This teaches the model to be helpful and follow directions.
+
 3. **RLHF / preference tuning** — train the model to prefer outputs that humans rate highly. This is where safety behavior, personality, and refusal patterns come from.
 
 What this means for you:
+
 - Model behavior comes from training. You can't easily override it from outside.
+
 - Refusals and safety are trained preferences, not hard rules — they can be bypassed (hence prompt injection).
+
 - Different providers (Anthropic, OpenAI, Google) make different training choices, which is why models feel different.
+
 - You work with what the training gave you. Your job is to steer it, not reprogram it.
 
 ## Common jargon, translated
@@ -167,5 +188,7 @@ This is uncomfortable for engineers used to reading source code to understand be
 ## Go deeper
 
 - **Andrej Karpathy's "Deep Dive into LLMs like ChatGPT"** on YouTube (3 hours, excellent)
+
 - **"The Illustrated Transformer" by Jay Alammar** — visual architecture walkthrough
+
 - **Anthropic's "Mapping the Mind of a Large Language Model"** — interpretability research

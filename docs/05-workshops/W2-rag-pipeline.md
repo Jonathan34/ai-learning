@@ -11,12 +11,19 @@
 ## What you're building
 
 A system that:
+
 1. Takes a collection of documents
+
 2. Splits them into chunks
+
 3. Converts chunks into vectors (embeddings)
+
 4. Stores them in a vector database
+
 5. When a user asks a question, finds the most relevant chunks
+
 6. Feeds those chunks to an LLM as context
+
 7. Generates an answer grounded in the retrieved documents
 
 ```mermaid
@@ -36,7 +43,9 @@ flowchart LR
 You need documents to search over. Options:
 
 - **Your own docs** — meeting notes, internal wiki pages, project documentation. Most realistic.
+
 - **A public dataset** — Wikipedia articles on a topic, a set of blog posts, documentation for a library you use.
+
 - **A small set of PDFs** — research papers, reports, manuals.
 
 Start with 10-50 documents. Enough to be interesting, small enough to iterate fast.
@@ -66,6 +75,7 @@ def chunk_text(text, chunk_size=500, overlap=50):
 **Try two strategies and compare:**
 
 1. **Fixed-size chunks** (above) — simple, predictable size, but may split mid-sentence
+
 2. **Sentence-boundary chunks** — split at sentence boundaries, varying size but more coherent
 
 ```python
@@ -198,9 +208,13 @@ print(ask("What is the refund policy?"))
 ```
 
 Try 10 questions. Note:
+
 - Does it answer correctly when the information is in the documents?
+
 - Does it say "I don't know" when the information isn't there?
+
 - Does it cite sources?
+
 - Does it hallucinate (make up information not in the context)?
 
 ---
@@ -265,9 +279,13 @@ This is a minimal eval. In production you'd use LLM-as-judge, check citation acc
 After building this, you should be able to answer:
 
 1. How does chunk size affect retrieval quality?
+
 2. What happens when the answer spans multiple chunks?
+
 3. How much does re-ranking actually help on your data?
+
 4. When does the system hallucinate vs. correctly say "I don't know"?
+
 5. What would you change for a production deployment?
 
 ---
@@ -275,13 +293,19 @@ After building this, you should be able to answer:
 ## Gotchas you'll encounter
 
 - **Chunk boundaries split relevant information.** The answer is half in one chunk and half in another. Overlapping chunks help but don't fully solve this.
+
 - **Embedding model matters.** Different embedding models have different strengths. If your documents are code-heavy, a general-purpose embedding model may underperform.
+
 - **"I don't know" is hard to get right.** Models tend to answer even when they shouldn't. You'll need to iterate on the prompt to get reliable refusals.
+
 - **Metadata is important.** Knowing which document a chunk came from (for citations) requires storing metadata alongside embeddings.
 
 ## Go deeper
 
 - [Anthropic's "Contextual Retrieval" blog post](https://www.anthropic.com/news/contextual-retrieval) — technique that improves chunk quality
+
 - [Chroma documentation](https://docs.trychroma.com/) — the vector DB used here
+
 - [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard) — compare embedding models
+
 - [Chapter 03 (Context Engineering)](../01-foundations/03-context-engineering.md) covers the theory behind what you just built

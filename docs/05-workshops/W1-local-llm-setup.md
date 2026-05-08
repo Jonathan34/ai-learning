@@ -44,8 +44,11 @@ ollama run llama3.2:3b
 You're now talking to a language model running entirely on your laptop. Ask it something. Note the generation speed.
 
 What to observe:
+
 - Time to first token (should be ~100ms on a fast CPU, longer on first load)
+
 - Tokens per second (write it down — this is your baseline)
+
 - Does it fit in memory? Check Activity Monitor / Task Manager.
 
 ---
@@ -65,8 +68,11 @@ The 14B model needs 8+ GB of memory. If you don't have that, skip it and try `mi
 Ask each model the same prompts. Things to compare:
 
 1. **Tokens per second** — smaller models are faster
+
 2. **Reasoning** — e.g., "I have 3 apples. I eat 1 and give 2 to my friend. How many do I have?"
+
 3. **Domain knowledge** — pick something from your work
+
 4. **Code** — e.g., "Write a Python function that checks if a string is a palindrome, handling whitespace and case."
 
 You'll notice patterns. Small models hallucinate more. Large models are slower but more reliable. Different model families have different "personalities." Instruction-following varies a lot.
@@ -168,9 +174,13 @@ Now you've seen the naked inference path. llama.cpp has knobs for everything —
 Answer these for yourself:
 
 1. What's the smallest model that's useful for your day-to-day work?
+
 2. How does quality change as you go from 3B → 8B → larger?
+
 3. How does your laptop's hardware limit what you can run? (GPU memory, system memory)
+
 4. If you were designing a product with a "works offline" requirement, which model would you pick and why?
+
 5. What did the 4-bit quantization cost you, quality-wise? Was it a meaningful loss for your use case?
 
 Writing down answers — even brief ones — cements the learning.
@@ -180,9 +190,13 @@ Writing down answers — even brief ones — cements the learning.
 ## Gotchas
 
 - **Ollama defaults to a short context window** (2048 tokens). If your prompt is long, the model silently truncates. Set `num_ctx` in the Modelfile or API call to increase it.
+
 - **Quantized models lose capability unevenly.** Small models quantized aggressively can become borderline useless on reasoning tasks while still being fine for classification or summarization.
+
 - **CPU vs GPU matters a lot.** M-series Macs and RTX cards both accelerate local inference, but through different paths. Check that your runtime is using the right backend.
+
 - **Model licenses vary.** Llama has restrictions, Mistral has permissive licensing, some models are research-only. Check before using commercially.
+
 - **Memory is often the real limit.** A 13B model at Q4 needs ~8 GB of memory. Add a few GB for context and overhead. A 16 GB laptop can't run 30B+ models comfortably.
 
 ---
@@ -190,8 +204,11 @@ Writing down answers — even brief ones — cements the learning.
 ## What you should have after this workshop
 
 - Ollama installed with 3+ models pulled
+
 - Understanding of quantization trade-offs from direct observation
+
 - A Python script that calls a local model successfully
+
 - A sense of what "works locally" actually means — and what doesn't
 
 Next workshop builds on this. You can keep using your local model.
@@ -199,6 +216,9 @@ Next workshop builds on this. You can keep using your local model.
 ## Go deeper
 
 - [Ollama documentation](https://ollama.com)
+
 - [llama.cpp GitHub repository](https://github.com/ggerganov/llama.cpp)
+
 - [HuggingFace model hub](https://huggingface.co/models) — where most GGUF files are published
+
 - [TheBloke's quantization guide](https://huggingface.co/TheBloke) — explains the different quantization levels

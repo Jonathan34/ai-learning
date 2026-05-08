@@ -3,11 +3,17 @@
 Prompts get all the attention, but in real systems the prompt is usually the smallest part of what the model sees. The bigger challenge is assembling the full input — called the **context** — that the model receives on each call.
 
 A typical production call includes:
+
 - A system prompt (stable, versioned)
+
 - Retrieved documents (pulled from a knowledge base based on the user's question)
+
 - Conversation history (what was said before in this session)
+
 - Tool outputs (results from functions the agent called)
+
 - User state (profile, permissions, preferences)
+
 - The current user input
 
 The model sees all of this as one long sequence of tokens. Its response depends on the entire sequence. Context engineering is about assembling that sequence well — deciding what goes in, in what form, and in what order.
@@ -27,9 +33,13 @@ The model has no way to know which parts of its context are relevant, trustworth
 The context window is a budget. Even with 200K tokens available, you have to choose what's worth spending tokens on.
 
 Trade-offs you'll face:
+
 - More retrieved documents → better chance of including the right answer, but more cost and more risk of the model getting confused
+
 - More conversation history → better continuity, but old messages can conflict with current instructions
+
 - Tool outputs → essential when fresh, noise when stale
+
 - Examples → helpful for unfamiliar tasks, wasteful for routine ones
 
 A context assembly strategy is a design decision worth documenting. Most teams don't, and end up with ad-hoc assembly that works until it doesn't.
@@ -39,14 +49,21 @@ A context assembly strategy is a design decision worth documenting. Most teams d
 Same information, different format, different results.
 
 What works:
+
 - Clear boundaries between sections (`<document id="42">...</document>`)
+
 - Metadata on retrieved documents (title, date, source) — helps the model cite correctly
+
 - Important content near the end of the context, close to the user's question — models pay more attention to recent tokens
+
 - Structured data (JSON, tables) for factual information
 
 What doesn't:
+
 - Dumping raw documents without structure
+
 - Mixing instructions and data without clear boundaries
+
 - Burying critical information in the middle of a 100K-token context
 
 ### 3. Keeping context coherent
@@ -70,12 +87,19 @@ flowchart LR
 ```
 
 The steps:
+
 1. **Split your documents into chunks** (paragraphs or sections, typically 200-500 tokens each)
+
 2. **Convert each chunk into a vector** (a list of numbers that represents its meaning) using an embedding model
+
 3. **Store those vectors** in a vector database
+
 4. **When a user asks a question**, convert their question into a vector too
+
 5. **Find the chunks whose vectors are most similar** to the question vector (nearest neighbor search)
+
 6. **Put those chunks into the prompt** as context
+
 7. **Generate the answer** based on the retrieved context
 
 This is called "naive RAG." It works well for straightforward questions and fails predictably for harder ones.
@@ -111,7 +135,9 @@ Practical takeaway: put the most important retrieved documents near the end of t
 ## When to use RAG vs other approaches
 
 - **Use RAG** when the knowledge is factual, changes over time, or is specific to your organization. You want the model to cite sources and stay current.
+
 - **Use fine-tuning** when you want to change how the model behaves (its style, format, or approach to a task). Fine-tuning doesn't add knowledge well — it changes behavior.
+
 - **Use agents** when the task requires multiple steps, decisions, or tool use that unfolds over time.
 
 Most real systems combine all three: a fine-tuned or instruction-tuned model, driven by an agent, using RAG for knowledge.
@@ -135,6 +161,9 @@ If you take one thing from this chapter: the model is only as good as the contex
 ## Go deeper
 
 - **[Workshop W2 — First RAG Pipeline](../05-workshops/W2-rag-pipeline.md).** Build one end-to-end.
+
 - **Anthropic's "Contextual Retrieval" blog post** — practical technique that improves RAG quality
+
 - **"Lost in the Middle" paper** (Liu et al., 2023) — the research on attention and position
+
 - **LangChain's RAG documentation** — concrete patterns and code

@@ -11,10 +11,15 @@
 ## What you're building
 
 An observability layer that captures:
+
 - Every prompt sent to the model (the full assembled text, not the template)
+
 - Every response received
+
 - Every tool call (name, arguments, result, duration)
+
 - Timing and cost for each step
+
 - Enough metadata to reconstruct any past interaction
 
 ---
@@ -194,7 +199,9 @@ Run your agent, then view the trace. You should be able to see exactly what happ
 Now use your observability to debug a problem:
 
 1. **Introduce a bug.** Make one of your tools return incorrect data silently (e.g., wrong order status).
+
 2. **Run the agent.** It will produce a wrong answer based on the bad tool data.
+
 3. **Debug from the trace alone.** Can you identify where things went wrong just by reading the trace? You should be able to see: the tool returned bad data → the model used that data → the final answer was wrong.
 
 This is the test of whether your observability is sufficient. If you can reconstruct the failure from logs alone (without re-running the agent), you're in good shape.
@@ -234,9 +241,13 @@ Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spo
 ## Gotchas
 
 - **Log the actual prompt, not the template.** The template says `{system_prompt} + {context}`. You need the fully assembled text. This is the #1 mistake teams make.
+
 - **Full-context logging is expensive at scale.** A 10K-token prompt logged 1000 times/day is 10M tokens of log data per day. Sample in production (log 100% of errors, 5-10% of successes).
+
 - **PII in logs.** User messages contain personal data. Redact or mask before storing. Set retention policies.
+
 - **Correlation IDs are essential.** Without them, you can't link multiple LLM calls to a single user request. Add them from day one.
+
 - **Timestamps need to be precise.** If you're measuring latency, use monotonic clocks, not wall clocks.
 
 ---
@@ -244,13 +255,19 @@ Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spo
 ## What you should have after this workshop
 
 - Instrumented LLM calls with full prompt, response, and metadata logging
+
 - Trace IDs linking all calls within a single user request
+
 - Tool call instrumentation with timing and error capture
+
 - A trace viewer that reconstructs any past interaction
+
 - The ability to debug a production issue from logs alone
 
 ## Go deeper
 
 - [Langfuse documentation](https://langfuse.com/docs) — open-source observability for LLMs
+
 - [OpenTelemetry for GenAI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) — the emerging standard
+
 - [Chapter 12 (Observability)](../03-production/12-observability.md) covers the theory and production patterns

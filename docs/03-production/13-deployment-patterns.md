@@ -54,16 +54,23 @@ Most teams start with hosted APIs and only move to self-hosted when they have a 
 ### Multi-region
 
 If your users are global, latency to a single region matters. Options:
+
 - Deploy in multiple regions (if self-hosted)
+
 - Use a provider with global endpoints
+
 - Accept the latency for non-interactive workloads
 
 ### Fallback across providers
 
 When your primary provider has an outage (it happens), fall back to another. Sounds simple. In practice:
+
 - Different models behave differently — your prompts may need adjustment
+
 - Different rate limits and pricing
+
 - Different feature support (tool use formats, streaming behavior)
+
 - Testing the fallback path is essential — don't discover it's broken during an outage
 
 ### Request queuing
@@ -73,16 +80,23 @@ When you hit rate limits or capacity constraints, queue requests rather than fai
 ### Caching
 
 Three levels:
+
 - **Prompt caching** (provider-side) — caches computation for repeated prompt prefixes. Automatic with most providers.
+
 - **Response caching** (your side) — if the exact same input produces the same output, cache it. Works for deterministic queries (temperature 0, same input).
+
 - **Semantic caching** — cache responses for queries that are similar (not identical) to previous ones. More complex, higher risk of serving stale/wrong answers.
 
 ### Circuit breakers and graceful degradation
 
 When the AI system is down or degraded:
+
 - Fall back to a simpler model
+
 - Fall back to a rule-based system
+
 - Show a "temporarily unavailable" message
+
 - Queue the request for later processing
 
 Don't let an AI outage take down your entire application. The AI feature should degrade gracefully, not catastrophically.
@@ -104,17 +118,25 @@ model = "claude-sonnet-4-20250514"  # specific version
 ### Upgrade process
 
 When you want to upgrade to a newer model:
+
 1. Run your eval harness on the new model with your existing prompts
+
 2. Check for regressions
+
 3. If regressions exist, adjust prompts and re-eval
+
 4. Canary deploy (small % of traffic) and monitor
+
 5. Full rollout once confident
 
 ### Deprecation planning
 
 Providers deprecate old models. You'll get notice (usually months), but you need a plan:
+
 - Track which models you're using where
+
 - Have your eval harness ready to test replacements
+
 - Budget time for prompt adjustments
 
 ## Things that trip people up
@@ -138,6 +160,9 @@ The hybrid pattern (hosted frontier for complex tasks, self-hosted small model f
 ## Go deeper
 
 - [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/) — cloud-managed multi-model access
+
 - [vLLM documentation](https://docs.vllm.ai/) — the standard for self-hosted GPU inference
+
 - [LiteLLM](https://github.com/BerriAI/litellm) — unified interface across providers with fallback support
+
 - [Chapter 14](14-local-and-edge.md) covers local/edge inference specifically

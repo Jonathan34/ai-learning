@@ -25,9 +25,13 @@ This works because each specialist has a smaller, more focused context. The rout
 A planning agent decomposes a complex task into subtasks and delegates each to a worker agent.
 
 Example: "Research this topic and write a report" becomes:
+
 1. Orchestrator plans: search for sources, summarize each, synthesize into report
+
 2. Worker 1: searches and retrieves sources
+
 3. Worker 2: summarizes each source
+
 4. Orchestrator: synthesizes summaries into final report
 
 This works when the subtasks are genuinely independent and benefit from different contexts or tools.
@@ -93,5 +97,7 @@ The field is moving fast. New coordination patterns, better frameworks (LangGrap
 ## Go deeper
 
 - [Anthropic's "Building Effective Agents"](https://www.anthropic.com/research/building-effective-agents) — includes multi-agent patterns
+
 - [AutoGen documentation](https://microsoft.github.io/autogen/) — the framework most focused on multi-agent
+
 - [Workshop W5 — Multi-Agent System](../05-workshops/W5-multi-agent-system.md). Build one and experience the failure modes.

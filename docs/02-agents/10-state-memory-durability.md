@@ -19,7 +19,9 @@ For agents that run across multiple turns or multiple sessions, state management
 The simplest form of memory: keep the full conversation in the context. Works fine for short conversations. Breaks down when:
 
 - The conversation exceeds the context window
+
 - Old messages contain instructions that conflict with current ones
+
 - The cost of processing the full history on every turn becomes too high
 
 Solutions, from simplest to most complex:
@@ -45,8 +47,11 @@ When a user comes back tomorrow, what should the agent remember?
 **Learned preferences.** How the user likes things formatted, what topics they care about, what they've explicitly corrected.
 
 Architecturally, long-term memory is usually:
+
 - A structured database for explicit facts (key-value pairs, user profiles)
+
 - A vector store for semantic retrieval of past conversations
+
 - Sometimes both, queried at the start of each session or each turn
 
 ## The durability problem
@@ -76,10 +81,15 @@ Memory systems decay over time. This is the part most teams skip and then regret
 Memory means storing user data. That triggers real obligations:
 
 - What data are you storing? (Conversations, extracted facts, preferences)
+
 - How long do you keep it? (Retention policy)
+
 - Can the user see what's stored? (Transparency)
+
 - Can the user delete it? (Right to deletion — required by GDPR, CCPA)
+
 - Where is it stored? (Data residency)
+
 - Who can access it? (Access controls)
 
 If you're building memory into a product, these aren't optional considerations. Plan for them from the start.
@@ -119,6 +129,9 @@ The key insight: memory is not a feature you bolt on. It's an architectural deci
 ## Go deeper
 
 - [Mem0 documentation](https://docs.mem0.ai/) — managed memory layer
+
 - [LangGraph persistence docs](https://langchain-ai.github.io/langgraph/concepts/persistence/) — checkpointing and state management
+
 - [Letta (formerly MemGPT)](https://www.letta.com/) — research on memory-augmented agents
+
 - [Workshop W4](../05-workshops/W4-tool-using-agent.md) and W5 both involve state management in practice

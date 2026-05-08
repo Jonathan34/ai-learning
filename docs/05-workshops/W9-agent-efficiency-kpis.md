@@ -21,24 +21,35 @@ This workshop builds the instrumentation to detect these inefficiencies and the 
 Efficiency isn't a single number. It's a profile across several dimensions:
 
 **Step efficiency** — how many LLM calls per user request?
+
 - Low (1-2 steps): simple request handled directly
+
 - Medium (3-5 steps): typical multi-step task
+
 - High (6+ steps): complex task or inefficient agent
 
 **Tool efficiency** — how many tool calls per request, and are they diverse?
+
 - One tool call per task step is typical
+
 - The same tool called 5+ times is a warning sign (loop, retry, or the model not understanding the result)
 
 **Token efficiency** — input tokens relative to output produced
+
 - High input-to-output ratios mean the agent is reading a lot but producing little
+
 - Context that grows unboundedly across steps is a sign of poor pruning
 
 **Time efficiency** — wall-clock latency per request
+
 - Each LLM call adds 500ms-3s
+
 - Tool calls add variable time
+
 - Total latency = sum of all sequential operations
 
 **Task success** — did the agent actually complete the task?
+
 - The whole point. No efficiency matters if the agent fails.
 
 For each, you'll set thresholds that indicate "this run is inefficient" or "this pattern is worth investigating."
@@ -200,9 +211,13 @@ for r in worst_by_steps:
 Pick the 3 worst traces. Open each one and read through it. What actually went wrong? Common patterns:
 
 - **Loop on the same tool:** model keeps calling `search_X` with slightly different queries because it's not understanding the results
+
 - **Redundant calls:** model calls `get_customer`, gets data, then calls `get_customer` again in a later step because it "forgot" the earlier result
+
 - **Getting stuck:** model tries the same approach 3 times with minor variations, never pivoting to a different strategy
+
 - **Over-reading:** model retrieves documents it doesn't need, then has to parse through them
+
 - **Not stopping:** model has enough information but keeps making tool calls anyway
 
 ---
@@ -351,15 +366,23 @@ The goal: reduce waste without hurting task success. If success rate dropped, ba
 ## What you should have after this workshop
 
 - A set of efficiency metrics computed from your agent traces
+
 - Defined inefficiency signals with severity levels
+
 - Identification of your actual worst-case runs
+
 - Targeted fixes for the specific problems you found
+
 - A KPI dashboard or report showing trends over time
+
 - Threshold-based alerts for regression detection
 
 ## Go deeper
 
 - [Langfuse metrics documentation](https://langfuse.com/docs/analytics) — built-in dashboards for agent metrics
+
 - [Arize Phoenix](https://docs.arize.com/phoenix) — open-source observability with agent-specific metrics
+
 - [Chapter 12 (Observability)](../03-production/12-observability.md) covers the monitoring theory
+
 - [Chapter 11 (Inference Economics)](../03-production/11-inference-economics.md) covers the cost dimensions
