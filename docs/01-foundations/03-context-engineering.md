@@ -22,7 +22,7 @@ This is the more honest name for what people used to call "prompt engineering" o
 
 ## Why this is where most systems fail
 
-Most production AI failures are context failures, not model failures. The model gets the wrong documents, too many documents, stale information, or conflicting instructions — and produces a bad answer that gets blamed on "hallucination."
+Most production AI failures are context failures, not model failures. The model gets the wrong documents, too many documents, stale information, or conflicting instructions — and produces a bad answer that gets blamed on "hallucination".
 
 The model has no way to know which parts of its context are relevant, trustworthy, or current. That's your job as the engineer.
 
@@ -74,7 +74,7 @@ This is why retrieval quality matters so much. You're not just finding relevant 
 
 ## RAG: Retrieval-Augmented Generation
 
-RAG is the standard pattern for giving LLMs access to information they weren't trained on — your company's docs, recent data, user-specific information. Here's how it works:
+RAG is the standard pattern for giving LLMs access to information they weren't trained on. For instance, your company's docs, recent data, user-specific information. Here's how it works:
 
 ```mermaid
 flowchart LR
@@ -106,6 +106,8 @@ The steps:
 This is called "naive RAG". It works well for straightforward questions and fails predictably for harder ones.
 
 ### Where naive RAG breaks down
+
+I experienced a few issues when I worked on a project to [derive operational insights from AWS Support Cases](https://aws.amazon.com/blogs/machine-learning/derive-meaningful-and-actionable-operational-insights-from-aws-using-amazon-q-business/).
 
 **Chunking problems.** If you split a document in the wrong place, the relevant information might be split across two chunks, and neither chunk alone makes sense. There's no universal right answer — it depends on your documents.
 

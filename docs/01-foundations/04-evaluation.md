@@ -1,7 +1,5 @@
 # Evaluation
 
-This is the chapter most people skip and then regret.
-
 Evaluation is how you know your AI system works. In traditional software, you write unit tests with expected outputs. In LLM systems, you can't do that — a summary can be correct in a hundred different ways and wrong in a million subtle ones. There's no single "right answer" to compare against.
 
 Every team I've seen ship LLM features in production hits the same wall: "we changed the prompt and we think it's better, but we can't actually prove it". That's an evaluation problem.
@@ -10,11 +8,9 @@ Every team I've seen ship LLM features in production hits the same wall: "we cha
 
 In normal software testing, you check: does the output match the expected output? With LLMs, the output is free-form text. Two completely different responses can both be correct. A response can be mostly right but wrong on one detail. A response can sound perfect but be entirely made up.
 
-You need new approaches. Here are the ones that work.
+You need new approaches. Here are a few.
 
 ## Three different things people call "evaluation"
-
-These get mixed up constantly:
 
 **Model benchmarks** — measuring how capable a model is in general (can it do math? code? follow instructions?). This is what papers report. It helps you pick a model but doesn't tell you if your system works.
 
@@ -44,7 +40,7 @@ Start with 20-50 examples. That's enough to catch obvious regressions. Grow to 2
 
 ## Scoring approaches
 
-From cheapest to most expensive — and in practice you'll stack several of these:
+From cheapest to most expensive — and in practice you may stack several of these:
 
 **Exact match** and **property checks** are your first line. Does it return valid JSON? Does it contain a citation? Is the classification label correct? These are deterministic, free, instant. Run them on every single output. Most teams under-invest here — you can catch 40% of failures with string matching alone.
 
@@ -58,7 +54,7 @@ In practice, stack these: property checks first (cheap, catches obvious failures
 
 ## LLM-as-judge: useful but tricky
 
-Using one LLM to evaluate another LLM's output is now the standard approach for scoring open-ended responses. It works, but has specific failure modes:
+Using one LLM to evaluate another LLM's output is now a standard approach for scoring open-ended responses. It works, but has specific failure modes:
 
 **Self-preference.** If you use the same model to generate and judge, it rates its own outputs higher. Use a different model as the judge.
 
@@ -68,7 +64,7 @@ Using one LLM to evaluate another LLM's output is now the standard approach for 
 
 **Vague rubrics fail.** "Rate this 1-10" gives inconsistent, clustered scores. Specific questions work much better: "Does this response cite at least one source document? Yes/No". "Does this response answer the user's actual question? Yes/No."
 
-To check if your judge is trustworthy: have humans rate 50-100 examples, then compare the judge's ratings to the human ratings. If they agree 85%+ of the time, the judge is probably reliable enough. If agreement is below 75%, the judge needs work.
+To check if your judge is trustworthy: have humans rate 50-100 examples, then compare the judge's ratings to the human ratings. Then you can define a baseline such as if they agree 85%+ of the time, the judge is probably reliable enough. If agreement is below 75%, the judge needs work.
 
 ## Offline eval vs online eval
 
