@@ -57,16 +57,18 @@ Anthropic's official toolkit for building agents on Claude. Tied to Claude model
 
 If you're building on Claude and want a framework that plays to its strengths, this is the right starting point. The trade-off is single-provider lock-in.
 
-### OpenAI Agents SDK / Assistants API
+### OpenAI Agents SDK
 
-OpenAI's agent-building toolkit. Includes the Assistants API (hosted) and the Agents SDK (client-side).
+OpenAI's agent-building toolkit. The [Agents SDK](https://openai.github.io/openai-agents-python/) is a higher-level runtime on top of the Responses API (OpenAI's core model-call primitive). It runs the agent loop for you (turns, tool execution, guardrails, handoffs between agents) and adds tracing and optional session state.
+
+The older Assistants API is retired. OpenAI's [Assistants migration guide](https://platform.openai.com/docs/assistants/overview) set its shutdown for 26 August 2026 and points you to Responses plus the Conversations API: Threads become Conversations, Runs become Responses. If you want the server to hold history, the [conversation state guide](https://developers.openai.com/api/docs/guides/conversation-state/) shows Conversations keeping messages and tool calls under a durable ID. The same guide covers the alternatives: chain calls with `previous_response_id`, or pass history yourself. (All OpenAI links checked 2026-09-28.)
 
 | | |
 |---|---|
-| Strengths | First-party, well-maintained, Assistants API handles state/threading for you |
-| Weaknesses | OpenAI-only, hosted state raises data governance questions, API has been in flux |
+| Strengths | First-party, well-maintained, managed agent loop, optional session state |
+| Weaknesses | OpenAI-only, server-side state raises data governance questions, API has been in flux (the Assistants retirement is a recent example) |
 
-Reasonable if you're OpenAI-native and want to move fast. Consider the lock-in.
+Reasonable if you're OpenAI-native and want to move fast. Consider the lock-in. There's also a second, separate choice: let the SDK run the loop, or call Responses directly and own tool dispatch, state, and control flow in your own code. OpenAI's own docs describe [code-driven orchestration](https://openai.github.io/openai-agents-python/multi_agent/) as the more deterministic and predictable option.
 
 ### AutoGen (Microsoft)
 

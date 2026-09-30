@@ -66,7 +66,7 @@
 | LangChain | Rapid prototyping, broad ecosystem | Abstractions sometimes fight you |
 | AutoGen | Multi-agent patterns | Microsoft; actor-model-ish |
 | CrewAI | Role-based multi-agent | Easy to start |
-| OpenAI Agents SDK | OpenAI-native | Ties to Assistants API |
+| OpenAI Agents SDK | OpenAI-native | Higher-level runtime over the Responses API; tools, handoffs, guardrails, tracing, sessions ([docs](https://openai.github.io/openai-agents-python/), checked 2026-09-28) |
 | Mastra | Newer TypeScript-native | Gaining traction |
 | DSPy | Compiled prompts, research-flavored | Different philosophy |
 
