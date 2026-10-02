@@ -90,7 +90,7 @@ The things experienced AI engineers have learned the hard way, in one list. Cros
 
 - **Tool outputs too long blow context** — truncate or summarize. ([Ch 09](../02-agents/09-mcp-and-tools.md))
 
-- **MCP has no default security** — add auth, rate limits, capability constraints yourself. ([Ch 09](../02-agents/09-mcp-and-tools.md))
+- **MCP authorization is optional, not automatic** — as of the 2026-07-28 MCP revision (checked October 2026), HTTP servers can use MCP's standardized OAuth framework, but you have to enable it, and least privilege, capability constraints, rate limits, and tool safety are still yours to enforce. ([Ch 09](../02-agents/09-mcp-and-tools.md))
 
 ## On multi-agent
 

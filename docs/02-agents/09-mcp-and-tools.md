@@ -166,15 +166,21 @@ A single server can expose any combination. A filesystem MCP server exposes tool
 
 ### Transport and protocol
 
-- **Transport:** stdio (subprocess), HTTP/SSE, or newer streamable HTTP. Stdio is common for local dev; HTTP for remote servers.
+The protocol has changed shape more than once, so this describes the [2026-07-28 revision](https://modelcontextprotocol.io/specification/2026-07-28/changelog) (checked October 2026). If you're reading older docs or SDK code, expect a connection-based model with a handshake instead.
 
-- **Capabilities negotiation:** client and server exchange what they support on connect.
+- **Transport:** stdio for a local server running as a subprocess, [Streamable HTTP](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http) for remote servers. The older HTTP+SSE transport (SSE is Server-Sent Events, a one-way HTTP streaming format) is deprecated. Don't build new servers or clients on it.
+
+- **No handshake, no session:** the current revision is stateless. Earlier versions opened with an `initialize` exchange and kept a protocol-level session. That's gone. Each request now carries the protocol version, the client's capabilities, and client identity in its `_meta` field (a metadata block on the message). Server identity comes back in the result's `_meta`.
+
+- **Discovery up front:** servers must implement `server/discover`, which returns the protocol versions they support, their capabilities, and who they are. A client can call it before anything else. Over stdio it's also how a client tells a current server from a legacy one.
 
 - **Tool invocation:** client sends a tool call; server executes and returns the result.
 
 - **Resource fetch:** client requests a resource; server returns content.
 
-The protocol handles discovery ("what tools do you have?") and invocation, with metadata for schemas, descriptions, and pagination.
+Beyond `server/discover`, the protocol handles listing ("what tools do you have?") and invocation, with metadata for schemas, descriptions, and pagination.
+
+Stateless means the protocol itself keeps no session. If your tools need conversation or user state, that's still yours to manage.
 
 ### The ecosystem as of late 2025
 
@@ -223,9 +229,9 @@ That's a working MCP server. Plug it into Claude Desktop and Claude can call `ad
 
 MCP lowers the bar to connecting tools to agents. That's good and dangerous.
 
-- **No default authentication or authorization.** Servers you run locally trust the client. Servers over HTTP need you to add auth yourself.
+- **Authorization is optional, not automatic.** Servers you run locally over stdio trust the client. For HTTP, MCP defines a [standardized OAuth-based authorization framework](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization). When you implement it, the spec requires access tokens bound to your server, audience validation (checking the token was issued for you), and no passing client tokens through to upstream APIs. But it's opt-in. Nothing protects an HTTP server until someone turns it on.
 
-- **Once connected, MCP tools are privileged.** The protocol doesn't enforce capability constraints; that's the application's job.
+- **OAuth doesn't decide what a tool may do.** These are separate pieces, and none of them is a permission system. Capabilities say which protocol features each side supports. Client identity in `_meta` says which client is talking. OAuth, when enabled, says the caller holds a valid token issued for your server. None of them says which tools that user or agent should be allowed to invoke. Least-privilege scopes, consent, per-tool policy, rate limits, and request validation are still the application's job. The [MCP security best practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices) page is a good checklist.
 
 - **Untrusted MCP servers are a supply chain risk.** Running a random MCP server from the community is like running a random script from the internet. Audit before adopting.
 
@@ -295,7 +301,7 @@ Tool design is mature as a discipline — the principles above are well-establis
 
 Watch for:
 
-- MCP security practices to formalize (auth, capability scoping)
+- MCP authorization adoption. The spec exists; whether servers and clients actually turn it on and scope it tightly is the open question
 
 - Tool schema standards to stabilize across providers
 
@@ -306,6 +312,10 @@ Watch for:
 ## Go deeper
 
 - [modelcontextprotocol.io](https://modelcontextprotocol.io) — the official MCP spec and server directory
+
+- [MCP 2026-07-28 changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog) — what changed in the stateless revision: no handshake, no sessions, `server/discover`, per-request metadata
+
+- [MCP authorization spec](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) and [security best practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices) — read both before exposing a server over HTTP
 
 - [Anthropic's "Tool use with Claude" docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — practical patterns that apply to any LLM
 
