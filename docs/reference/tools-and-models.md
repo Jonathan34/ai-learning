@@ -2,14 +2,14 @@
 
 **Warning:** this ages fast. Verify anything specific before relying on it.
 
-## Frontier hosted models (late 2025)
+## Frontier hosted models (October 2026)
 
 | Model | Provider | Good at | Notes |
 |---|---|---|---|
-| Claude 4 family (Opus, Sonnet, Haiku) | Anthropic | Reasoning, coding, long context, safety | Strong default for production |
-| GPT-4o / o3 | OpenAI | Broad capability, tool use, reasoning (o3) | Widely available |
-| Gemini 2.5 Pro / Flash | Google | Long context, multimodal | Strong at images, 1M+ context |
-| Grok | xAI | Less aligned; use case specific | Less mature ecosystem |
+| GPT-5.6 family (Sol, Terra, Luna) | OpenAI | Coding, tool use, knowledge work, multimodal tasks | Sol is the flagship; Terra and Luna trade capability for lower cost and latency ([official overview](https://openai.com/index/gpt-5-6/), checked 2026-10-03) |
+| Claude 5 family (Fable, Opus, Sonnet; Haiku 4.5) | Anthropic | Agentic coding, enterprise work, long context, balanced production workloads | Choose by capability, speed, and cost; current flagship tiers have 1M-token context ([model catalog](https://platform.claude.com/docs/en/about-claude/models/overview), checked 2026-10-03) |
+| Gemini 3 family (3.8 Flash stable; 3.1 Pro preview) | Google | Multimodal work, coding, agents, low-latency workloads | Production status varies by model; Google directs new projects away from 2.5 ([model catalog](https://ai.google.dev/gemini-api/docs/models), checked 2026-10-03) |
+| Grok 4.7 | xAI | Coding, tool use, general-purpose reasoning | Current general-purpose flagship; real-time information requires search tools ([model catalog](https://docs.x.ai/docs/models?cluster=us-west-1), checked 2026-10-03) |
 
 ## Open-weights models worth knowing
 
