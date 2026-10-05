@@ -6,9 +6,9 @@
 
 | Model | Provider | Good at | Notes |
 |---|---|---|---|
-| GPT-5.6 family (Sol, Terra, Luna) | OpenAI | Coding, tool use, knowledge work, multimodal tasks | Sol is the flagship; Terra and Luna trade capability for lower cost and latency ([official overview](https://openai.com/index/gpt-5-6/), checked 2026-10-03) |
-| Claude 5 family (Fable, Opus, Sonnet; Haiku 4.5) | Anthropic | Agentic coding, enterprise work, long context, balanced production workloads | Choose by capability, speed, and cost; current flagship tiers have 1M-token context ([model catalog](https://platform.claude.com/docs/en/about-claude/models/overview), checked 2026-10-03) |
-| Gemini 3 family (3.8 Flash stable; 3.1 Pro preview) | Google | Multimodal work, coding, agents, low-latency workloads | Production status varies by model; Google directs new projects away from 2.5 ([model catalog](https://ai.google.dev/gemini-api/docs/models), checked 2026-10-03) |
+| GPT-6 family (Astra, 6.1 Sol, Luna) | OpenAI | Coding, tool use, knowledge work, multimodal tasks | OpenAI positions Astra as its most capable model; 6.1 Sol balances capability and cost; Luna is the fastest and cheapest ([changelog](https://developers.openai.com/api/docs/changelog), [latest-model guide](https://developers.openai.com/api/docs/guides/latest-model/gpt-5.2), checked 2026-10-05) |
+| Claude 5 family (Fable 5.1, Opus 5, Sonnet 5; Haiku 4.5) | Anthropic | Agentic coding, enterprise work, long context, balanced production workloads | Anthropic recommends Opus 5 for most workloads and Fable 5.1 for the hardest reasoning and long-horizon agent work; Fable, Opus, and Sonnet have 1M-token context, Haiku 4.5 has 200K ([model catalog](https://platform.claude.com/docs/en/models/overview), checked 2026-10-05) |
+| Gemini 3 family (3.8 Flash stable; 3.1 Pro preview) | Google | Multimodal work, coding, agents, low-latency workloads | Production status varies by model; Google recommends 3.8 Flash or 3.5 Flash-Lite over 2.5 for new projects ([model catalog](https://ai.google.dev/gemini-api/docs/models), checked 2026-10-05) |
 | Grok 4.7 | xAI | Coding, tool use, general-purpose reasoning | Current general-purpose flagship; real-time information requires search tools ([model catalog](https://docs.x.ai/docs/models?cluster=us-west-1), checked 2026-10-03) |
 
 ## Open-weights models worth knowing

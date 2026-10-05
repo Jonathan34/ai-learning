@@ -26,7 +26,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Chat-tuned / Assistant model** — a model further tuned for conversational interaction
 
-- **Frontier model** — the current most-capable class (Claude 4, GPT-4o/o3, Gemini 2.5, etc.)
+- **Frontier model** — the current most-capable class (Claude 5, GPT-6, Gemini 3, etc. as of October 2026; see [Tools and Models](tools-and-models.md))
 
 ## Inference
 
