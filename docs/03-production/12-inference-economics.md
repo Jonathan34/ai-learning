@@ -6,13 +6,15 @@ Every LLM request has three costs: input tokens, output tokens, and time. Whethe
 
 Most hosted LLM providers charge per token, with different rates for input and output:
 
-- **Input tokens** (your prompt + context): cheaper, typically $0.25–$5 per million tokens for frontier models
+- **Input tokens** (your prompt + context): cheaper
 
-- **Output tokens** (what the model generates): more expensive, typically $1–$15 per million tokens
+- **Output tokens** (what the model generates): more expensive
+
+There's no single price range worth memorizing. Prices vary sharply by provider, model, context length, and processing tier. As of 2026-10-09, standard short-context GPT-6 pricing runs from $0.10/$0.50 per million input/output tokens for Luna to $10/$50 for Astra ([OpenAI pricing](https://developers.openai.com/api/docs/pricing), checked 2026-10-09). Anthropic's standard Claude pricing runs from $0.10/$0.50 for Haiku 5.5 prompts up to 100K tokens to $10/$50 for Fable 5.1 ([Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), checked 2026-10-09). Check the provider's pricing page before estimating a workload.
 
 Output tokens cost 3-5x more than input tokens because generation is sequential — each token must be produced one at a time, which can't be parallelized. Input tokens, by contrast, are all processed in a single parallel batch. The hardware utilization is much worse for sequential generation, hence the price difference.
 
-For a typical production call:
+For a typical production call, using illustrative rates rather than any one provider's current price:
 
 - 2,000 input tokens (system prompt + context + user message)
 

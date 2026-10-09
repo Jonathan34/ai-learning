@@ -7,7 +7,7 @@
 | Model | Provider | Good at | Notes |
 |---|---|---|---|
 | GPT-6 family (Astra, 6.1 Sol, Luna) | OpenAI | Coding, tool use, knowledge work, multimodal tasks | OpenAI positions Astra as its most capable model; 6.1 Sol balances capability and cost; Luna is the fastest and cheapest ([changelog](https://developers.openai.com/api/docs/changelog), [latest-model guide](https://developers.openai.com/api/docs/guides/latest-model/gpt-5.2), checked 2026-10-05) |
-| Claude 5 family (Fable 5.1, Opus 5, Sonnet 5; Haiku 4.5) | Anthropic | Agentic coding, enterprise work, long context, balanced production workloads | Anthropic recommends Opus 5 for most workloads and Fable 5.1 for the hardest reasoning and long-horizon agent work; Fable, Opus, and Sonnet have 1M-token context, Haiku 4.5 has 200K ([model catalog](https://platform.claude.com/docs/en/models/overview), checked 2026-10-05) |
+| Claude 5 family (Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5) | Anthropic | Agentic coding, enterprise work, long context, balanced production workloads | Anthropic recommends Opus 5.5 for most workloads and Fable 5.1 when demanding reasoning or long-horizon agent work needs more than Opus 5.5 at higher effort; Sonnet 5.5 balances speed and intelligence; Haiku 5.5 targets high-volume, latency-sensitive work; all four have 1M-token context ([model catalog](https://platform.claude.com/docs/en/models/overview), checked 2026-10-09) |
 | Gemini 3 family (3.8 Flash stable; 3.1 Pro preview) | Google | Multimodal work, coding, agents, low-latency workloads | Production status varies by model; Google recommends 3.8 Flash or 3.5 Flash-Lite over 2.5 for new projects ([model catalog](https://ai.google.dev/gemini-api/docs/models), checked 2026-10-05) |
 | Grok 4.7 | xAI | Coding, tool use, general-purpose reasoning | Current general-purpose flagship; real-time information requires search tools ([model catalog](https://docs.x.ai/docs/models?cluster=us-west-1), checked 2026-10-03) |
 
@@ -114,13 +114,11 @@
 
 - arxiv-sanity, Papers With Code
 
-## Cost ballpark (late 2025, USD)
+## Cost ballpark (October 2026, USD)
 
 Prices change. This is a rough order-of-magnitude for thinking.
 
-- Frontier hosted output tokens: ~$1-$15 per million tokens
-
-- Frontier hosted input tokens: ~$0.25-$5 per million tokens
+- Hosted frontier tokens: prices vary sharply by provider, model, context length, and processing tier. As of 2026-10-09, standard short-context GPT-6 pricing runs from $0.10/$0.50 per million input/output tokens for Luna to $10/$50 for Astra ([OpenAI pricing](https://developers.openai.com/api/docs/pricing), checked 2026-10-09). Anthropic's standard Claude pricing runs from $0.10/$0.50 for Haiku 5.5 prompts up to 100K tokens to $10/$50 for Fable 5.1 ([Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), checked 2026-10-09). Check the provider's pricing page before estimating a workload.
 
 - Open-weights self-hosted on GPUs: ~$0.05-$2 per million output tokens depending on model size and utilization
 
