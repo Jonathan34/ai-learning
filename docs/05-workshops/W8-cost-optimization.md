@@ -177,7 +177,43 @@ Measure the impact. If your agent was generating 800-token reasoning chains befo
 
 Not every request needs the biggest model. A classification or simple lookup works fine on a small, cheap model.
 
-**Build a classifier:**
+The catch is that the router costs something too. It adds latency, maybe tokens, maybe another service to run. And every request it wrongly calls "simple" quietly gets a worse answer. So use the cheapest router that can actually tell your requests apart.
+
+Routing is a well-studied idea, not a hack. [FrugalGPT](https://arxiv.org/abs/2305.05176) (2023) studies cascades: try a cheap model first and escalate when the answer looks weak. [RouteLLM](https://arxiv.org/abs/2406.18665) (2024) trains routers from human preference data and ships an [open-source implementation](https://github.com/lm-sys/RouteLLM). Neither gives you a guaranteed saving. The result depends on your traffic and your quality bar.
+
+How teams build the router varies a lot. Rules, local classifiers, embeddings, learned routers, and provider-side routers are all in use, often combined. NVIDIA's [write-up on routing agents across models](https://developer.nvidia.com/blog/route-ai-agents-across-models-with-nvidia-nemo-switchyard/) draws the same line between fixed heuristics and routers trained on workload data. Roughly, from lightest to heaviest:
+
+| Router | Runs where | Good when | Watch out for |
+|---|---|---|---|
+| Rules | Your code | You already know the task type: endpoint, tool, input size, tenant policy | Brittle on free-form text |
+| Local embedding match or classifier | Your infrastructure | You have labeled example requests | Needs labels, and retraining as traffic drifts |
+| Small LLM or learned router | Hosted, or local if you run the model | The route needs real semantic judgment | Extra call on every request |
+
+**Start with rules.** If the request comes in through a "tag this ticket" endpoint, you don't need a model to tell you it's a tagging job.
+
+```python
+def route_by_rules(request):
+    if request.endpoint in {"extract_fields", "tag_ticket"}:
+        return "simple"
+    if request.needs_tools or count_tokens(request.text) > 8_000:
+        return "complex"
+    return None  # no rule matched, fall through to the next router
+```
+
+**Then try a local classifier.** An embedding is a vector of numbers a small encoder model produces for a piece of text. Similar requests get nearby vectors. Embed a few dozen labeled examples per route, then send each new request to the route of its closest examples. This runs on your own hardware with no extra hosted call. Aurelio AI's [Semantic Router](https://github.com/aurelio-labs/semantic-router) packages this pattern and supports [local Hugging Face encoders](https://github.com/aurelio-labs/semantic-router/blob/main/semantic_router/encoders/huggingface.py). A plain classifier (logistic regression, say) trained on labeled production requests works too.
+
+```python
+# embed() is any local encoder model; route_vectors holds embedded labeled examples
+def route_by_similarity(text, route_vectors, threshold=0.8):
+    query = embed(text)
+    route, score = max(
+        ((name, cosine(query, v)) for name, vecs in route_vectors.items() for v in vecs),
+        key=lambda pair: pair[1],
+    )
+    return (route, score) if score >= threshold else (None, score)
+```
+
+**Use a model when you need judgment.** When intent is genuinely ambiguous, a small LLM classifier is the easy version:
 
 ```python
 def classify_complexity(user_request):
@@ -198,24 +234,40 @@ Classification (one word):"""
     )
     return response.strip().lower()
 
-def route_request(user_request):
-    complexity = classify_complexity(user_request)
-    if complexity == "simple":
-        return run_agent(user_request, model="claude-haiku-4")
-    else:
-        return run_agent(user_request, model="claude-sonnet-4")
-
 ```
 
-Measure:
+The other option at this tier is a learned router like RouteLLM, if you have preference or outcome data that looks like your traffic. Either one can run on your own hardware if you host the model yourself.
 
-- What percentage of requests route to the small model?
+**Whatever the router, plan for being wrong.** Only take the cheap route when the router is confident. Fall back to the big model when it isn't, or when the cheap answer fails a check. That second part is the FrugalGPT-style cascade.
 
-- How much does that save per request?
+```python
+def route_request(request):
+    route = route_by_rules(request)
+    if route is None:
+        # or swap in classify_complexity() or a learned router
+        route, score = route_by_similarity(request.text, ROUTE_VECTORS)
+    if route == "simple":
+        result = run_agent(request.text, model="claude-haiku-4")
+        if passes_checks(result):  # schema valid, required fields present, etc.
+            return result
+    return run_agent(request.text, model="claude-sonnet-4")
+```
 
-- Did quality drop on simple requests? (Use your W3 eval harness to check.)
+A binary simple/complex split is fine for this exercise. Real systems often route on more than that: required tools, context length, modality, privacy rules, latency target, provider availability, and observed per-task quality.
 
-Typical savings: 50-70% on traffic that's classified as simple, usually 40-60% of total traffic. Net savings: 20-40% of your total bill.
+**Exercise: compare routers.** Run at least two routers (say, rules plus embeddings, and a small LLM) on the same labeled requests. Also run a no-routing baseline that sends everything to the big model. For each, measure:
+
+- Routing accuracy, and especially false downgrades: hard requests sent to the small model
+
+- End-to-end quality, using your W3 eval harness
+
+- Share of traffic routed to the small model, and how often the fallback fires
+
+- p95 routing latency and router cost per request
+
+- Total cost per request, router included
+
+There's no typical saving to aim for. Whether routing pays off depends on your traffic mix, your prices, and how much quality you can give up. A local router is most attractive at high volume, when data should stay local, or when the routing policy has to be deterministic and auditable. At low volume, running another model can cost more than a small hosted classification call.
 
 ---
 
@@ -367,7 +419,7 @@ Run your 20 test requests again with all optimizations enabled:
 | Avg output tokens | XXX | XXX | -XX% |
 | Quality score (from W3) | X% | X% | change |
 
-If you did the exercises thoughtfully, you should see cost drops of 40-70% with minimal quality impact. If quality dropped significantly, you were too aggressive on one of the levers — roll back the one that hurt the most.
+How big the drop is depends on your workload, so don't grade yourself against someone else's number. What matters is that each change paid for itself without hurting quality. If quality dropped significantly, you were too aggressive on one of the levers — roll back the one that hurt the most.
 
 ---
 
@@ -378,6 +430,8 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 **Cache invalidation from small changes.** A single extra space in your system prompt breaks caching. Your prompt construction needs to produce byte-identical output every time.
 
 **Model routing that doesn't actually route.** If your classifier always returns "complex", you're paying for the classifier AND the big model. Verify the actual routing distribution.
+
+**A router that costs more than it saves.** An extra hosted call on every request adds latency and spend. If rules or a local classifier can make the call, use them.
 
 **Context pruning that drops critical information.** Aggressive summarization can lose facts the agent needed later. Test with your eval harness after every pruning change.
 
@@ -395,7 +449,7 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 
 - Measured impact of each technique individually
 
-- A cost profile reduced by 40-70% vs baseline
+- A before-and-after cost profile, with the quality impact of each change
 
 - Understanding of which levers matter most for your specific workload
 
@@ -406,5 +460,7 @@ If you did the exercises thoughtfully, you should see cost drops of 40-70% with 
 - [OpenAI prompt caching docs](https://platform.openai.com/docs/guides/prompt-caching) — OpenAI's implementation
 
 - [LiteLLM cost tracking](https://docs.litellm.ai/docs/proxy/cost_tracking) — multi-provider cost tracking
+
+- [RouteLLM](https://arxiv.org/abs/2406.18665) from LMSYS — learned routing between a strong and a weak model, with [code](https://github.com/lm-sys/RouteLLM)
 
 - [Chapter 12 (Inference Economics)](../03-production/12-inference-economics.md) covers the theory behind these optimizations

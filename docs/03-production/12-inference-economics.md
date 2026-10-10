@@ -90,13 +90,17 @@ flowchart LR
 
 The classifier can be:
 
+- A rule-based system (known endpoint or task type → small model, needs tools or long context → large model)
+
+- An embedding match or conventional classifier trained on labeled historical requests. Both run on your own hardware, with no extra hosted call.
+
 - A small LLM that estimates difficulty
 
-- A rule-based system (short queries → small model, long queries → large model)
+- A learned router such as [RouteLLM](https://arxiv.org/abs/2406.18665), trained on preference data
 
-- A trained classifier based on historical data
+Start with the lightest one that can tell your requests apart. Otherwise the router becomes a real slice of the bill.
 
-This can cut costs 50-70% if most of your traffic is simple requests. The trade-off: you need to handle cases where the small model fails and needs to be escalated to the large one.
+How much this saves depends on your traffic mix and prices. There's no reliable general number, so measure it against a no-routing baseline. The trade-off: you need to handle cases where the small model fails and needs to be escalated to the large one. [FrugalGPT](https://arxiv.org/abs/2305.05176) studies that cheap-first, escalate-on-doubt cascade. [Workshop W8](../05-workshops/W8-cost-optimization.md) walks through building and comparing routers.
 
 ## Capacity and rate limits
 
