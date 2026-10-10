@@ -53,39 +53,63 @@ Write 5 example inputs by hand — vary the difficulty. Include one that's ambig
 
 ## Part 2: Basic extraction with schema constraints (30 min)
 
-Use your provider's structured output feature:
+Use your provider's native structured output feature. That constrains the model's final answer to your schema. Don't wrap the schema in a fake tool and force the model to call it. Tool schemas are for actions your code runs, and Claude now supports schema-constrained answers directly ([Anthropic structured outputs docs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), checked October 2026).
 
 ```python
 import anthropic
-import json
 
 client = anthropic.Anthropic()
+MODEL = "claude-sonnet-4-5"  # check the docs for which models support structured outputs
 
-def extract_ticket(text: str) -> dict:
+# The schema Claude generates against. It mirrors SupportTicket but leaves out
+# the length and numeric bounds; SupportTicket checks those after the response arrives.
+TICKET_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "category": {"type": "string", "enum": ["billing", "technical", "account", "shipping", "other"]},
+        "priority": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "sentiment": {"type": "string", "enum": ["frustrated", "neutral", "positive"]},
+        "summary": {"type": "string", "description": "One-sentence summary of the issue"},
+        "action_required": {"type": "string", "description": "What needs to happen next"},
+        "requires_human": {"type": "boolean", "description": "True if this can't be resolved automatically"},
+        "confidence": {"type": "number", "description": "How confident the extraction is, 0 to 1"},
+    },
+    "required": ["category", "priority", "sentiment", "summary", "action_required", "requires_human", "confidence"],
+    "additionalProperties": False,
+}
+
+class ExtractionError(Exception):
+    pass
+
+def extract_ticket(text: str, note: str = "", max_tokens: int = 1024) -> SupportTicket:
+    prompt = f"Extract structured data from this support ticket:\n\n{text}"
+    if note:
+        prompt += f"\n\n{note}"
+
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": f"Extract structured data from this support ticket:\n\n{text}"}],
-        tools=[{
-            "name": "classify_ticket",
-            "description": "Extract structured classification from a support ticket",
-            "input_schema": SupportTicket.model_json_schema()
-        }],
-        tool_choice={"type": "tool", "name": "classify_ticket"}
+        model=MODEL,
+        max_tokens=max_tokens,
+        messages=[{"role": "user", "content": prompt}],
+        output_config={"format": {"type": "json_schema", "schema": TICKET_SCHEMA}},
     )
 
-    # Extract the tool use result
-    for block in response.content:
-        if block.type == "tool_use":
-            return block.input
+    # Refusals and truncation are the cases where the output may not match the schema,
+    # so check before parsing anything
+    if response.stop_reason in ("refusal", "max_tokens"):
+        raise ExtractionError(f"No usable output (stop_reason={response.stop_reason})")
 
-    raise ValueError("No tool use in response")
+    # Raises pydantic.ValidationError if a bound the schema left out is violated
+    return SupportTicket.model_validate_json(response.content[0].text)
 ```
+
+This uses the raw `output_config.format` request so you can look at `stop_reason` before anything tries to parse. The SDK also has a `client.messages.parse(..., output_format=SupportTicket)` helper that builds the schema from your Pydantic model and returns `response.parsed_output` ([Anthropic docs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), checked October 2026). It's shorter, but here you want to see refusals and truncation as their own cases, so you need the stop reason first.
+
+Claude only enforces a subset of JSON Schema, and a raw schema with unsupported constraints can be rejected with a 400 error. That's why `TICKET_SCHEMA` leaves out the `max_length` on `summary` and the `ge`/`le` bounds on `confidence`. `SupportTicket` still checks them, but only after the response arrives. The model wasn't forced to respect them while it was generating. Keeping the two definitions in step is the cost of the raw path, so treat drift between them as a bug.
 
 Run it on your 5 examples. Check:
 
-- Does it parse correctly every time?
-- Are the classifications sensible?
+- Does any call fail outright? Malformed JSON should be rare now. When a call fails, check whether it was a refusal, truncation, or a `ValidationError` on one of the bounds.
+- Are the classifications sensible? This is where the real errors live. A schema-valid answer can still be wrong.
 - What happens with the ambiguous input?
 - What happens with the adversarial input?
 
@@ -93,29 +117,49 @@ Run it on your 5 examples. Check:
 
 ## Part 3: Add validation and retry (30 min)
 
-Wrap extraction with proper error handling:
+With native structured output, you shouldn't need retries to repair broken JSON. Retries still earn their place for truncation, where you try again with a bigger token budget, for bounds the schema left out, for business rules the schema can't express, and for transient API errors. A refusal usually isn't worth retrying with the same input.
 
 ```python
 from pydantic import ValidationError
 
-def extract_with_retry(text: str, max_retries: int = 2) -> SupportTicket:
+def business_problems(ticket: SupportTicket) -> list[str]:
+    problems = []
+    if ticket.priority == "critical" and not ticket.requires_human:
+        problems.append("priority is 'critical' but requires_human is False")
+    # Add the rules your own pipeline cares about
+    return problems
+
+def extract_with_retry(text: str, max_retries: int = 2, max_tokens: int = 1024) -> SupportTicket:
+    note = ""
     last_error = None
 
     for attempt in range(max_retries + 1):
         try:
-            raw = extract_ticket(text)
-            return SupportTicket.model_validate(raw)
-        except ValidationError as e:
+            ticket = extract_ticket(text, note=note, max_tokens=max_tokens)
+        except ExtractionError as e:
             last_error = e
-            if attempt < max_retries:
-                # Feed the error back to the model
-                error_msg = f"Previous extraction failed validation:\n{e}\n\nPlease fix and try again."
-                raw = extract_ticket(f"{text}\n\n[SYSTEM NOTE: {error_msg}]")
-            else:
-                raise ValueError(f"Extraction failed after {max_retries + 1} attempts: {last_error}")
+            if "max_tokens" not in str(e):
+                raise  # a refusal won't change on a blind retry
+            max_tokens *= 2
+            continue
+        except ValidationError as e:
+            # A bound the schema couldn't enforce, like confidence > 1
+            last_error = e
+            note = f"A previous extraction failed validation: {e}. Fix the fields it names."
+            continue
+
+        problems = business_problems(ticket)
+        if not problems:
+            return ticket
+
+        # Feed the problems back into the next attempt
+        last_error = "; ".join(problems)
+        note = f"A previous extraction was inconsistent: {last_error}. Re-read the ticket and correct whichever field is wrong."
+
+    raise ExtractionError(f"Extraction failed after {max_retries + 1} attempts: {last_error}")
 ```
 
-Test it — force failures by making your Pydantic model stricter (lower max_length, narrower ranges). See how often the retry fixes things.
+Test it. Write a ticket that tempts the model into an inconsistent answer, like a full outage described in a calm, polite tone. Then call it with a very low `max_tokens` to trigger truncation. See how often the retry fixes things.
 
 ---
 
@@ -230,7 +274,7 @@ Run it. Which fields does the model get wrong most often? That tells you where t
 
 Try the same extraction three ways and compare:
 
-1. **Schema-constrained** (what you built above)
+1. **Schema-constrained** (native structured output, what you built above)
 2. **Free-form + parse** — ask the model to "return JSON" in the prompt, then parse
 3. **Two-step** — first ask the model to reason about the ticket in free text, then extract from its own reasoning
 
@@ -239,14 +283,13 @@ Try the same extraction three ways and compare:
 def extract_two_step(text: str) -> SupportTicket:
     # Step 1: reason
     reasoning = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model=MODEL,
         max_tokens=500,
         messages=[{"role": "user", "content": f"Analyze this support ticket. What category is it? How urgent? What's the customer's tone? What action is needed?\n\n{text}"}]
     ).content[0].text
 
-    # Step 2: extract from reasoning
-    raw = extract_ticket(f"Based on this analysis:\n{reasoning}\n\nExtract structured data.")
-    return SupportTicket.model_validate(raw)
+    # Step 2: extract from reasoning with native structured output
+    return extract_ticket(text, note=f"Use this analysis of the ticket:\n{reasoning}")
 ```
 
 Which approach gives better accuracy? Which is cheaper? Which handles edge cases better?
@@ -261,7 +304,9 @@ Which approach gives better accuracy? Which is cheaper? Which handles edge cases
 
 - **Pydantic v1 vs v2.** The API changed significantly. Make sure your code matches your installed version (`model_validate` is v2, `parse_obj` is v1).
 
-- **Provider differences in schema support.** Anthropic uses tool use for structured output. OpenAI has `response_format`. Google has `response_schema`. The concepts are the same but the API calls differ.
+- **Provider differences in API shape.** Anthropic, OpenAI, and Google all offer native schema-constrained responses. The parameter names and SDK helpers differ, and so do the parts of JSON Schema each one supports ([Anthropic](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), [OpenAI](https://developers.openai.com/api/docs/guides/structured-outputs), [Google](https://ai.google.dev/gemini-api/docs/structured-output), checked October 2026). All three treat tool or function calling as a separate contract, used when the model asks your code to take an action. Older tutorials that force a tool call to get typed output predate native support with Claude.
+
+- **Schema-valid isn't the same as correct.** Constrained output stops malformed JSON. It doesn't stop a wrong category or a made-up summary. That's what Part 5 is for.
 
 ---
 
@@ -278,5 +323,5 @@ This pattern — extract, validate, handle failure, measure — is the backbone 
 
 - [Structured Output and Type Safety](../01-foundations/06-structured-output.md) — the theory behind what you just built
 - [Instructor library](https://github.com/jxnl/instructor) — production-grade structured output with retries
-- [Anthropic's tool use docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+- [Anthropic's structured outputs docs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) — `messages.parse`, `output_config.format`, and the supported schema subset
 - [Workshop W3 (Real Evaluation)](W3-real-evaluation.md) — expanding the eval approach used here
