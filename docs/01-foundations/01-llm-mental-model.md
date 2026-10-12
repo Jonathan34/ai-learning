@@ -41,8 +41,8 @@ Terms you'll see throughout. Brief definitions here; deeper explanations below.
 |---|---|
 | **Token** | A sub-word unit. The model sees tokens, not words. "Strawberry" might be 1-3 tokens depending on the model. |
 | **Context window** | Max tokens the model can handle at once (input + output combined). |
-| **Attention** | The mechanism that lets each token "look at" every other token to figure out what's relevant. Makes transformers work. Expensive — roughly O(n²) in sequence length. |
-| **Forward pass** | One run of the input through all the model's layers to produce an output. Each new token requires one forward pass. |
+| **Attention** | The mechanism that lets each token "look at" other tokens to figure out what's relevant. Makes transformers work. Standard dense attention lets every token look at every earlier token, which costs roughly O(n²) in sequence length. Some models limit this to a local window. |
+| **Forward pass** | One run of the input through all the model's layers to produce an output. In conventional decoding, each new token takes one forward pass. |
 | **Inference** | Running the trained model to generate output. What you do when you call the API. |
 | **Temperature** | Controls randomness. 0 = always pick the most likely token. Higher = more variety. |
 | **Hallucination** | Model confidently produces false output. Inherent to how generation works — not a bug you can patch. |
@@ -52,9 +52,9 @@ Terms you'll see throughout. Brief definitions here; deeper explanations below.
 
 Once you have the generation loop in your head, a lot of LLM behavior becomes predictable:
 
-**Why are LLMs slow?** Each new token requires a forward pass through every layer. Thanks to the KV cache, the model doesn't reprocess earlier tokens — but it still has to run the new token through all layers sequentially. A 500-token response means 500 sequential forward passes. You can stream tokens to the user as they're generated, but you can't skip the computation.
+**Why are LLMs slow?** In conventional autoregressive decoding (generate one token, append it, generate the next), each new token needs its own forward pass through every layer. Thanks to the KV cache, the model doesn't reprocess earlier tokens — but it still has to run the new token through all layers, and it can't produce token 501 before it knows token 500. A 500-token response means roughly 500 sequential steps. Some serving stacks shorten that chain with [speculative decoding](https://arxiv.org/abs/2211.17192): a small, cheap model drafts a few tokens ahead, and the big model checks them all in one pass and keeps the ones that pass. The output follows the same distribution the big model would have produced on its own. The paper reports 2-3x speedups over a standard implementation on T5-XXL (Leviathan et al., 2022, checked 2026-10-11). The tokens are still ordered, and you can still stream them to the user, but the work doesn't disappear.
 
-**Why does context length cost money?** The attention mechanism compares every token to every other token. Double the context length and the computation roughly quadruples. That's why a 128K-token call costs significantly more than a 4K-token call.
+**Why does context length cost money?** Standard dense attention compares every token with every earlier token. For a full pass over the sequence — processing your prompt (called prefill) or training — doubling the length roughly quadruples the attention work. Generation is different: with a KV cache, each new token only compares itself against the stored keys, so its attention work grows roughly linearly with context length. Either way, a 128K-token call costs significantly more than a 4K-token call. But the real cost also depends on the feed-forward layers, memory traffic, batching, and how attention is implemented. [FlashAttention](https://proceedings.neurips.cc/paper_files/paper/2022/hash/67d57c32e20fd0a7a302cb81d36e40d5-Abstract-Conference.html) is a good example: it computes exactly the same dense attention, still O(n²), but moves far less data through GPU memory, and it trained GPT-2 about 3x faster in the paper's tests (Dao et al., NeurIPS 2022, checked 2026-10-11). Big-O tells you the shape of the problem, not the bill.
 
 **Why do models lose track of instructions in long prompts?** Attention spreads across all tokens. Your system prompt at position 0 is competing with 100K tokens of documents for the model's attention budget. Sometimes the documents win.
 
@@ -129,9 +129,11 @@ Example: in "The cat sat on the mat. It was tired". — the token "It" will atte
 
 **Causal masking** (during generation): token at position 5 can only attend to positions 0-4, not 6+. This enforces left-to-right generation — the model can't peek at future tokens.
 
+**Sliding-window and sparse attention**: everything above describes standard dense attention, and it's the right mental model to start with. But not every deployed model attends globally. [Mistral 7B](https://arxiv.org/abs/2310.06825), for example, uses sliding-window attention: in each layer, a token only attends to a fixed window of recent positions, which cuts inference cost on long sequences. Information from further back still reaches it indirectly, passed forward through the stacked layers (Jiang et al., 2023, checked 2026-10-11).
+
 ### Why this matters for you
 
-- **Cost scales quadratically.** Every token attends to every other token. Double the context = ~4x the attention computation. This is why long contexts are expensive.
+- **Cost scales quadratically, for standard dense attention.** Every token attends to every earlier token. Double the context = ~4x the attention computation for a full pass over the sequence. This is why long contexts are expensive. Cached decoding, sliding-window models, and faster kernels all change the real numbers, so treat this as the shape of the problem rather than a pricing formula.
 
 - **"Lost in the middle."** In practice, tokens at the start and end of the context get more attention than those in the middle. Put important information near the end of your context, close to the query.
 

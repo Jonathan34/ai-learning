@@ -12,7 +12,7 @@ Most hosted LLM providers charge per token, with different rates for input and o
 
 There's no single price range worth memorizing. Prices vary sharply by provider, model, context length, and processing tier. As of 2026-10-09, standard short-context GPT-6 pricing runs from $0.10/$0.50 per million input/output tokens for Luna to $10/$50 for Astra ([OpenAI pricing](https://developers.openai.com/api/docs/pricing), checked 2026-10-09). Anthropic's standard Claude pricing runs from $0.10/$0.50 for Haiku 5.5 prompts up to 100K tokens to $10/$50 for Fable 5.1 ([Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), checked 2026-10-09). Check the provider's pricing page before estimating a workload.
 
-Output tokens cost 3-5x more than input tokens because generation is sequential — each token must be produced one at a time, which can't be parallelized. Input tokens, by contrast, are all processed in a single parallel batch. The hardware utilization is much worse for sequential generation, hence the price difference.
+Output tokens cost 3-5x more than input tokens. The exact ratio is a provider's commercial decision, but serving mechanics explain part of it. Input tokens are all processed together in one parallel pass. In conventional autoregressive decoding, output tokens come out one step at a time, because each depends on the ones before it, and the hardware gets less useful work done per step. Techniques like [speculative decoding](https://arxiv.org/abs/2211.17192) let the model verify several drafted tokens in one pass, which cuts the number of serial steps (Leviathan et al., 2022, checked 2026-10-11). The tokens are still produced in order, though.
 
 For a typical production call, using illustrative rates rather than any one provider's current price:
 
@@ -64,7 +64,7 @@ flowchart LR
 
 - **Prefill** — processing all input tokens. Roughly proportional to input length. Fast for short prompts, noticeable for 100K+ token contexts.
 
-- **Generation** — producing output tokens one at a time. This is the slow part. Proportional to output length.
+- **Generation** — producing output tokens. This is the slow part. In conventional decoding it's one model step per token, so it's roughly proportional to output length. Speculative decoding and other serving optimizations can cut the number of serial steps, so time per token isn't fixed by the model alone ([Leviathan et al., 2022](https://arxiv.org/abs/2211.17192), checked 2026-10-11).
 
 **Time to first token (TTFT)** = network + queue + prefill. This is what the user waits before seeing anything.
 

@@ -22,6 +22,12 @@ For each, the guidance is:
 
 - **"Training Compute-Optimal Large Language Models"** (Hoffmann et al., 2022) — the Chinchilla paper, which refined scaling laws and sparked the focus on training data. **[Know of]**.
 
+## Inference efficiency
+
+- **["FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness"](https://proceedings.neurips.cc/paper_files/paper/2022/hash/67d57c32e20fd0a7a302cb81d36e40d5-Abstract-Conference.html)** (Dao et al., NeurIPS 2022) — same exact dense attention, still O(n²), but much less GPU memory traffic. **[Know of]**. Shows why Big-O alone doesn't predict wall-clock cost.
+
+- **["Fast Inference from Transformers via Speculative Decoding"](https://arxiv.org/abs/2211.17192)** (Leviathan et al., 2022) — a small model drafts tokens, the big model verifies several at once, with the same output distribution. **[Know of]**. Why "one forward pass per token" is the conventional baseline, not a law.
+
 ## Prompting and reasoning
 
 - **"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"** (Wei et al., 2022) — CoT. **[Read]**. Still foundational; production prompts still use CoT patterns.
