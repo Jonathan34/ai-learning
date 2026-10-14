@@ -41,44 +41,55 @@ Define 3-5 tools with clear schemas:
 ```python
 tools = [
     {
-        "name": "search_orders",
-        "description": "Search for a customer's orders by email address. Returns a list of recent orders with order_id, date, status, and total. Use this when the user asks about their orders or order status.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "description": "Customer's email address"
-                }
-            },
-            "required": ["email"]
+        "type": "function",
+        "function": {
+            "name": "search_orders",
+            "description": "Search for a customer's orders by email address. Returns a list of recent orders with order_id, date, status, and total. Use this when the user asks about their orders or order status.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "Customer's email address"
+                    }
+                },
+                "required": ["email"]
+            }
         }
     },
     {
-        "name": "get_order_details",
-        "description": "Get full details for a specific order by order_id. Returns items, shipping info, and payment details. Use this after search_orders when you need more detail about a specific order.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "order_id": {"type": "string", "description": "The order ID (e.g., ORD-12345)"}
-            },
-            "required": ["order_id"]
+        "type": "function",
+        "function": {
+            "name": "get_order_details",
+            "description": "Get full details for a specific order by order_id. Returns items, shipping info, and payment details. Use this after search_orders when you need more detail about a specific order.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {"type": "string", "description": "The order ID (e.g., ORD-12345)"}
+                },
+                "required": ["order_id"]
+            }
         }
     },
     {
-        "name": "check_refund_eligibility",
-        "description": "Check if an order is eligible for a refund. Returns eligibility status and reason. Use this when the user asks about returns or refunds.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "order_id": {"type": "string"}
-            },
-            "required": ["order_id"]
+        "type": "function",
+        "function": {
+            "name": "check_refund_eligibility",
+            "description": "Check if an order is eligible for a refund. Returns eligibility status and reason. Use this when the user asks about returns or refunds.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {"type": "string"}
+                },
+                "required": ["order_id"]
+            }
         }
     }
 ]
 
 ```
+
+Each tool is wrapped in `{"type": "function", "function": {...}}`. That's the shape OpenAI Chat Completions expects for function tools, so don't pass the bare name/description/parameters object ([OpenAI function calling guide](https://developers.openai.com/api/docs/guides/function-calling?api-mode=chat), checked 2026-10-14).
 
 Now implement fake versions of these tools (they don't need to hit real systems):
 
@@ -193,7 +204,7 @@ def execute_tool(name, arguments):
 Add validation before executing:
 
 ```python
-valid_tool_names = {t["name"] for t in tools}
+valid_tool_names = {t["function"]["name"] for t in tools}
 if tool_name not in valid_tool_names:
     result = {"error": f"Tool '{tool_name}' does not exist. Available tools: {list(valid_tool_names)}"}
 
