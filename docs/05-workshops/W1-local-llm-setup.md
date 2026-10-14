@@ -31,16 +31,16 @@ ollama serve
 Pull your first model. Start small:
 
 ```bash
-ollama pull llama3.2:3b
+ollama pull qwen3.5:0.8b
 
 ```
 
-This downloads a 2 GB quantized model. Quantization means the model's numbers have been compressed from their distribution precision (BF16 — 16-bit brain float) down to 4-bit integers — trading a small amount of quality for a massive reduction in file size and memory use. The original Llama 3.2 3B in BF16 is about 6 GB.
+This downloads a quantized model of roughly 1.2-1.3 GB, depending on the tag ([Ollama library: qwen3.5](https://ollama.com/library/qwen3.5), checked 2026-10-14). Quantization means the model's numbers have been compressed from the higher precision they were trained in down to fewer bits per weight — trading a small amount of quality for a big reduction in file size and memory use. You'll check exactly which quantization you got in Part 3.
 
 Run it:
 
 ```bash
-ollama run llama3.2:3b
+ollama run qwen3.5:0.8b
 
 ```
 
@@ -61,13 +61,13 @@ What to observe:
 Pull three more models covering a range:
 
 ```bash
-ollama pull llama3.2:1b       # smaller
-ollama pull llama3.1:8b       # medium
-ollama pull qwen2.5:14b       # larger, different model family
+ollama pull gemma4:e2b        # small edge model, different family
+ollama pull qwen3.5:9b        # medium
+ollama pull gemma4:12b        # larger
 
 ```
 
-The 14B model needs 8+ GB of memory. If you don't have that, skip it and try `mistral:7b` instead.
+Check the download sizes before you pull. As of 2026-10-14, the Qwen 3.5 9B tags are about 6.6-7.6 GB, Gemma 4 E2B tags about 4.6-7.5 GB, and Gemma 4 12B tags about 7.7-8.0 GB ([qwen3.5](https://ollama.com/library/qwen3.5), [gemma4](https://ollama.com/library/gemma4)). The model needs at least that much free memory, plus room for context. On a 16 GB laptop with other apps open, the 12B model may not fit. If it doesn't, skip it — two sizes from two families still teaches the lesson.
 
 Ask each model the same prompts. Things to compare:
 
@@ -88,11 +88,11 @@ Write down what you observed.
 ## Part 3: Inspect the quantization (20 min)
 
 ```bash
-ollama show llama3.2:3b --modelfile
+ollama show qwen3.5:9b --modelfile
 
 ```
 
-You'll see the parameter file. Notice the model is `Q4_K_M` or similar — that's 4-bit quantization with a specific compression scheme. The letters and numbers encode how aggressively the model was compressed and which algorithm was used.
+You'll see the parameter file. `ollama show qwen3.5:9b` without the flag prints a summary that includes the quantization. Look for something like `Q4_K_M` — that's 4-bit quantization with a specific compression scheme. The letters and numbers encode how aggressively the model was compressed and which algorithm was used.
 
 Find where Ollama stored the actual model file:
 
@@ -104,14 +104,16 @@ ls -lh ~/.ollama/models/blobs/
 
 Look at the file sizes. These are GGUF files — llama.cpp's binary format for storing quantized models. This is what's actually loaded into memory at runtime.
 
-Try a different quantization level:
+Try a different quantization level. Open the model's Tags list on its Ollama library page and look for a tag ending in `q8_0` (8-bit) for a size you've already pulled. Tag names change between releases, so copy the exact name from the page rather than guessing it:
 
 ```bash
-ollama pull llama3.2:3b-instruct-q8_0    # 8-bit quantization
+ollama pull <model>:<tag-ending-in-q8_0>    # 8-bit quantization
 
 ```
 
-Compare quality and speed against the default (Q4). You'll see the quality-vs-size trade-off directly. The 8-bit version is larger and slightly better; the 4-bit version is smaller and slightly worse. For most tasks, the difference is subtle.
+If there's no 8-bit tag for your model, compare two different 4-bit tags of the same model instead, or skip this step.
+
+Compare quality and speed against the default (usually Q4). You'll see the quality-vs-size trade-off directly. The 8-bit version is larger and slightly better; the 4-bit version is smaller and slightly worse. For most tasks, the difference is subtle.
 
 ---
 
@@ -137,7 +139,7 @@ client = openai.OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="llama3.2:3b",
+    model="qwen3.5:0.8b",
     messages=[
         {"role": "system", "content": "You are concise."},
         {"role": "user", "content": "Explain RAG in two sentences."}
@@ -164,7 +166,8 @@ brew install llama.cpp
 Download a GGUF model file directly from HuggingFace (a platform where people publish model files):
 
 ```bash
-# Example: a small Llama 3.2 model
+# Example: a small Llama 3.2 model. It's an older model, but any GGUF
+# file works for seeing the raw inference path.
 # Check huggingface.co for current URLs
 wget https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf
 
@@ -187,7 +190,7 @@ Answer these for yourself:
 
 1. What's the smallest model that's useful for your day-to-day work?
 
-2. How does quality change as you go from 3B → 8B → larger?
+2. How does quality change as you go from 0.8B → 9B → larger?
 
 3. How does your laptop's hardware limit what you can run? (GPU memory, system memory)
 
@@ -201,7 +204,7 @@ Writing down answers — even brief ones — cements the learning.
 
 ## Gotchas
 
-- **Ollama defaults to a short context window** (2048 tokens). If your prompt is long, the model silently truncates. Set `num_ctx` in the Modelfile or API call to increase it.
+- **Ollama's default context window depends on your GPU memory, not the model.** As of 2026-10-14, it picks 4K tokens with under 24 GiB of VRAM, 32K with 24-48 GiB, and 256K with 48 GiB or more ([Ollama context length docs](https://docs.ollama.com/context-length)). So a laptop below 24 GiB of VRAM gets 4K, even for a model like Qwen 3.5 that supports 256K. Set `num_ctx` in the Modelfile or API call to increase it, and expect memory use to grow with it.
 
 - **Quantized models lose capability unevenly.** Small models quantized aggressively can become borderline useless on reasoning tasks while still being fine for classification or summarization.
 
