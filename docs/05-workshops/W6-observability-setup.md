@@ -1,6 +1,6 @@
 # Workshop W6 — Observability Setup
 
-**Goal:** Instrument an agent end-to-end so you can answer "what did the model see when it produced that output?" for any past call.
+**Goal:** Instrument an agent end-to-end so you can reconstruct what happened on a past request, and, when you deliberately turn content capture on, answer "what did the model see when it produced that output?"
 
 **Time:** 2-3 hours
 
@@ -10,17 +10,23 @@
 
 ## What you're building
 
-An observability layer that captures:
+An observability layer that always captures:
 
-- Every prompt sent to the model (the full assembled text, not the template)
+- Every LLM call's model, token counts, finish reason, and timing
 
-- Every response received
+- Every tool call's name, duration, and whether it errored
 
-- Every tool call (name, arguments, result, duration)
+- Trace IDs and step numbers, so you can reconstruct the shape of any past interaction
 
-- Timing and cost for each step
+And, only when you switch content capture on:
 
-- Enough metadata to reconstruct any past interaction
+- The prompt sent to the model (the full assembled text, not the template)
+
+- The response received
+
+- Tool arguments and results
+
+Content is off by default because prompts, responses, and tool data can contain personal information, secrets, and proprietary context. That matches the OpenTelemetry GenAI conventions, which treat message content as opt-in and likely sensitive ([GenAI events conventions](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-events.md), checked 2026-10-12). See [Chapter 13](../03-production/13-observability.md) for the reasoning.
 
 ---
 
@@ -29,9 +35,13 @@ An observability layer that captures:
 Start with the simplest useful thing: structured JSON logs for every LLM call.
 
 ```python
+import os
 import time
 import json
 import uuid
+
+# Off unless someone deliberately turns it on
+CAPTURE_CONTENT = os.environ.get("LLM_CAPTURE_CONTENT") == "true"
 
 def call_llm_instrumented(messages, tools=None, **kwargs):
     call_id = str(uuid.uuid4())[:8]
@@ -45,23 +55,30 @@ def call_llm_instrumented(messages, tools=None, **kwargs):
 
     duration = time.time() - start
 
+    message = response.choices[0].message
     log_entry = {
         "call_id": call_id,
         "timestamp": time.time(),
         "model": kwargs.get("model", "default"),
-        "messages": messages,  # THE FULL PROMPT
         "tools_available": [t["name"] for t in (tools or [])],
-        "response": response.choices[0].message.content,
         "tool_calls": [
-            {"name": tc.function.name, "args": tc.function.arguments}
-            for tc in (response.choices[0].message.tool_calls or [])
+            {"name": tc.function.name} for tc in (message.tool_calls or [])
         ],
+        "finish_reason": response.choices[0].finish_reason,
         "usage": {
             "input_tokens": response.usage.prompt_tokens,
             "output_tokens": response.usage.completion_tokens,
         },
         "duration_ms": int(duration * 1000),
     }
+
+    if CAPTURE_CONTENT:
+        log_entry["messages"] = messages  # the full prompt
+        log_entry["response"] = message.content
+        log_entry["tool_calls"] = [
+            {"name": tc.function.name, "args": tc.function.arguments}
+            for tc in (message.tool_calls or [])
+        ]
 
     # Write to a log file (in production, send to your log aggregator)
     with open("llm_calls.jsonl", "a") as f:
@@ -71,7 +88,9 @@ def call_llm_instrumented(messages, tools=None, **kwargs):
 
 ```
 
-Replace your existing `client.chat.completions.create` calls with this instrumented version. Now every call is logged with full context.
+Replace your existing `client.chat.completions.create` calls with this instrumented version. Now every call is logged with its metadata. Run once with `LLM_CAPTURE_CONTENT=true` on your own test data and compare the two log entries, so you can see exactly what the flag adds.
+
+In a real system, that flag deserves more ceremony than an environment variable: scope it to one tenant, flow, or incident, make it expire, and redact before writing. This workshop keeps it simple.
 
 ---
 
@@ -134,11 +153,13 @@ def execute_tool_instrumented(name, arguments):
         "type": "tool_call",
         "timestamp": time.time(),
         "tool_name": name,
-        "arguments": arguments,
-        "result": result,
         "error": error,
         "duration_ms": int(duration * 1000),
     }
+
+    if CAPTURE_CONTENT:
+        log_entry["arguments"] = arguments
+        log_entry["result"] = result
 
     with open("llm_calls.jsonl", "a") as f:
         f.write(json.dumps(log_entry) + "\n")
@@ -173,8 +194,11 @@ def view_trace(trace_id):
 
     for event in events:
         if event.get("type") == "tool_call":
-            print(f"  🔧 Tool: {event['tool_name']}({event['arguments']})")
-            print(f"     Result: {str(event['result'])[:100]}...")
+            print(f"  🔧 Tool: {event['tool_name']}({event.get('arguments', '<not captured>')})")
+            if "result" in event:
+                print(f"     Result: {str(event['result'])[:100]}...")
+            if event.get("error"):
+                print(f"     Error: {event['error']}")
             print(f"     Duration: {event['duration_ms']}ms")
         else:
             tokens = event.get("usage", {})
@@ -195,7 +219,7 @@ def view_trace(trace_id):
 
 ```
 
-Run your agent, then view the trace. You should be able to see exactly what happened at each step.
+Run your agent, then view the trace. With content capture off, you should still see the sequence of steps, which tools ran, what failed, and where the time and tokens went. With it on, you also see what the model was given and what it said.
 
 ---
 
@@ -205,11 +229,13 @@ Now use your observability to debug a problem:
 
 1. **Introduce a bug.** Make one of your tools return incorrect data silently (e.g., wrong order status).
 
-2. **Run the agent.** It will produce a wrong answer based on the bad tool data.
+2. **Run the agent with content capture off.** It will produce a wrong answer based on the bad tool data. Look at the trace. How far can you narrow it down from metadata alone? Usually to the step and the tool, but not to the bad value.
 
-3. **Debug from the trace alone.** Can you identify where things went wrong just by reading the trace? You should be able to see: the tool returned bad data → the model used that data → the final answer was wrong.
+3. **Turn content capture on for this incident and reproduce.** Set `LLM_CAPTURE_CONTENT=true`, run the same request on your test data, and read the trace. You should be able to see: the tool returned bad data → the model used that data → the final answer was wrong.
 
-This is the test of whether your observability is sufficient. If you can reconstruct the failure from logs alone (without re-running the agent), you're in good shape.
+4. **Turn it off again.** Then delete the content entries you no longer need.
+
+This is the test of whether your observability is sufficient. If metadata gets you to the right place and targeted content capture gets you the rest, you're in good shape.
 
 ---
 
@@ -227,18 +253,23 @@ langfuse = Langfuse(
 )
 
 # Wrap your agent run in a trace
-trace = langfuse.trace(name="user_request", input=user_message)
+trace = langfuse.trace(
+    name="user_request",
+    input=user_message if CAPTURE_CONTENT else None,
+)
 
 # Each LLM call becomes a "generation" span
 generation = trace.generation(
     name="agent_step_1",
     model="claude-sonnet-4-20250514",
-    input=messages,
-    output=response.choices[0].message.content,
+    input=messages if CAPTURE_CONTENT else None,
+    output=response.choices[0].message.content if CAPTURE_CONTENT else None,
     usage={"input": response.usage.prompt_tokens, "output": response.usage.completion_tokens}
 )
 
 ```
+
+Sending content to a hosted tool means it now lives with a third party too. Keep the same flag in front of it.
 
 Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spot patterns. It's what the DIY approach above evolves into at scale.
 
@@ -246,11 +277,13 @@ Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spo
 
 ## Gotchas
 
-- **Log the actual prompt, not the template.** The template says `{system_prompt} + {context}`. You need the fully assembled text. This is the #1 mistake teams make.
+- **Capture the actual prompt, not the template.** When content capture is on, the template `{system_prompt} + {context}` is useless. You need the fully assembled text.
 
-- **Full-context logging is expensive at scale.** A 10K-token prompt logged 1000 times/day is 10M tokens of log data per day. Sample in production (log 100% of errors, 5-10% of successes).
+- **Full-context logging is expensive at scale.** A 10K-token prompt logged 1000 times/day is 10M tokens of log data per day. One more reason to capture content for incidents and approved eval samples rather than for every call.
 
-- **PII in logs.** User messages contain personal data. Redact or mask before storing. Set retention policies.
+- **PII, secrets, and proprietary data in logs.** User messages, retrieved documents, and tool results can contain all three. Keep content capture off by default. When it's on, redact before storing, restrict who can read it, and set a short retention period your privacy policy approves.
+
+- **Debug flags outlive debugging.** Content capture switched on for an incident tends to stay on. Make it expire.
 
 - **Correlation IDs are essential.** Without them, you can't link multiple LLM calls to a single user request. Add them from day one.
 
@@ -260,20 +293,22 @@ Langfuse gives you a web UI to browse traces, filter by time/model/cost, and spo
 
 ## What you should have after this workshop
 
-- Instrumented LLM calls with full prompt, response, and metadata logging
+- Instrumented LLM calls with metadata logging by default
+
+- An opt-in switch that adds prompts, responses, tool arguments, and tool results
 
 - Trace IDs linking all calls within a single user request
 
 - Tool call instrumentation with timing and error capture
 
-- A trace viewer that reconstructs any past interaction
+- A trace viewer that works with or without captured content
 
-- The ability to debug a production issue from logs alone
+- The ability to narrow down a production issue from metadata, then confirm it with targeted content capture
 
 ## Go deeper
 
 - [Langfuse documentation](https://langfuse.com/docs) — open-source observability for LLMs
 
-- [OpenTelemetry for GenAI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) — the emerging standard
+- [OpenTelemetry GenAI events conventions](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-events.md) — the emerging standard, including which content fields are opt-in (checked 2026-10-12)
 
 - [Chapter 13 (Observability)](../03-production/13-observability.md) covers the theory and production patterns

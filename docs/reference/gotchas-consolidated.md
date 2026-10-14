@@ -122,9 +122,9 @@ The things experienced AI engineers have learned the hard way, in one list. Cros
 
 ## On observability
 
-- **Logging "prompt template" ≠ logging "actual prompt"** — log what the model literally saw. ([Ch 13](../03-production/13-observability.md))
+- **Logging "prompt template" ≠ logging "actual prompt"** — when content capture is on, capture what the model literally saw. ([Ch 13](../03-production/13-observability.md))
 
-- **Full-context logs have PII and cost** — sample and redact intelligently. ([Ch 13](../03-production/13-observability.md))
+- **Full-context logs carry PII, secrets, proprietary context, and cost** — log metadata by default; make content capture opt-in, targeted, redacted, access-restricted, and short-lived. ([Ch 13](../03-production/13-observability.md))
 
 - **Dashboards without alerts** are decorative. ([Ch 13](../03-production/13-observability.md))
 

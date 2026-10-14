@@ -88,7 +88,7 @@ The most reliable defense is **least privilege** — give the agent only the too
 
 Separate read from write. Read tools (look up information) are low-risk. Write tools (send email, modify data) are high-risk. Gate write tools with confirmation steps or human approval. Set hard budgets — max tool calls per session, max spend, max messages sent.
 
-Log everything. Every tool call, with the full context that led to the model's decision. When something goes wrong in production (and it will), you need to reconstruct the chain: what did the model see, what did it decide, what happened next. Without traces, you're guessing.
+Trace every tool call: which tool, when, in which step, whether it succeeded. When something goes wrong in production (and it will), you need to reconstruct the chain: what did the model see, what did it decide, what happened next. Without traces, you're guessing. The full context behind each decision is a different matter. Prompts and tool data can hold personal information, secrets, and proprietary context, so capture that content only when you deliberately turn it on. [Chapter 13](../03-production/13-observability.md) covers how.
 
 The design question to answer: "What's the worst this agent could do if someone tricked it?" If the answer is "say something embarrassing" — you can give it more autonomy. If the answer is "drain a bank account" — human-in-the-loop is mandatory.
 
@@ -130,7 +130,7 @@ You need someone trying to break your system before users do. Good practices:
 
 **"The model will refuse."** It usually does. But "usually" isn't "always". Refusals are a trained preference, not a hard guarantee. Don't rely on them as your only defense.
 
-**Not logging prompts.** Without the full prompt (system + user + context), you can't debug incidents. But logging prompts means logging user data. Plan for this: log, redact sensitive fields, encrypt, set retention policies.
+**Logging every prompt by default.** Without the full prompt (system + user + context), some incidents are hard to debug. But logging prompts means logging user data, secrets that leaked into context, and proprietary material. OpenTelemetry's GenAI conventions make prompt and response content opt-in for this reason ([GenAI events conventions](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-events.md), checked 2026-10-12). Log metadata by default. Have a way to switch content capture on for a specific incident or approved sample, and when it's on, redact, encrypt, restrict access, and keep it only as long as your policy allows.
 
 ## The bottom line
 
