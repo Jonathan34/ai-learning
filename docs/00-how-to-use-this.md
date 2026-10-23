@@ -2,7 +2,7 @@
 
 ## Format
 
-Each chapter is written to be read in 8-12 minutes. Workshops are longer — plan for a weekend.
+Most chapters are written to be read in 8-12 minutes. The infrastructure chapters are a little denser. Workshops are longer — plan for a half day or a weekend.
 
 Chapters are not all structured the same way. Some start with a concept, some with a problem, some jump straight into the details. The shape of each chapter matches what its content needs.
 
@@ -19,6 +19,14 @@ Most chapters include:
 - Links to deeper reading
 
 Workshops are hands-on. Every workshop has you build something real and compare it to what you expected.
+
+## Two parts, one stack
+
+Part I is about software engineering for AI: model behavior, agents, evaluation, production systems, and technical leadership.
+
+Part II starts where an API abstraction stops. It covers distributed training, self-hosted inference, GPU systems, cluster networks, storage, scheduling, IaC, and enterprise platform design.
+
+If you already build production AI applications, start at Phase 5. Go back to Part I when a topic exposes a gap.
 
 ## What "credible" means here
 
@@ -45,6 +53,8 @@ You're not here to become an ML researcher. You're here to become someone ML eng
 **Depth path (4-6 weeks, part-time):** All chapters, all workshops. You'll be ready for any architecture review.
 
 **Principled path (6-12 months):** Add the papers. Contribute to an open-source project. Ship something production-grade at work.
+
+**Infrastructure bridge (4-6 weeks, part-time):** Phases 5-7 plus W11-W14. Use a real workload and real measurements whenever you can.
 
 ## One piece of advice
 

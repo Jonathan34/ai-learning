@@ -1,6 +1,9 @@
 # MkDocs build output
 site/
 
+# Private source material
+intake/
+
 # Python
 __pycache__/
 *.py[cod]

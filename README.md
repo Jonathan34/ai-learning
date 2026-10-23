@@ -1,10 +1,10 @@
-# AI & Agentic Systems — Learning Path for Senior Engineers
+# AI Systems — Learning Path for Senior Engineers
 
 ## Who this is for
 
 You're a senior software engineer, architect, or engineering leader. You know distributed systems, cloud, operational excellence, probably multiple languages, and you've shipped production software for years. You don't need to learn what a function is.
 
-What you *do* need is to become credible in the AI/agentic systems space — not "I read an article about transformers" credible, but "I can architect a production agent system, mentor an AI team, and stand up in a design review with ML engineers" credible.
+What you *do* need is to become credible across the AI stack — from model-facing software to the GPU infrastructure under it. Not "I read an article about transformers" credible, but "I can build the system, size the platform, and defend the trade-offs in a design review" credible.
 
 This curriculum is designed for that gap.
 
@@ -24,9 +24,16 @@ This curriculum is designed for that gap.
 02-agents/                   (Agentic systems in depth — 5 chapters, ~50 min)
 03-production/               (Running AI in real systems — 5 chapters, ~50 min)
 04-leadership/               (Architect and PE-level concerns — 4 chapters, ~40 min)
-05-workshops/                (Hands-on practice — 10 workshops, multi-hour each)
-reference/                   (Glossary, papers, tools, gotchas)
+05-ai-workloads/             (Training, serving, and workload sizing — 3 chapters)
+06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
+07-enterprise-architecture/  (Secure platforms and PoC-to-production — 2 chapters)
+05-workshops/                (Hands-on practice — 14 workshops, multi-hour each)
+reference/                   (Glossary, papers, tools, gotchas, videos)
 ```
+
+## Part I: Software engineering for AI
+
+This part builds the judgment needed to ship AI software. It starts with model behavior, then moves through agents, production systems, and technical leadership.
 
 ### Phase 1: Foundations (~60 min reading)
 
@@ -68,7 +75,31 @@ The architect and Principal Engineer scope.
 - **19. Team and Org Patterns** — shape of an AI team, career ladders, hiring
 - **20. Staying Current** — how to not drown in the firehose
 
-### Phase 5: Workshops (hands-on)
+## Part II: Cloud infrastructure for AI
+
+This part follows the bytes below the API. It covers how training and inference use hardware, how GPU clusters are built, and how to move a platform from a benchmark to a reliable production service.
+
+### Phase 5: AI workloads
+
+- **21. Distributed Training Systems** — parallelism, memory, communication, and failure
+- **22. Self-Hosted Inference** — prefill, decode, KV cache, batching, and serving engines
+- **23. Workload Sizing and Economics** — turn an SLO or training target into GPUs, time, and cost
+
+### Phase 6: AI infrastructure
+
+- **24. GPU Systems** — memory, bandwidth, interconnects, software stack, and health
+- **25. Cluster Networking** — RDMA, InfiniBand, RoCE, NCCL, and topology
+- **26. Storage and the Data Path** — datasets, checkpoints, model loading, and caching
+- **27. Kubernetes and Slurm** — GPU scheduling, gang scheduling, and platform choice
+- **28. Infrastructure as Code** — repeatable environments that can grow past a demo
+- **29. Reliability and Performance** — acceptance tests, observability, and structured debugging
+
+### Phase 7: Enterprise architecture
+
+- **30. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
+- **31. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
+
+## Workshops (hands-on)
 
 You can't reason about a field you haven't built in.
 
@@ -82,6 +113,10 @@ You can't reason about a field you haven't built in.
 - **W8. Cost Optimization** — measure, route, cache, budget
 - **W9. Agent Efficiency KPIs** — instrument and benchmark agent performance
 - **W10. Structured Output in Practice** — extraction, validation, retry, eval
+- **W11. Python for AI Infrastructure** — parse benchmarks and automate health checks
+- **W12. GPU Cluster Acceptance Test** — prove compute, network, and storage before a workload
+- **W13. Workload Sizing and TCO** — build a small capacity and cost model
+- **W14. Enterprise AI Platform Capstone** — design and defend a production platform
 
 ### Reference
 
@@ -89,29 +124,30 @@ You can't reason about a field you haven't built in.
 - **Papers to Know** — the ~20 papers that actually matter
 - **Tools and Models** — quick reference, caveat: changes fast
 - **Gotchas** — consolidated list across all chapters
+- **AI Infrastructure Videos** — a guided watch list paired with the new chapters
 
 ## Suggested path
 
 Three ways to approach this depending on your time:
 
-**The sprint (2 weekends, ~20 hours).** Read all of Phase 1 and 2. Do W1, W2, W4. You'll be conversant.
+**AI software sprint (2 weekends, ~20 hours).** Read Phase 1 and 2. Do W1, W2, and W4. You'll be conversant in applied AI.
 
-**The depth (4-6 weeks, part-time).** All chapters. All workshops. You'll be credible in any architecture review or PE interview.
+**AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W14. You'll be able to reason from workload behavior down to GPU, network, storage, and platform choices.
 
-**The principled (6-12 months).** Add the papers. Contribute to an open-source agent framework. Ship something production-grade at work. You'll be a real voice in the space.
+**Full stack (8-12 weeks, part-time).** Complete both parts and the core workshops. You'll be credible in software, platform, and architecture discussions.
 
 ## Prerequisites
 
-- Comfort with Python (not expertise — just "can read and write it")
+- Solid software engineering experience and comfort with Python
 - Basic familiarity with LLM APIs (you've called OpenAI or Anthropic at least once)
 - Understanding of distributed systems, basic cloud services, HTTP
 - Shell and git
 
-If you've built LLM pipelines on Bedrock with retrieval and evals (the work you're already doing), you're already past the starting line.
+No GPU is required for most of the reading or sizing exercises. The cluster workshop can use borrowed, rented, or work-provided hardware.
 
 ## What this is not
 
-- **Not an ML course.** I'll barely mention gradient descent. You don't need it to architect systems.
+- **Not an ML research course.** It covers the workload mechanics an engineer needs, not how to invent a new model architecture.
 - **Not a coding bootcamp.** I'll give you code when it clarifies a concept.
 - **Not a research summary.** I'll point to papers when they matter; I won't re-summarize them.
 - **Not exhaustive.** This is the *working knowledge* a Principal Engineer needs. You'll keep learning after.
@@ -123,8 +159,11 @@ You've internalized this material when you can:
 1. Sit in a design review for a new AI feature and ask the right questions (not "what if the model hallucinates" — that's table stakes — but "what's your eval strategy, who owns the regression harness, how do you handle prompt drift across model versions").
 2. Read a new LLM paper from DeepMind or Anthropic and tell a colleague in 5 minutes what matters.
 3. Architect an agentic system end-to-end: identify the agent boundaries, tool interfaces, state/memory model, failure modes, cost model, evaluation approach.
-4. Walk a customer or stakeholder through "should we use AI here" without defaulting to either hype or dismissal.
-5. Mentor an engineer who's new to this space.
+4. Explain where an AI workload is limited by memory, compute, network, storage, or scheduling.
+5. Size a training or inference platform with explicit assumptions, then describe how you would test those assumptions.
+6. Design a secure GPU platform and a path from proof of concept to production.
+7. Walk a stakeholder through "should we use AI here" without defaulting to either hype or dismissal.
+8. Mentor an engineer who's new to this space.
 
 You don't have to do all of this today. You have to be able to see the path.
 

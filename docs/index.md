@@ -1,12 +1,12 @@
-# AI & Agentic Systems — Learning Path for Senior Engineers
+# AI Systems — Learning Path for Senior Engineers
 
-A structured curriculum for experienced software engineers who want to become credible in applied AI and agentic systems.
+A structured curriculum for experienced software engineers who want to become credible across AI software and the cloud infrastructure that runs it.
 
 ## Who this is for
 
 You're a senior software engineer, architect, or engineering leader. You know distributed systems, cloud, operational excellence, and you've shipped production software for years. What you need is to become credible in the AI/agentic systems space — not "I read an article about transformers" credible, but "I can architect a production agent system and stand up in a design review with ML engineers" credible.
 
-## Curriculum
+## Part I: Software engineering for AI
 
 ### Phase 1: Foundations (~60 min reading)
 
@@ -48,7 +48,35 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | 19 | [Team and Org Patterns](04-leadership/19-team-and-org-patterns.md) |
 | 20 | [Staying Current](04-leadership/20-staying-current.md) |
 
-### Phase 5: Workshops (hands-on)
+## Part II: Cloud infrastructure for AI
+
+### Phase 5: AI workloads
+
+| # | Chapter |
+|---|---|
+| 21 | [Distributed Training Systems](05-ai-workloads/21-distributed-training.md) |
+| 22 | [Self-Hosted Inference](05-ai-workloads/22-self-hosted-inference.md) |
+| 23 | [Workload Sizing and Economics](05-ai-workloads/23-workload-sizing.md) |
+
+### Phase 6: AI infrastructure
+
+| # | Chapter |
+|---|---|
+| 24 | [GPU Systems](06-ai-infrastructure/24-gpu-systems.md) |
+| 25 | [Cluster Networking](06-ai-infrastructure/25-cluster-networking.md) |
+| 26 | [Storage and the Data Path](06-ai-infrastructure/26-storage-and-data.md) |
+| 27 | [Kubernetes and Slurm](06-ai-infrastructure/27-kubernetes-and-slurm.md) |
+| 28 | [Infrastructure as Code](06-ai-infrastructure/28-infrastructure-as-code.md) |
+| 29 | [Reliability and Performance](06-ai-infrastructure/29-reliability-and-performance.md) |
+
+### Phase 7: Enterprise architecture
+
+| # | Chapter |
+|---|---|
+| 30 | [Secure AI Platforms](07-enterprise-architecture/30-secure-ai-platforms.md) |
+| 31 | [From Proof of Concept to Production](07-enterprise-architecture/31-poc-to-production.md) |
+
+## Workshops (hands-on)
 
 | # | Workshop |
 |---|---|
@@ -62,6 +90,10 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W8 | [Cost Optimization](05-workshops/W8-cost-optimization.md) |
 | W9 | [Agent Efficiency & KPIs](05-workshops/W9-agent-efficiency-kpis.md) |
 | W10 | [Structured Output in Practice](05-workshops/W10-structured-output-in-practice.md) |
+| W11 | [Python for AI Infrastructure](05-workshops/W11-python-ai-infrastructure.md) |
+| W12 | [GPU Cluster Acceptance Test](05-workshops/W12-gpu-cluster-acceptance.md) |
+| W13 | [Workload Sizing and TCO](05-workshops/W13-workload-sizing-tco.md) |
+| W14 | [Enterprise AI Platform Capstone](05-workshops/W14-enterprise-ai-platform.md) |
 
 ### Reference
 
@@ -71,13 +103,14 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | [Papers to Know](reference/papers-to-know.md) | The ~20 papers that actually matter |
 | [Tools and Models](reference/tools-and-models.md) | Quick reference (changes fast) |
 | [Gotchas](reference/gotchas-consolidated.md) | Consolidated failure modes across all chapters |
+| [AI Infrastructure Videos](reference/ai-infrastructure-videos.md) | Guided videos for workloads, GPU platforms, and architecture |
 
 ---
 
 ## Suggested paths
 
-**The sprint (2 weekends, ~20 hours):** Read Phase 1 and 2. Do W1, W2, W4. You'll be conversant.
+**AI software sprint (2 weekends, ~20 hours):** Read Phase 1 and 2. Do W1, W2, and W4.
 
-**The depth (4-6 weeks, part-time):** All chapters. All workshops. You'll be credible in any architecture review.
+**AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W14.
 
-**The principled (6-12 months):** Add the papers. Contribute to an open-source agent framework. Ship something production-grade. You'll be a real voice in the space.
+**Full stack (8-12 weeks, part-time):** Complete both parts and the core workshops. Ship one production-grade project.

@@ -1,5 +1,5 @@
-site_name: AI & Agentic Systems — Learning Path
-site_description: From experienced software engineer to credible AI architect. A structured curriculum for senior engineers.
+site_name: AI Systems — Learning Path
+site_description: From senior software engineer to credible AI systems architect. Software, workloads, and cloud infrastructure.
 site_author: Jonathan Delfour
 site_url: https://jonathan34.github.io/ai-learning/
 
@@ -94,40 +94,60 @@ nav:
   - Home: index.md
   - Learning:
       - Start Here: 00-how-to-use-this.md
-      - 01 — Foundations:
-          - Overview: 01-foundations/index.md
-          - How LLMs Actually Work: 01-foundations/01-llm-mental-model.md
-          - Prompting as Programming: 01-foundations/02-prompting-as-programming.md
-          - Context Engineering: 01-foundations/03-context-engineering.md
-          - Evaluation: 01-foundations/04-evaluation.md
-          - Security and Safety: 01-foundations/05-security-and-safety.md
-          - Structured Output: 01-foundations/06-structured-output.md
-      - 02 — Agents:
-          - Overview: 02-agents/index.md
-          - What an Agent Is: 02-agents/07-what-is-an-agent.md
-          - Framework Landscape: 02-agents/08-framework-landscape.md
-          - MCP and Tools: 02-agents/09-mcp-and-tools.md
-          - Multi-Agent Patterns: 02-agents/10-multi-agent-patterns.md
-          - State, Memory, Durability: 02-agents/11-state-memory-durability.md
-      - 03 — Production:
-          - Overview: 03-production/index.md
-          - Inference Economics: 03-production/12-inference-economics.md
-          - Observability: 03-production/13-observability.md
-          - Deployment Patterns: 03-production/14-deployment-patterns.md
-          - Local and Edge: 03-production/15-local-and-edge.md
-          - Platform Engineering: 03-production/16-ai-platform-engineering.md
-      - 04 — Leadership:
-          - Overview: 04-leadership/index.md
-          - Deciding What to Build: 04-leadership/17-deciding-what-to-build.md
-          - AI Product Sense: 04-leadership/18-ai-product-sense.md
-          - Team & Org Patterns: 04-leadership/19-team-and-org-patterns.md
-          - Staying Current: 04-leadership/20-staying-current.md
-      - 05 — Reference:
+      - Part I — Software Engineering for AI:
+          - 01 — Foundations:
+              - Overview: 01-foundations/index.md
+              - How LLMs Actually Work: 01-foundations/01-llm-mental-model.md
+              - Prompting as Programming: 01-foundations/02-prompting-as-programming.md
+              - Context Engineering: 01-foundations/03-context-engineering.md
+              - Evaluation: 01-foundations/04-evaluation.md
+              - Security and Safety: 01-foundations/05-security-and-safety.md
+              - Structured Output: 01-foundations/06-structured-output.md
+          - 02 — Agents:
+              - Overview: 02-agents/index.md
+              - What an Agent Is: 02-agents/07-what-is-an-agent.md
+              - Framework Landscape: 02-agents/08-framework-landscape.md
+              - MCP and Tools: 02-agents/09-mcp-and-tools.md
+              - Multi-Agent Patterns: 02-agents/10-multi-agent-patterns.md
+              - State, Memory, Durability: 02-agents/11-state-memory-durability.md
+          - 03 — Production:
+              - Overview: 03-production/index.md
+              - Inference Economics: 03-production/12-inference-economics.md
+              - Observability: 03-production/13-observability.md
+              - Deployment Patterns: 03-production/14-deployment-patterns.md
+              - Local and Edge: 03-production/15-local-and-edge.md
+              - Platform Engineering: 03-production/16-ai-platform-engineering.md
+          - 04 — Leadership:
+              - Overview: 04-leadership/index.md
+              - Deciding What to Build: 04-leadership/17-deciding-what-to-build.md
+              - AI Product Sense: 04-leadership/18-ai-product-sense.md
+              - Team & Org Patterns: 04-leadership/19-team-and-org-patterns.md
+              - Staying Current: 04-leadership/20-staying-current.md
+      - Part II — Cloud Infrastructure for AI:
+          - 05 — AI Workloads:
+              - Overview: 05-ai-workloads/index.md
+              - Distributed Training: 05-ai-workloads/21-distributed-training.md
+              - Self-Hosted Inference: 05-ai-workloads/22-self-hosted-inference.md
+              - Workload Sizing: 05-ai-workloads/23-workload-sizing.md
+          - 06 — AI Infrastructure:
+              - Overview: 06-ai-infrastructure/index.md
+              - GPU Systems: 06-ai-infrastructure/24-gpu-systems.md
+              - Cluster Networking: 06-ai-infrastructure/25-cluster-networking.md
+              - Storage and Data: 06-ai-infrastructure/26-storage-and-data.md
+              - Kubernetes and Slurm: 06-ai-infrastructure/27-kubernetes-and-slurm.md
+              - Infrastructure as Code: 06-ai-infrastructure/28-infrastructure-as-code.md
+              - Reliability and Performance: 06-ai-infrastructure/29-reliability-and-performance.md
+          - 07 — Enterprise Architecture:
+              - Overview: 07-enterprise-architecture/index.md
+              - Secure AI Platforms: 07-enterprise-architecture/30-secure-ai-platforms.md
+              - PoC to Production: 07-enterprise-architecture/31-poc-to-production.md
+      - Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md
           - Papers to Know: reference/papers-to-know.md
           - Tools and Models: reference/tools-and-models.md
           - Gotchas: reference/gotchas-consolidated.md
+          - AI Infrastructure Videos: reference/ai-infrastructure-videos.md
   - Workshops:
       - Overview: 05-workshops/index.md
       - Local LLM Setup: 05-workshops/W1-local-llm-setup.md
@@ -140,6 +160,10 @@ nav:
       - Cost Optimization: 05-workshops/W8-cost-optimization.md
       - Agent Efficiency & KPIs: 05-workshops/W9-agent-efficiency-kpis.md
       - Structured Output in Practice: 05-workshops/W10-structured-output-in-practice.md
+      - Python for AI Infrastructure: 05-workshops/W11-python-ai-infrastructure.md
+      - GPU Cluster Acceptance Test: 05-workshops/W12-gpu-cluster-acceptance.md
+      - Workload Sizing and TCO: 05-workshops/W13-workload-sizing-tco.md
+      - Enterprise AI Platform Capstone: 05-workshops/W14-enterprise-ai-platform.md
   - Perspectives:
       - Overview: perspectives/index.md
       - "Neurology of AI Safety": perspectives/neurology-of-ai-safety.md
