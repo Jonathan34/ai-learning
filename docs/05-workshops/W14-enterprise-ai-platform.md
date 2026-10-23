@@ -136,5 +136,6 @@ The short version should cover the decision, cost range, largest risk, and next 
 
 ## Go deeper
 
-- [Chapter 30 — Secure AI Platforms](../07-enterprise-architecture/30-secure-ai-platforms.md)
-- [Chapter 31 — From Proof of Concept to Production](../07-enterprise-architecture/31-poc-to-production.md)
+- [Chapter 30 — AI Solution Architecture in Practice](../07-enterprise-architecture/30-ai-solution-architecture.md)
+- [Chapter 31 — Secure AI Platforms](../07-enterprise-architecture/31-secure-ai-platforms.md)
+- [Chapter 32 — From Proof of Concept to Production](../07-enterprise-architecture/32-poc-to-production.md)

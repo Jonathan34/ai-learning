@@ -190,4 +190,4 @@ The answer should always include clarifying questions, rough math, architecture,
 
 ---
 
-[← Previous: Secure AI Platforms](30-secure-ai-platforms.md)
+[← Previous: Secure AI Platforms](31-secure-ai-platforms.md)

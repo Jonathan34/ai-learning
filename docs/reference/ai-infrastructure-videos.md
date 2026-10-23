@@ -81,7 +81,7 @@ Pair with [How LLMs Actually Work](../01-foundations/01-llm-mental-model.md).
 - [How Nebius build cloud for AI workloads](https://www.youtube.com/watch?v=lrxU7Z4p3Vs) — Nebius, 34 min
 - [How dedicated endpoints work on Nebius Token Factory](https://www.youtube.com/watch?v=JHNSPUTBoP0) — Nebius, 5 min
 
-Pair with [From Proof of Concept to Production](../07-enterprise-architecture/31-poc-to-production.md).
+Pair with [AI Solution Architecture in Practice](../07-enterprise-architecture/30-ai-solution-architecture.md) and [From Proof of Concept to Production](../07-enterprise-architecture/32-poc-to-production.md).
 
 ## Python practice
 

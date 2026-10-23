@@ -141,4 +141,4 @@ Capacity is part of reliability.
 
 ---
 
-[← Previous: Infrastructure as Code](28-infrastructure-as-code.md) · [Next: Secure AI Platforms →](../07-enterprise-architecture/30-secure-ai-platforms.md)
+[← Previous: Infrastructure as Code](28-infrastructure-as-code.md) · [Next: AI Solution Architecture →](../07-enterprise-architecture/30-ai-solution-architecture.md)

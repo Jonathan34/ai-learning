@@ -69,12 +69,13 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | 28 | [Infrastructure as Code](06-ai-infrastructure/28-infrastructure-as-code.md) |
 | 29 | [Reliability and Performance](06-ai-infrastructure/29-reliability-and-performance.md) |
 
-### Phase 7: Enterprise architecture
+### Phase 7: Solution architecture
 
 | # | Chapter |
 |---|---|
-| 30 | [Secure AI Platforms](07-enterprise-architecture/30-secure-ai-platforms.md) |
-| 31 | [From Proof of Concept to Production](07-enterprise-architecture/31-poc-to-production.md) |
+| 30 | [AI Solution Architecture in Practice](07-enterprise-architecture/30-ai-solution-architecture.md) |
+| 31 | [Secure AI Platforms](07-enterprise-architecture/31-secure-ai-platforms.md) |
+| 32 | [From Proof of Concept to Production](07-enterprise-architecture/32-poc-to-production.md) |
 
 ## Workshops (hands-on)
 

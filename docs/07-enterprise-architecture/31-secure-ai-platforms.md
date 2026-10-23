@@ -156,4 +156,4 @@ Ambiguous ownership shows up during the first incident.
 
 ---
 
-[← Previous: Reliability and Performance](../06-ai-infrastructure/29-reliability-and-performance.md) · [Next: From Proof of Concept to Production →](31-poc-to-production.md)
+[← Previous: AI Solution Architecture](30-ai-solution-architecture.md) · [Next: From Proof of Concept to Production →](32-poc-to-production.md)

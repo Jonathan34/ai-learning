@@ -137,10 +137,11 @@ nav:
               - Kubernetes and Slurm: 06-ai-infrastructure/27-kubernetes-and-slurm.md
               - Infrastructure as Code: 06-ai-infrastructure/28-infrastructure-as-code.md
               - Reliability and Performance: 06-ai-infrastructure/29-reliability-and-performance.md
-          - 07 — Enterprise Architecture:
+          - 07 — Solution Architecture:
               - Overview: 07-enterprise-architecture/index.md
-              - Secure AI Platforms: 07-enterprise-architecture/30-secure-ai-platforms.md
-              - PoC to Production: 07-enterprise-architecture/31-poc-to-production.md
+              - AI Solution Architecture: 07-enterprise-architecture/30-ai-solution-architecture.md
+              - Secure AI Platforms: 07-enterprise-architecture/31-secure-ai-platforms.md
+              - PoC to Production: 07-enterprise-architecture/32-poc-to-production.md
       - Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md

@@ -26,7 +26,7 @@ This curriculum is designed for that gap.
 04-leadership/               (Architect and PE-level concerns — 4 chapters, ~40 min)
 05-ai-workloads/             (Training, serving, and workload sizing — 3 chapters)
 06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
-07-enterprise-architecture/  (Secure platforms and PoC-to-production — 2 chapters)
+07-enterprise-architecture/  (Solution architecture and production adoption — 3 chapters)
 05-workshops/                (Hands-on practice — 14 workshops, multi-hour each)
 reference/                   (Glossary, papers, tools, gotchas, videos)
 ```
@@ -94,10 +94,11 @@ This part follows the bytes below the API. It covers how training and inference 
 - **28. Infrastructure as Code** — repeatable environments that can grow past a demo
 - **29. Reliability and Performance** — acceptance tests, observability, and structured debugging
 
-### Phase 7: Enterprise architecture
+### Phase 7: Solution architecture
 
-- **30. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
-- **31. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
+- **30. AI Solution Architecture in Practice** — knowledge areas, use cases, deliverables, and hands-on depth
+- **31. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
+- **32. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
 
 ## Workshops (hands-on)
 
