@@ -54,6 +54,15 @@ For the platform:
 - Monitoring and audit evidence
 - Ownership and support path
 
+For an ML lifecycle:
+
+- Training run links to versioned code, data, features, and environment
+- Model quality passes task and important-segment thresholds
+- Schema, latency, resource, security, and governance gates pass
+- Deployed service reports its exact model version
+- Monitoring covers service, data, model, and business behavior
+- Promotion and rollback are tested
+
 Agree on the test data, commands, and pass/fail thresholds.
 
 ## A two-week shape
@@ -135,6 +144,8 @@ Before production:
 - Data protection and retention defined
 - Dashboards, alerts, and runbooks ready
 - Acceptance tests automated
+- Model validation, registry, promotion, and rollback path tested
+- Production labels, drift review, and retraining ownership defined
 - Backup and restore tested
 - Failure and rollback drills passed
 - Cost ownership assigned
@@ -184,10 +195,11 @@ The answer should always include clarifying questions, rough math, architecture,
 
 - [Workshop W13 — Workload Sizing and TCO](../05-workshops/W13-workload-sizing-tco.md)
 - [Workshop W14 — Enterprise AI Platform Capstone](../05-workshops/W14-enterprise-ai-platform.md)
+- [Workshop W15 — End-to-End MLOps](../05-workshops/W15-end-to-end-mlops.md)
 - [Google Cloud Architecture Framework](https://cloud.google.com/architecture/framework)
 - [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
 - [Azure Well-Architected Framework](https://learn.microsoft.com/azure/well-architected/)
 
 ---
 
-[← Previous: Secure AI Platforms](31-secure-ai-platforms.md)
+[← Previous: Secure AI Platforms](33-secure-ai-platforms.md)

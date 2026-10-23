@@ -133,4 +133,4 @@ Later phases add federation, stronger isolation, reservations, policy, backup, i
 
 ---
 
-[← Previous: Kubernetes and Slurm](27-kubernetes-and-slurm.md) · [Next: Reliability and Performance →](29-reliability-and-performance.md)
+[← Previous: Kubernetes and Slurm](29-kubernetes-and-slurm.md) · [Next: Reliability and Performance →](31-reliability-and-performance.md)

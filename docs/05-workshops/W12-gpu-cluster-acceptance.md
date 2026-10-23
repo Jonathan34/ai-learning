@@ -135,6 +135,6 @@ Put the suite in version control. Run it after hardware replacement, driver upgr
 
 ## Go deeper
 
-- [Chapter 29 — Reliability and Performance](../06-ai-infrastructure/29-reliability-and-performance.md)
+- [Chapter 31 — Reliability and Performance](../06-ai-infrastructure/31-reliability-and-performance.md)
 - [NVIDIA DCGM](https://docs.nvidia.com/datacenter/dcgm/latest/)
 - [nccl-tests](https://github.com/NVIDIA/nccl-tests)

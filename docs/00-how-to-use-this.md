@@ -54,7 +54,7 @@ You're not here to become an ML researcher. You're here to become someone ML eng
 
 **Principled path (6-12 months):** Add the papers. Contribute to an open-source project. Ship something production-grade at work.
 
-**Infrastructure bridge (4-6 weeks, part-time):** Phases 5-7 plus W11-W14. Use a real workload and real measurements whenever you can.
+**Infrastructure bridge (4-6 weeks, part-time):** Phases 5-7 plus W11-W15. Use a real workload and real measurements whenever you can.
 
 ## One piece of advice
 

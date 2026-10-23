@@ -115,4 +115,4 @@ The network path to the data belongs in the platform design.
 
 ---
 
-[← Previous: Cluster Networking](25-cluster-networking.md) · [Next: Kubernetes and Slurm →](27-kubernetes-and-slurm.md)
+[← Previous: Cluster Networking](27-cluster-networking.md) · [Next: Kubernetes and Slurm →](29-kubernetes-and-slurm.md)

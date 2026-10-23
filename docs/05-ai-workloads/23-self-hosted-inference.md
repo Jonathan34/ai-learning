@@ -139,4 +139,4 @@ This connects software evaluation to infrastructure work.
 
 ---
 
-[← Previous: Distributed Training](21-distributed-training.md) · [Next: Workload Sizing and Economics →](23-workload-sizing.md)
+[← Previous: Distributed Training](22-distributed-training.md) · [Next: Workload Sizing and Economics →](24-workload-sizing.md)

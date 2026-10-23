@@ -164,4 +164,4 @@ This order separates application, fabric, storage, and hardware problems.
 
 ---
 
-[Next: Self-Hosted Inference →](22-self-hosted-inference.md)
+[← Previous: ML Algorithms for Architects](21-ml-algorithms-for-architects.md) · [Next: Self-Hosted Inference →](23-self-hosted-inference.md)

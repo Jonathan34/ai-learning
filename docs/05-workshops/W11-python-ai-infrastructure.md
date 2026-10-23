@@ -153,4 +153,4 @@ Check:
 
 - [Python `asyncio` documentation](https://docs.python.org/3/library/asyncio.html)
 - [NCCL tests](https://github.com/NVIDIA/nccl-tests)
-- [Chapter 29 — Reliability and Performance](../06-ai-infrastructure/29-reliability-and-performance.md)
+- [Chapter 31 — Reliability and Performance](../06-ai-infrastructure/31-reliability-and-performance.md)

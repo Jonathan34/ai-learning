@@ -54,28 +54,30 @@ You're a senior software engineer, architect, or engineering leader. You know di
 
 | # | Chapter |
 |---|---|
-| 21 | [Distributed Training Systems](05-ai-workloads/21-distributed-training.md) |
-| 22 | [Self-Hosted Inference](05-ai-workloads/22-self-hosted-inference.md) |
-| 23 | [Workload Sizing and Economics](05-ai-workloads/23-workload-sizing.md) |
+| 21 | [ML Algorithms for Architects](05-ai-workloads/21-ml-algorithms-for-architects.md) |
+| 22 | [Distributed Training Systems](05-ai-workloads/22-distributed-training.md) |
+| 23 | [Self-Hosted Inference](05-ai-workloads/23-self-hosted-inference.md) |
+| 24 | [Workload Sizing and Economics](05-ai-workloads/24-workload-sizing.md) |
+| 25 | [The MLOps Lifecycle](05-ai-workloads/25-mlops-lifecycle.md) |
 
 ### Phase 6: AI infrastructure
 
 | # | Chapter |
 |---|---|
-| 24 | [GPU Systems](06-ai-infrastructure/24-gpu-systems.md) |
-| 25 | [Cluster Networking](06-ai-infrastructure/25-cluster-networking.md) |
-| 26 | [Storage and the Data Path](06-ai-infrastructure/26-storage-and-data.md) |
-| 27 | [Kubernetes and Slurm](06-ai-infrastructure/27-kubernetes-and-slurm.md) |
-| 28 | [Infrastructure as Code](06-ai-infrastructure/28-infrastructure-as-code.md) |
-| 29 | [Reliability and Performance](06-ai-infrastructure/29-reliability-and-performance.md) |
+| 26 | [GPU Systems](06-ai-infrastructure/26-gpu-systems.md) |
+| 27 | [Cluster Networking](06-ai-infrastructure/27-cluster-networking.md) |
+| 28 | [Storage and the Data Path](06-ai-infrastructure/28-storage-and-data.md) |
+| 29 | [Kubernetes and Slurm](06-ai-infrastructure/29-kubernetes-and-slurm.md) |
+| 30 | [Infrastructure as Code](06-ai-infrastructure/30-infrastructure-as-code.md) |
+| 31 | [Reliability and Performance](06-ai-infrastructure/31-reliability-and-performance.md) |
 
 ### Phase 7: Solution architecture
 
 | # | Chapter |
 |---|---|
-| 30 | [AI Solution Architecture in Practice](07-enterprise-architecture/30-ai-solution-architecture.md) |
-| 31 | [Secure AI Platforms](07-enterprise-architecture/31-secure-ai-platforms.md) |
-| 32 | [From Proof of Concept to Production](07-enterprise-architecture/32-poc-to-production.md) |
+| 32 | [AI Solution Architecture in Practice](07-enterprise-architecture/32-ai-solution-architecture.md) |
+| 33 | [Secure AI Platforms](07-enterprise-architecture/33-secure-ai-platforms.md) |
+| 34 | [From Proof of Concept to Production](07-enterprise-architecture/34-poc-to-production.md) |
 
 ## Workshops (hands-on)
 
@@ -95,6 +97,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W12 | [GPU Cluster Acceptance Test](05-workshops/W12-gpu-cluster-acceptance.md) |
 | W13 | [Workload Sizing and TCO](05-workshops/W13-workload-sizing-tco.md) |
 | W14 | [Enterprise AI Platform Capstone](05-workshops/W14-enterprise-ai-platform.md) |
+| W15 | [End-to-End MLOps](05-workshops/W15-end-to-end-mlops.md) |
 
 ### Reference
 
@@ -112,6 +115,6 @@ You're a senior software engineer, architect, or engineering leader. You know di
 
 **AI software sprint (2 weekends, ~20 hours):** Read Phase 1 and 2. Do W1, W2, and W4.
 
-**AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W14.
+**AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W15.
 
 **Full stack (8-12 weeks, part-time):** Complete both parts and the core workshops. Ship one production-grade project.

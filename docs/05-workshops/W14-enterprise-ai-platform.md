@@ -60,6 +60,9 @@ Produce a diagram and a short document covering:
 - GPU pools and capacity policy
 - Compute fabric
 - Object, shared, and local storage
+- Data validation and feature pipeline
+- Experiment tracking, training pipeline, and model registry
+- Model validation, promotion, deployment, monitoring, and rollback
 - Model serving and gateway
 - Observability and audit
 - CI/CD, IaC, and image supply chain
@@ -117,6 +120,7 @@ The short version should cover the decision, cost range, largest risk, and next 
 | Area | Strong answer |
 |---|---|
 | Workload | Design follows measured training and inference needs |
+| MLOps | Models are reproducible, validated, promoted, monitored, and reversible |
 | Infrastructure | Compute, network, storage, and scheduling fit together |
 | Security | Boundaries and ownership are explicit |
 | Reliability | Baselines, spare capacity, recovery, and runbooks exist |
@@ -136,6 +140,7 @@ The short version should cover the decision, cost range, largest risk, and next 
 
 ## Go deeper
 
-- [Chapter 30 — AI Solution Architecture in Practice](../07-enterprise-architecture/30-ai-solution-architecture.md)
-- [Chapter 31 — Secure AI Platforms](../07-enterprise-architecture/31-secure-ai-platforms.md)
-- [Chapter 32 — From Proof of Concept to Production](../07-enterprise-architecture/32-poc-to-production.md)
+- [Chapter 32 — AI Solution Architecture in Practice](../07-enterprise-architecture/32-ai-solution-architecture.md)
+- [Chapter 33 — Secure AI Platforms](../07-enterprise-architecture/33-secure-ai-platforms.md)
+- [Chapter 34 — From Proof of Concept to Production](../07-enterprise-architecture/34-poc-to-production.md)
+- [Workshop W15 — End-to-End MLOps](W15-end-to-end-mlops.md)

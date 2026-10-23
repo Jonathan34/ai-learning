@@ -24,10 +24,10 @@ This curriculum is designed for that gap.
 02-agents/                   (Agentic systems in depth — 5 chapters, ~50 min)
 03-production/               (Running AI in real systems — 5 chapters, ~50 min)
 04-leadership/               (Architect and PE-level concerns — 4 chapters, ~40 min)
-05-ai-workloads/             (Training, serving, and workload sizing — 3 chapters)
+05-ai-workloads/             (ML foundations, workloads, sizing, and MLOps — 5 chapters)
 06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
 07-enterprise-architecture/  (Solution architecture and production adoption — 3 chapters)
-05-workshops/                (Hands-on practice — 14 workshops, multi-hour each)
+05-workshops/                (Hands-on practice — 15 workshops, multi-hour each)
 reference/                   (Glossary, papers, tools, gotchas, videos)
 ```
 
@@ -81,24 +81,26 @@ This part follows the bytes below the API. It covers how training and inference 
 
 ### Phase 5: AI workloads
 
-- **21. Distributed Training Systems** — parallelism, memory, communication, and failure
-- **22. Self-Hosted Inference** — prefill, decode, KV cache, batching, and serving engines
-- **23. Workload Sizing and Economics** — turn an SLO or training target into GPUs, time, and cost
+- **21. ML Algorithms for Architects** — problem families, model choices, metrics, and infrastructure implications
+- **22. Distributed Training Systems** — parallelism, memory, communication, and failure
+- **23. Self-Hosted Inference** — prefill, decode, KV cache, batching, and serving engines
+- **24. Workload Sizing and Economics** — turn an SLO or training target into GPUs, time, and cost
+- **25. The MLOps Lifecycle** — data, experiments, pipelines, registries, deployment, and monitoring
 
 ### Phase 6: AI infrastructure
 
-- **24. GPU Systems** — memory, bandwidth, interconnects, software stack, and health
-- **25. Cluster Networking** — RDMA, InfiniBand, RoCE, NCCL, and topology
-- **26. Storage and the Data Path** — datasets, checkpoints, model loading, and caching
-- **27. Kubernetes and Slurm** — GPU scheduling, gang scheduling, and platform choice
-- **28. Infrastructure as Code** — repeatable environments that can grow past a demo
-- **29. Reliability and Performance** — acceptance tests, observability, and structured debugging
+- **26. GPU Systems** — memory, bandwidth, interconnects, software stack, and health
+- **27. Cluster Networking** — RDMA, InfiniBand, RoCE, NCCL, and topology
+- **28. Storage and the Data Path** — datasets, checkpoints, model loading, and caching
+- **29. Kubernetes and Slurm** — GPU scheduling, gang scheduling, and platform choice
+- **30. Infrastructure as Code** — repeatable environments that can grow past a demo
+- **31. Reliability and Performance** — acceptance tests, observability, and structured debugging
 
 ### Phase 7: Solution architecture
 
-- **30. AI Solution Architecture in Practice** — knowledge areas, use cases, deliverables, and hands-on depth
-- **31. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
-- **32. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
+- **32. AI Solution Architecture in Practice** — knowledge areas, use cases, deliverables, and hands-on depth
+- **33. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
+- **34. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
 
 ## Workshops (hands-on)
 
@@ -118,6 +120,7 @@ You can't reason about a field you haven't built in.
 - **W12. GPU Cluster Acceptance Test** — prove compute, network, and storage before a workload
 - **W13. Workload Sizing and TCO** — build a small capacity and cost model
 - **W14. Enterprise AI Platform Capstone** — design and defend a production platform
+- **W15. End-to-End MLOps** — train, track, validate, deploy, monitor, promote, and roll back a model
 
 ### Reference
 
@@ -133,7 +136,7 @@ Three ways to approach this depending on your time:
 
 **AI software sprint (2 weekends, ~20 hours).** Read Phase 1 and 2. Do W1, W2, and W4. You'll be conversant in applied AI.
 
-**AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W14. You'll be able to reason from workload behavior down to GPU, network, storage, and platform choices.
+**AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W15. You'll be able to reason from model choice and lifecycle down to GPU, network, storage, and platform choices.
 
 **Full stack (8-12 weeks, part-time).** Complete both parts and the core workshops. You'll be credible in software, platform, and architecture discussions.
 

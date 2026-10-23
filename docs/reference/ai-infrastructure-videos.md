@@ -19,7 +19,7 @@ The list mixes vendor-neutral explanations with vendor-specific implementations.
 - [A deep dive into NVIDIA Blackwell with SemiAnalysis' Dylan Patel](https://www.youtube.com/watch?v=Fq4SM9XZ-8U) — Together AI, 47 min
 - [A Deep Dive on How To Leverage the NVIDIA GB200 for Ultra-Fast...](https://www.youtube.com/watch?v=Nlgp4T4kvdE) — CNCF, 28 min
 
-Pair with [GPU Systems](../06-ai-infrastructure/24-gpu-systems.md).
+Pair with [GPU Systems](../06-ai-infrastructure/26-gpu-systems.md).
 
 ## Cluster networking
 
@@ -27,21 +27,21 @@ Pair with [GPU Systems](../06-ai-infrastructure/24-gpu-systems.md).
 - [Multi-GPU Communication Libraries for Scaling HPC and AI Workloads | NVIDIA GTC 2025](https://www.youtube.com/watch?v=kyQtbyR536I) — NVIDIA Developer, 42 min
 - [Demystifying NCCL: An In-depth Analysis of GPU Communication Protocols and Algorithms](https://www.youtube.com/watch?v=UDCLvBqEPcA) — HOTI, 29 min
 
-Pair with [Cluster Networking](../06-ai-infrastructure/25-cluster-networking.md).
+Pair with [Cluster Networking](../06-ai-infrastructure/27-cluster-networking.md).
 
 ## Distributed training
 
 - [Scale ANY Model: PyTorch DDP, ZeRO, Pipeline & Tensor Parallelism Made Simple](https://www.youtube.com/watch?v=r3DwMv84H9I) — Zachary Mueller, 30 min
 - [Training Models Too Big for One GPU | ZeRO & FSDP](https://www.youtube.com/watch?v=nx5yfCa4W98) — Jia-Bin Huang, 23 min
 
-Pair with [Distributed Training Systems](../05-ai-workloads/21-distributed-training.md).
+Pair with [Distributed Training Systems](../05-ai-workloads/22-distributed-training.md).
 
 ## Inference serving
 
 - [Mastering LLM Inference Optimization From Theory to Cost Effective Deployment: Mark Moyou](https://www.youtube.com/watch?v=9tvJ_GYJA-o) — AI Engineer, 34 min
 - [Fast LLM Serving with vLLM and PagedAttention](https://www.youtube.com/watch?v=5ZlavKF_98U) — Anyscale, 32 min
 
-Pair with [Self-Hosted Inference](../05-ai-workloads/22-self-hosted-inference.md).
+Pair with [Self-Hosted Inference](../05-ai-workloads/23-self-hosted-inference.md).
 
 ## Kubernetes and Slurm
 
@@ -51,21 +51,21 @@ Pair with [Self-Hosted Inference](../05-ai-workloads/22-self-hosted-inference.md
 - [Why Kubernetes Struggles with Batch Jobs (And How Kueue Fixes It)](https://www.youtube.com/watch?v=SjNFiFvSdLQ) — Ops and Odds, 5 min
 - [Managed Soperator overview: Slurm on Kubernetes for scalable AI workloads](https://www.youtube.com/watch?v=iQstLUA0oiA) — Nebius, 11 min
 
-Pair with [Kubernetes and Slurm](../06-ai-infrastructure/27-kubernetes-and-slurm.md).
+Pair with [Kubernetes and Slurm](../06-ai-infrastructure/29-kubernetes-and-slurm.md).
 
 ## Infrastructure as Code
 
 - [Terraform Practices: The Good, the Bad, and the Ugly](https://www.youtube.com/watch?v=L3uLFTI8wpU) — HashiCorp, 15 min
 - [Block-by-Block: Understanding Terraform Module Design Through Minecraft](https://www.youtube.com/watch?v=lmghqJIK8EE) — HashiCorp, 29 min
 
-Pair with [Infrastructure as Code](../06-ai-infrastructure/28-infrastructure-as-code.md).
+Pair with [Infrastructure as Code](../06-ai-infrastructure/30-infrastructure-as-code.md).
 
 ## Storage
 
 - [Kidger 2019: Parallel Filesystems for AI and HPC](https://www.youtube.com/watch?v=IvHR1QURGac) — Daniel Kidger, 55 min
 - [AI Explained: Checkpointing in LLMs and the Trade-Offs between Reliability and Performance](https://www.youtube.com/watch?v=3Rwgb8s_49g) — WEKA, 4 min
 
-Pair with [Storage and the Data Path](../06-ai-infrastructure/26-storage-and-data.md).
+Pair with [Storage and the Data Path](../06-ai-infrastructure/28-storage-and-data.md).
 
 ## Transformer refresher
 
@@ -81,7 +81,7 @@ Pair with [How LLMs Actually Work](../01-foundations/01-llm-mental-model.md).
 - [How Nebius build cloud for AI workloads](https://www.youtube.com/watch?v=lrxU7Z4p3Vs) — Nebius, 34 min
 - [How dedicated endpoints work on Nebius Token Factory](https://www.youtube.com/watch?v=JHNSPUTBoP0) — Nebius, 5 min
 
-Pair with [AI Solution Architecture in Practice](../07-enterprise-architecture/30-ai-solution-architecture.md) and [From Proof of Concept to Production](../07-enterprise-architecture/32-poc-to-production.md).
+Pair with [AI Solution Architecture in Practice](../07-enterprise-architecture/32-ai-solution-architecture.md) and [From Proof of Concept to Production](../07-enterprise-architecture/34-poc-to-production.md).
 
 ## Python practice
 

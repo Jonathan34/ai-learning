@@ -44,6 +44,8 @@ An architect does not need equal depth everywhere. They do need to move across t
 | Area | What you should be able to do |
 |---|---|
 | AI and ML workloads | Explain pre-training, fine-tuning, batch inference, and online inference; identify their different bottlenecks |
+| ML methods and evaluation | Match common algorithm families to use cases; discuss features, labels, baselines, error trade-offs, and suitable metrics |
+| MLOps | Design a reproducible path from data and training through experiment tracking, validation, registry, deployment, monitoring, and rollback |
 | Distributed training | Discuss memory, parallelism, collectives, checkpointing, MFU, and failure recovery |
 | Inference serving | Reason about model fit, KV cache, batching, latency, goodput, quantization, and replicas |
 | GPU systems | Choose hardware from memory, bandwidth, compute, interconnect, availability, and price |
@@ -90,6 +92,22 @@ The design may need:
 - A promotion path from experiment to approved model
 
 This is often a platform problem rather than a single large-cluster problem.
+
+### Enterprise MLOps
+
+A company has many models, but each team trains and deploys them differently.
+
+The architecture work includes:
+
+- Defining how code, data, features, environments, and runs are versioned
+- Choosing experiment tracking, pipeline orchestration, and a model registry
+- Creating quality, security, schema, latency, and cost gates
+- Separating training, model promotion, and service deployment
+- Designing batch, online, shadow, canary, and rollback paths
+- Monitoring service health, data quality, model behavior, and business outcomes
+- Defining who owns labels, retraining decisions, approvals, and production incidents
+
+The goal is not to buy every MLOps product. It is to make one model lifecycle reproducible, safe, observable, and easy to operate before scaling the platform to many teams.
 
 ### Self-hosted online inference
 
@@ -203,6 +221,7 @@ Useful questions uncover constraints:
 |---|---|
 | Outcome | What improves, by how much, and who decides? |
 | Workload | Training or inference? Which model, data, framework, and precision? |
+| ML lifecycle | Where do labels come from? How are runs tracked, models approved, deployed, monitored, retrained, and rolled back? |
 | Scale | Average, peak, growth, deadline, and concurrency? |
 | Performance | Which latency, throughput, quality, or completion-time target? |
 | Data | Where is it now, how large is it, and where may it go? |
@@ -223,6 +242,7 @@ A strong engagement leaves reusable artifacts:
 - Proof-of-concept plan
 - Infrastructure as Code and deployment examples
 - Benchmark and acceptance-test results
+- Model lifecycle, promotion gates, and monitoring plan
 - Security and data-flow review
 - Production-readiness checklist
 - Runbooks, ownership, and escalation path
@@ -239,6 +259,7 @@ You should be able to:
 - Inspect Kubernetes events, resources, scheduling, networking, and storage
 - Run and interpret GPU, NCCL, and storage tests
 - Read a training or inference performance report
+- Trace a model from its training data and run to its deployed version and production signals
 - Explain where the workload is waiting
 
 You do not need to replace the kernel, fabric, storage, security, or ML specialist. You need enough depth to identify the right problem, provide useful evidence, and work with that specialist as a peer.
@@ -257,12 +278,14 @@ You do not need to replace the kernel, fabric, storage, security, or ML speciali
 
 ## Go deeper
 
-- [Workload Sizing and Economics](../05-ai-workloads/23-workload-sizing.md)
-- [Secure AI Platforms](31-secure-ai-platforms.md)
-- [From Proof of Concept to Production](32-poc-to-production.md)
+- [Workload Sizing and Economics](../05-ai-workloads/24-workload-sizing.md)
+- [The MLOps Lifecycle](../05-ai-workloads/25-mlops-lifecycle.md)
+- [Secure AI Platforms](33-secure-ai-platforms.md)
+- [From Proof of Concept to Production](34-poc-to-production.md)
 - [Workshop W13 — Workload Sizing and TCO](../05-workshops/W13-workload-sizing-tco.md)
 - [Workshop W14 — Enterprise AI Platform Capstone](../05-workshops/W14-enterprise-ai-platform.md)
+- [Workshop W15 — End-to-End MLOps](../05-workshops/W15-end-to-end-mlops.md)
 
 ---
 
-[← Previous: Reliability and Performance](../06-ai-infrastructure/29-reliability-and-performance.md) · [Next: Secure AI Platforms →](31-secure-ai-platforms.md)
+[← Previous: Reliability and Performance](../06-ai-infrastructure/31-reliability-and-performance.md) · [Next: Secure AI Platforms →](33-secure-ai-platforms.md)

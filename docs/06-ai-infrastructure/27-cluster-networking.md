@@ -117,4 +117,4 @@ Useful tools include `ibstat`, `ibv_devinfo`, `perfquery`, perftest, `nvidia-smi
 
 ---
 
-[← Previous: GPU Systems](24-gpu-systems.md) · [Next: Storage and the Data Path →](26-storage-and-data.md)
+[← Previous: GPU Systems](26-gpu-systems.md) · [Next: Storage and the Data Path →](28-storage-and-data.md)

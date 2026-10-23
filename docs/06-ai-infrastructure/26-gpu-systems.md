@@ -127,4 +127,4 @@ NVIDIA **XID** messages are driver-reported GPU errors. Some point to applicatio
 
 ---
 
-[← Previous: Workload Sizing](../05-ai-workloads/23-workload-sizing.md) · [Next: Cluster Networking →](25-cluster-networking.md)
+[← Previous: The MLOps Lifecycle](../05-ai-workloads/25-mlops-lifecycle.md) · [Next: Cluster Networking →](27-cluster-networking.md)

@@ -177,4 +177,4 @@ If the benchmark does not change the estimate, it was probably not testing the i
 
 ---
 
-[← Previous: Self-Hosted Inference](22-self-hosted-inference.md) · [Next: GPU Systems →](../06-ai-infrastructure/24-gpu-systems.md)
+[← Previous: Self-Hosted Inference](23-self-hosted-inference.md) · [Next: The MLOps Lifecycle →](25-mlops-lifecycle.md)

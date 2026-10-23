@@ -140,5 +140,5 @@ The spreadsheet or code belongs in the same repository as the note.
 
 ## Go deeper
 
-- [Chapter 23 — Workload Sizing and Economics](../05-ai-workloads/23-workload-sizing.md)
+- [Chapter 24 — Workload Sizing and Economics](../05-ai-workloads/24-workload-sizing.md)
 - [MLPerf results](https://mlcommons.org/benchmarks/)

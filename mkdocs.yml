@@ -126,22 +126,24 @@ nav:
       - Part II — Cloud Infrastructure for AI:
           - 05 — AI Workloads:
               - Overview: 05-ai-workloads/index.md
-              - Distributed Training: 05-ai-workloads/21-distributed-training.md
-              - Self-Hosted Inference: 05-ai-workloads/22-self-hosted-inference.md
-              - Workload Sizing: 05-ai-workloads/23-workload-sizing.md
+              - ML Algorithms for Architects: 05-ai-workloads/21-ml-algorithms-for-architects.md
+              - Distributed Training: 05-ai-workloads/22-distributed-training.md
+              - Self-Hosted Inference: 05-ai-workloads/23-self-hosted-inference.md
+              - Workload Sizing: 05-ai-workloads/24-workload-sizing.md
+              - MLOps Lifecycle: 05-ai-workloads/25-mlops-lifecycle.md
           - 06 — AI Infrastructure:
               - Overview: 06-ai-infrastructure/index.md
-              - GPU Systems: 06-ai-infrastructure/24-gpu-systems.md
-              - Cluster Networking: 06-ai-infrastructure/25-cluster-networking.md
-              - Storage and Data: 06-ai-infrastructure/26-storage-and-data.md
-              - Kubernetes and Slurm: 06-ai-infrastructure/27-kubernetes-and-slurm.md
-              - Infrastructure as Code: 06-ai-infrastructure/28-infrastructure-as-code.md
-              - Reliability and Performance: 06-ai-infrastructure/29-reliability-and-performance.md
+              - GPU Systems: 06-ai-infrastructure/26-gpu-systems.md
+              - Cluster Networking: 06-ai-infrastructure/27-cluster-networking.md
+              - Storage and Data: 06-ai-infrastructure/28-storage-and-data.md
+              - Kubernetes and Slurm: 06-ai-infrastructure/29-kubernetes-and-slurm.md
+              - Infrastructure as Code: 06-ai-infrastructure/30-infrastructure-as-code.md
+              - Reliability and Performance: 06-ai-infrastructure/31-reliability-and-performance.md
           - 07 — Solution Architecture:
               - Overview: 07-enterprise-architecture/index.md
-              - AI Solution Architecture: 07-enterprise-architecture/30-ai-solution-architecture.md
-              - Secure AI Platforms: 07-enterprise-architecture/31-secure-ai-platforms.md
-              - PoC to Production: 07-enterprise-architecture/32-poc-to-production.md
+              - AI Solution Architecture: 07-enterprise-architecture/32-ai-solution-architecture.md
+              - Secure AI Platforms: 07-enterprise-architecture/33-secure-ai-platforms.md
+              - PoC to Production: 07-enterprise-architecture/34-poc-to-production.md
       - Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md
@@ -165,6 +167,7 @@ nav:
       - GPU Cluster Acceptance Test: 05-workshops/W12-gpu-cluster-acceptance.md
       - Workload Sizing and TCO: 05-workshops/W13-workload-sizing-tco.md
       - Enterprise AI Platform Capstone: 05-workshops/W14-enterprise-ai-platform.md
+      - End-to-End MLOps: 05-workshops/W15-end-to-end-mlops.md
   - Perspectives:
       - Overview: perspectives/index.md
       - "Neurology of AI Safety": perspectives/neurology-of-ai-safety.md

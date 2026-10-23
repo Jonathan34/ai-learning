@@ -139,4 +139,4 @@ Fair sharing is not isolation. Define both.
 
 ---
 
-[← Previous: Storage and the Data Path](26-storage-and-data.md) · [Next: Infrastructure as Code →](28-infrastructure-as-code.md)
+[← Previous: Storage and the Data Path](28-storage-and-data.md) · [Next: Infrastructure as Code →](30-infrastructure-as-code.md)
