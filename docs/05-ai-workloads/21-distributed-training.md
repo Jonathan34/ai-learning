@@ -2,7 +2,35 @@
 
 Training a model is a distributed systems problem with unusually expensive workers.
 
-Every GPU runs the same sequence: forward pass, loss, backward pass, optimizer step. At scale, the GPUs must exchange data between those steps. One slow GPU, link, or data loader can hold up the whole job.
+Every GPU repeats the same training step. At scale, the GPUs must exchange data during that step. One slow GPU, link, or data loader can hold up the whole job.
+
+## One training step, in plain English
+
+A model contains billions of **weights**: learned numbers that control how an input is transformed into an output. Training adjusts those weights a little at a time.
+
+Each step processes a **batch**, which is a small group of training examples:
+
+```mermaid
+flowchart LR
+    B[Batch of examples] --> F[Forward pass<br/>make predictions]
+    F --> L[Loss<br/>measure the error]
+    L --> R[Backward pass<br/>calculate gradients]
+    R --> S[Share gradients<br/>between GPUs]
+    S --> O[Optimizer step<br/>update the weights]
+    O --> N[Next batch]
+```
+
+**Forward pass.** The input moves through the model from the first layer to the last. For language models, the output is a set of scores for the possible next token. The model also keeps intermediate results called **activations**, because the backward pass will need them.
+
+**Loss.** The training code compares the model's prediction with the expected answer. It reduces the error to a number called the loss. Lower is better for that batch, but one low number does not mean the model is good overall.
+
+**Backward pass.** Automatic differentiation works backward through the operations from the forward pass. It calculates a **gradient** for each weight. A gradient says how sensitive the loss is to that weight and which direction should reduce the error.
+
+**Optimizer step.** An algorithm such as AdamW uses the gradients and a running history called **optimizer state** to make small changes to the weights. The gradients are then cleared and the next batch starts.
+
+Training repeats this cycle many times. The useful behavior comes from millions of small weight updates, not one dramatic change.
+
+In data-parallel training, each GPU processes a different batch. The GPUs combine their gradients before the optimizer step so their copies of the model stay in sync.
 
 ## What training needs
 
