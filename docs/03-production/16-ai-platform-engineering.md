@@ -86,7 +86,7 @@ The integration layer — the thing that ties all these pieces together and pres
 
 The sweet spot is usually when the second or third team starts building AI features. That's when the patterns become clear enough to abstract.
 
-## Things that trip people up
+## Things to watch for
 
 **Building the platform before you know what you need.** Platforms that solve problems nobody has are shelfware. Build the first 2-3 AI features without a platform. Notice what's painful. Then build the platform to solve those specific pains.
 

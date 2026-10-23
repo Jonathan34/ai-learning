@@ -118,7 +118,7 @@ Fair sharing is not isolation. Define both.
 - RDMA device is missing inside the pod
 - Images contain different NCCL versions
 
-## Things that trip people up
+## Things to watch for
 
 **Autoscaling without capacity planning.** A pending pod does not create a scarce GPU in the region.
 

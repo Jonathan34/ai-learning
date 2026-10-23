@@ -137,7 +137,7 @@ Write down who owns:
 
 Ambiguous ownership shows up during the first incident.
 
-## Things that trip people up
+## Things to watch for
 
 **Calling a shared cluster "isolated" because it has namespaces.** Namespaces are not a hardware boundary.
 

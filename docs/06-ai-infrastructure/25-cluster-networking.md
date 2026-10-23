@@ -95,7 +95,7 @@ Test isolation. A configuration that looks separate in an API is not enough.
 
 Useful tools include `ibstat`, `ibv_devinfo`, `perfquery`, perftest, `nvidia-smi topo -m`, and `NCCL_DEBUG=INFO`.
 
-## Things that trip people up
+## Things to watch for
 
 **A link negotiated below its expected speed.** The port can be Active and still be slow.
 

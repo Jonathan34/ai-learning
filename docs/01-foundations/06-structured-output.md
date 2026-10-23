@@ -115,7 +115,7 @@ class TicketClassification(BaseModel):
 
 The `reasoning` field is intentional. Including it improves accuracy (chain-of-thought effect) and gives you debuggability. In production, log the reasoning even if you don't show it to users.
 
-## Things that trip people up
+## Things to watch for
 
 **Putting the schema in the prompt AND using schema-constrained mode.** Pick one. If you're using the provider's structured output feature, the schema is already communicated. Repeating it in the prompt wastes tokens and can create conflicts if they diverge.
 

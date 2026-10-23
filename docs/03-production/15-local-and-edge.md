@@ -124,7 +124,7 @@ Local models powering agents on your device:
 
 The tension: local models are less capable than frontier hosted models. An agent that works well with Claude Sonnet might fail with a local 7B model. You often need to simplify the agent (fewer tools, simpler tasks, more constrained prompts) to work reliably with smaller models.
 
-## Things that trip people up
+## Things to watch for
 
 **"Works on my laptop" doesn't generalize.** Hardware varies enormously. A model that runs smoothly on your 32 GB M3 Max won't run at all on a user's 8 GB Windows laptop. Test on representative hardware.
 

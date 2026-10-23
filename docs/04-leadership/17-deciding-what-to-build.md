@@ -114,8 +114,6 @@ rate = forex_api.get_rate("EUR", "USD")  # 1 HTTP call, free, 200ms
 
 This isn't about avoiding AI — it's about using it where it's the right tool and using cheaper tools everywhere else. The best AI systems have surprisingly little AI in them. The LLM handles the parts humans used to do (reading, writing, deciding in ambiguous situations). Everything else is normal software engineering.
 
-
-
 A great demo doesn't mean a shippable product. The gap between "works on 5 examples" and "works reliably on the distribution of real inputs" is enormous. Teams that ship based on demos discover this the hard way.
 
 The reverse is also true: dismissing a capability because the first prototype fails is equally wrong. LLM features often need iteration — better prompts, better context, better eval — before they work well. The question is whether the iteration path is plausible, not whether the first attempt succeeds.
@@ -136,7 +134,7 @@ AI features rot in ways traditional features don't:
 
 Budget ongoing maintenance time. An AI feature isn't "done" when it ships — it needs continuous attention to stay good.
 
-## Things that trip people up
+## Things to watch for
 
 **Building AI because it's in the strategy deck.** If the only reason to use AI is "leadership wants AI features", push for specificity. Which features? For which users? Solving which problems?
 

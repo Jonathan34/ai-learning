@@ -141,7 +141,7 @@ Providers deprecate old models. You'll get notice (usually months), but you need
 
 - Budget time for prompt adjustments
 
-## Things that trip people up
+## Things to watch for
 
 **"Just use OpenAI" without thinking about governance.** Fine for a prototype. In production, someone will ask: "Where does our customer data go? What's their data retention policy? Are they SOC 2 compliant? What happens during an outage?" Have answers.
 

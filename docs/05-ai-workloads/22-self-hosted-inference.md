@@ -119,7 +119,7 @@ Keep a task-specific evaluation set. Run it when changing:
 
 This connects software evaluation to infrastructure work.
 
-## Things that trip people up
+## Things to watch for
 
 **Sizing from a vendor benchmark.** Prompt length, output length, concurrency, and latency targets can change the result sharply.
 

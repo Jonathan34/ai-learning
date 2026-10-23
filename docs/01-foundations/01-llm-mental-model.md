@@ -172,7 +172,7 @@ What this means for you:
 | "Frontier model" | The current most-capable class. Changes every few months. |
 | "Emergent capabilities" | Things the model does well that weren't explicitly trained. Real but overhyped. |
 
-## Things that trip people up
+## Things to watch for
 
 **"The model knows X."** It doesn't know anything. It has statistical patterns. It fails on obscure-but-real facts and succeeds on common-but-wrong ones. Never use it as a factual database without retrieval.
 

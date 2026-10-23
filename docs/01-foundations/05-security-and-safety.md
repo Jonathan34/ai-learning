@@ -120,7 +120,7 @@ You need someone trying to break your system before users do. Good practices:
 
 - Actually fix what you find — findings without fixes are worse than not looking
 
-## Things that trip people up
+## Things to watch for
 
 **"Guardrails" that don't actually guard.** Many "guardrail" libraries just classify outputs after generation (can miss things, still costs tokens) or filter keywords (trivially bypassed). They're one layer of defense, not the whole solution.
 

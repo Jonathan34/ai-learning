@@ -104,7 +104,7 @@ If you're building memory into a product, these aren't optional considerations. 
 
 **DIY with Postgres / Redis / S3** — often the right answer for teams that want full control. Store conversation history in Postgres, user facts in a structured table, semantic memories in a vector store (pgvector or similar).
 
-## Things that trip people up
+## Things to watch for
 
 **Storing full conversation history forever.** Unbounded storage cost, noisy retrieval, privacy liability. Set retention limits.
 

@@ -79,7 +79,7 @@ Debugging is harder by an order of magnitude. When something goes wrong, you nee
 | Task is simple but you want it to "feel" sophisticated | Single agent. Don't over-engineer. |
 | You want "agents to brainstorm" | Single agent with chain-of-thought. The brainstorming is theater. |
 
-## Things that trip people up
+## Things to watch for
 
 **Cost surprises.** A multi-agent system that costs $0.05 per request in testing costs $0.50 per request when agents loop more than expected on edge cases. Monitor per-request cost in production.
 

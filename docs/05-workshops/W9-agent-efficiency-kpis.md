@@ -359,7 +359,7 @@ The goal: reduce waste without hurting task success. If success rate dropped, ba
 
 ---
 
-## Things that trip people up
+## Things to watch for
 
 **Optimizing for the average, ignoring the tail.** Most of your requests might be efficient. A small percentage of runaway requests consume most of your budget. Focus on P95/P99, not just averages.
 

@@ -63,7 +63,7 @@ Every AI feature will produce bad outputs sometimes. The question is: what does 
 
 The worst outcome is a high-stakes AI feature that looks authoritative and is sometimes wrong. Users will trust it, act on it, and get hurt.
 
-## Things that trip people up
+## Things to watch for
 
 **Shipping a chatbot by default.** Chat is the most complex interaction pattern (multi-turn state, context management, open-ended inputs). It's often not what the user needs. A simple form with an AI-powered response is often better.
 

@@ -110,7 +110,7 @@ To evaluate an agent, you need to think about:
 
 Most teams evaluate agents on final output quality plus a few instrumented checks (step count, tools used, errors encountered). Full trajectory evaluation — scoring every decision the agent made — is still an open research problem.
 
-## Things that trip people up
+## Things to watch for
 
 **"We'll add eval later."** By the time you add it, you've already shipped quality problems. Build eval before or alongside the feature, even if it's small.
 

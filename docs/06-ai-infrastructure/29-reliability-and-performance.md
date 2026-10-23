@@ -122,7 +122,7 @@ Plan:
 
 Capacity is part of reliability.
 
-## Things that trip people up
+## Things to watch for
 
 **Alerting on GPU utilization alone.** It says little about why the workload is slow.
 

@@ -107,7 +107,7 @@ Do not rely on one utilization percentage. A GPU can look busy while tensor core
 
 NVIDIA **XID** messages are driver-reported GPU errors. Some point to application faults. Others, such as uncorrectable memory, NVLink, or "fallen off the bus" errors, usually need a node drain and hardware investigation.
 
-## Things that trip people up
+## Things to watch for
 
 **Comparing sparse and dense FLOPS.** Datasheets may show both. Most planning should use dense numbers unless the workload actually uses structured sparsity.
 

@@ -111,7 +111,7 @@ Build the PoC with:
 
 Later phases add federation, stronger isolation, reservations, policy, backup, incident response, and multi-environment promotion.
 
-## Things that trip people up
+## Things to watch for
 
 **Local state for a team.** It creates collisions and puts recovery on one laptop.
 

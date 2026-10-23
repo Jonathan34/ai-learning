@@ -170,7 +170,7 @@ Use the same method on different problems:
 
 The answer should always include clarifying questions, rough math, architecture, risks, a test plan, and the decision gate.
 
-## Things that trip people up
+## Things to watch for
 
 **Starting the PoC before defining the decision.** Teams optimize whatever is easiest to measure.
 

@@ -145,7 +145,7 @@ So: put the most important retrieved documents near the end of the context, clos
 
 Most real systems combine all three: a fine-tuned or instruction-tuned model, driven by an agent, using RAG for knowledge.
 
-## Things that trip people up
+## Things to watch for
 
 **"We'll just put everything in the context."** Tempting with large context windows. Bad idea. Costs go up, latency increases, the model gets confused, and you still can't guarantee it uses the right information.
 

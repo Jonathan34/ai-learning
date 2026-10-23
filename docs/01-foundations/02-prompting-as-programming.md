@@ -136,7 +136,7 @@ This means:
 
 Think of model upgrades like library upgrades — usually compatible, never guaranteed, always worth testing.
 
-## Things that trip people up
+## Things to watch for
 
 **Works on 20 test cases ≠ works in production.** Your test cases are a tiny sample. Real users will send inputs you never imagined. The input space is effectively infinite.
 

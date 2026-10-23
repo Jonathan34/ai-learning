@@ -96,7 +96,7 @@ The Principal/Staff AI engineer's hardest job isn't technical — it's saying "n
 
 **Phase 4 (30+):** Embedded AI engineers in product teams. Specialized roles (evals, platform, security). Formal career ladder. Training programs for engineers new to AI.
 
-## Things that trip people up
+## Things to watch for
 
 **Over-hiring "AI specialists" early.** For the first few AI features, you need good software engineers who can learn AI, not AI researchers who can't ship products. The engineering fundamentals matter more than the AI knowledge at this stage.
 

@@ -96,7 +96,7 @@ Plan a migration in stages:
 
 The network path to the data belongs in the platform design.
 
-## Things that trip people up
+## Things to watch for
 
 **Benchmarking sequential throughput only.** Real loaders may be limited by metadata or random access.
 

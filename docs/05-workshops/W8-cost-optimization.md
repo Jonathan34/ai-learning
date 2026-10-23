@@ -423,7 +423,7 @@ How big the drop is depends on your workload, so don't grade yourself against so
 
 ---
 
-## Things that trip people up
+## Things to watch for
 
 **Optimizing before measuring.** You'll guess wrong about where your cost comes from. Measure first.
 

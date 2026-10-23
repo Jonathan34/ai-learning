@@ -98,7 +98,7 @@ The fastest way to learn is from people doing the work. A few ways to build conn
 
 You don't need a large network. 5-10 people you can message with questions or share findings with is enough.
 
-## Things that trip people up
+## Things to watch for
 
 **Firehose anxiety.** You can't keep up with everything. Nobody can. The field produces more content in a week than anyone can read in a month. Accept this. Filter aggressively. Miss things. It's fine.
 

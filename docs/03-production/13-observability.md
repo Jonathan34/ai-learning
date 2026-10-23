@@ -146,7 +146,7 @@ Logging full prompts means logging user data. That's why content capture is opt-
 
 - **Cost.** Full-context logging at scale is expensive (storage + processing). Another reason not to do it for every call. Capture content for the incidents and eval samples you actually need, rather than routinely storing successful calls.
 
-## Things that trip people up
+## Things to watch for
 
 **Logging the prompt template, not the actual prompt.** Your template says `{system_prompt} + {context} + {user_input}`. Your logs show the template variables. When you've turned content capture on to debug something, you need the fully assembled text the model actually received. Capture that.
 

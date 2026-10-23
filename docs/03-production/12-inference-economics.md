@@ -152,7 +152,7 @@ If the number is too high, your options are:
 
 That last option is valid. Some features are too expensive for AI at current prices. Prices drop over time, so "not now" doesn't mean "never."
 
-## Things that trip people up
+## Things to watch for
 
 **Underestimating agent costs.** A demo that costs $0.01 per request becomes $0.50 per request when the agent loops 10 times on a complex query. Monitor per-request cost in production, not just average.
 

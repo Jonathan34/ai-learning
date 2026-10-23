@@ -116,7 +116,7 @@ When scaling efficiency is poor:
 
 This order separates application, fabric, storage, and hardware problems.
 
-## Things that trip people up
+## Things to watch for
 
 **Adding GPUs before fixing the bottleneck.** More workers can make communication or storage pressure worse.
 

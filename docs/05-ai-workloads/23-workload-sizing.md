@@ -157,7 +157,7 @@ Keep the first document short:
 
 If the benchmark does not change the estimate, it was probably not testing the important assumptions.
 
-## Things that trip people up
+## Things to watch for
 
 **Starting with the newest GPU.** Memory, bandwidth, availability, and price may point elsewhere.
 
