@@ -73,7 +73,7 @@ I've seen a lot of prompting advice, some of it is noise, these are the principl
 
 **Tell the model what to do when it can't answer.** "If the report lacks relevant information, write 'Not available in report'". Without this, the model will make something up to fill the gap. This is one of the most common causes of hallucination — the model completing a pattern rather than admitting it doesn't have the information.
 
-**"Think step by step" helps for reasoning, hurts for simple tasks.** Asking the model to reason out loud genuinely improves accuracy on complex problems (math, logic, multi-step analysis). For simple classification or extraction, it wastes tokens and can actually make things worse by giving the model room to talk itself into the wrong answer. Test both ways.
+**"Think step by step" depends on the model and the task.** For reasoning models, the advice is now to leave it out. They already reason internally, and OpenAI recommends simple, direct prompts for them and says chain-of-thought instructions may hinder performance ([OpenAI reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices), checked 2026-10-19). For other models, whether it helps on your task is something to measure, not assume. Either way, the extra output costs tokens and latency. Test both ways against your evals rather than adding it by habit.
 
 **Examples in the prompt are powerful but expensive.** Showing the model 2-3 input/output examples (called "few-shot prompting") can dramatically improve performance on unfamiliar tasks. Each example uses tokens though, which means cost and latency. Curate them carefully — bad examples actively hurt.
 

@@ -93,7 +93,7 @@ Schema constraints prevent the ordinary syntax and shape errors. They don't prev
 
 ## Patterns that work in production
 
-**Separate extraction from generation.** Don't ask the model to both think and produce structured output in one call. First ask it to reason (free text), then ask a second call to extract structure from its own reasoning. More tokens, more reliable.
+**Split the call only when your evals say so.** For a task that needs real analysis, you can run a free-text analysis call first and a second call that extracts structure from it. That costs more tokens and latency, and it isn't automatically more reliable. Reasoning models already reason internally, and OpenAI recommends direct prompts over asking them to think step by step ([OpenAI reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices), checked 2026-10-19). Start with a single structured call. If it struggles, try breaking the task into smaller extractions, or add the separate analysis pass, and keep whichever your evals show actually wins.
 
 **Retry with error feedback.** With native structured output you shouldn't need retries to repair JSON. You still need them when your own validation fails, either a business rule or a constraint the provider couldn't enforce in the schema. Send the error message back to the model: "Your output failed validation: age must be >= 0, got -1. Please fix". Most models correct themselves on the first retry.
 
@@ -110,10 +110,10 @@ class TicketClassification(BaseModel):
     category: Literal["billing", "technical", "account", "other"]
     priority: Literal["low", "medium", "high", "critical"]
     requires_human: bool
-    reasoning: str = Field(description="Brief explanation of classification")
+    rationale: str = Field(description="One or two sentences citing the ticket text behind the labels")
 ```
 
-The `reasoning` field is intentional. Including it improves accuracy (chain-of-thought effect) and gives you debuggability. In production, log the reasoning even if you don't show it to users.
+The `rationale` field is for the people reviewing results. It gives them a short explanation to check against the ticket, which makes bad labels easier to spot. Don't treat it as a record of how the model picked the label. A written explanation isn't reliably faithful to what actually drove the output ([Anthropic research](https://www.anthropic.com/research/reasoning-models-dont-say-think), checked 2026-10-19). Reasoning models also do their reasoning in internal tokens the API doesn't return ([OpenAI reasoning guide](https://developers.openai.com/api/docs/guides/reasoning), checked 2026-10-19). If you think the field improves accuracy, measure it with and without. If you log it, label it as model output, not as the model's reasoning.
 
 ## Things to watch for
 

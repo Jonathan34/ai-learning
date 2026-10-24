@@ -86,7 +86,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Zero-shot** — giving only instructions, no examples
 
-- **Chain-of-thought (CoT)** — asking the model to reason step-by-step before answering
+- **Chain-of-thought (CoT)** — intermediate reasoning text a model generates before its answer, either because you asked ("think step by step") or because it was trained to. It may differ from the model's internal computation. Reasoning models can use hidden reasoning tokens the API doesn't return ([OpenAI](https://developers.openai.com/api/docs/guides/reasoning), checked 2026-10-19), and visible CoT isn't reliably faithful ([Anthropic](https://www.anthropic.com/research/reasoning-models-dont-say-think), checked 2026-10-19)
 
 - **Self-consistency** — sampling multiple chains of thought and taking the majority answer
 
