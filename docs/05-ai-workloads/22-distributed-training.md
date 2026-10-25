@@ -14,19 +14,19 @@ Each step processes a **batch**, which is a small group of training examples:
 flowchart LR
     B[Batch of examples] --> F[Forward pass<br/>make predictions]
     F --> L[Loss<br/>measure the error]
-    L --> R[Backward pass<br/>calculate gradients]
+    L --> R[Backward pass<br/>find how each weight affected the error]
     R --> S[Share gradients<br/>between GPUs]
     S --> O[Optimizer step<br/>update the weights]
     O --> N[Next batch]
 ```
 
-**Forward pass.** The input moves through the model from the first layer to the last. For language models, the output is a set of scores for the possible next token. The model also keeps intermediate results called **activations**, because the backward pass will need them.
+**Forward pass.** The model uses its current weights to make a prediction for the batch. For a language model, that prediction is a set of scores for the possible next token. It also saves some of its intermediate calculations because they will be needed to learn from the error.
 
-**Loss.** The training code compares the model's prediction with the expected answer. It reduces the error to a number called the loss. Lower is better for that batch, but one low number does not mean the model is good overall.
+**Loss.** The training code compares the prediction with the expected answer and produces one number that represents how wrong the model was. Lower is better for that batch, but one low number does not mean the model is good overall.
 
-**Backward pass.** Automatic differentiation works backward through the operations from the forward pass. It calculates a **gradient** for each weight. A gradient says how sensitive the loss is to that weight and which direction should reduce the error.
+**Backward pass.** The system asks, for every weight: "If this number changed slightly, would the error become larger or smaller, and by how much?" It follows the saved calculations backward from the loss to answer that question. The result for each weight is called its **gradient**. Frameworks such as PyTorch calculate these gradients automatically; this is **automatic differentiation**.
 
-**Optimizer step.** An algorithm such as AdamW uses the gradients and a running history called **optimizer state** to make small changes to the weights. The gradients are then cleared and the next batch starts.
+**Optimizer step.** The gradients provide directions, but they do not change the model themselves. An optimizer such as AdamW uses them to nudge each weight a small distance in the direction expected to reduce the error. The gradients are then cleared and the next batch starts.
 
 Training repeats this cycle many times. The useful behavior comes from millions of small weight updates, not one dramatic change.
 
