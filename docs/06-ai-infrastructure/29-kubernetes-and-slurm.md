@@ -2,6 +2,24 @@
 
 GPU scheduling has a harder constraint than ordinary service scheduling: many workloads need several GPUs or nodes at the same time.
 
+## What the managed service does not remove
+
+A managed Kubernetes service may operate the control plane. The platform team still owns how workloads reach and use it.
+
+| Layer | What you need to understand |
+|---|---|
+| Control plane | API access, versions, audit logs, availability, and upgrade policy |
+| Node pools | Images, labels, taints, autoscaling, repair, capacity, and replacement |
+| CNI | Pod addresses, routing, network policy, service traffic, and MTU |
+| CSI | Storage classes, volume provisioning, attachment, mounting, and recovery |
+| Scheduling | Requests, limits, affinity, topology, quotas, priority, and gang admission |
+| Device layer | GPU drivers, device plugins or DRA, RDMA devices, and health |
+| Operations | Monitoring, upgrades, backups, incidents, and cost ownership |
+
+**CNI**, the Container Network Interface, connects pods to the network. A pod can be Running while DNS, routes, network policy, or MTU still prevents the application from working.
+
+**CSI**, the Container Storage Interface, connects workloads to storage systems. A claim moves through storage-class selection, provisioning, attachment, and mounting. An error at any stage can leave a pod Pending.
+
 ## How Kubernetes exposes a GPU
 
 The NVIDIA GPU Operator can manage:
@@ -118,6 +136,36 @@ Fair sharing is not isolation. Define both.
 - RDMA device is missing inside the pod
 - Images contain different NCCL versions
 
+## A troubleshooting order
+
+When a workload fails, move down the stack:
+
+1. Read the workload status and Kubernetes events.
+2. Check admission, queue quota, requests, affinity, taints, and capacity.
+3. Confirm the selected node reports the expected allocatable devices.
+4. Check the device plugin or DRA driver and the host GPU driver.
+5. Check CNI routes, DNS, network policy, service endpoints, and MTU.
+6. Check CSI provisioning, attachment, mount events, and storage permissions.
+7. Check the container image, runtime libraries, and application logs.
+8. For multi-node training, verify rendezvous and run a small collective test.
+
+Do not begin with application tuning when Kubernetes has not delivered the requested network, storage, or device.
+
+## Day-two operations
+
+Treat upgrades as a compatibility change across Kubernetes, the node image, GPU driver, container toolkit, GPU operator, CNI, CSI, and workload images.
+
+A safe sequence is:
+
+1. Test the version set on a small pool.
+2. Upgrade the control plane within its supported skew.
+3. Upgrade CPU system pools.
+4. Cordon and drain a small GPU pool.
+5. Run device, network, storage, and workload acceptance tests.
+6. Roll through the remaining pools with a rollback point.
+
+Draining a stateless service and interrupting a multi-hour training job are different operations. Coordinate drains with checkpoints, disruption budgets, queue state, and spare capacity.
+
 ## Things to watch for
 
 **Autoscaling without capacity planning.** A pending pod does not create a scarce GPU in the region.
@@ -136,6 +184,7 @@ Fair sharing is not isolation. Define both.
 - [Slurm documentation](https://slurm.schedmd.com/documentation.html)
 - [Soperator](https://github.com/nebius/soperator)
 - [AI infrastructure video guide](../reference/ai-infrastructure-videos.md#kubernetes-and-slurm)
+- [Workshop W16 — Kubernetes Operations for AI](../05-workshops/W16-kubernetes-ai-operations.md)
 
 ---
 

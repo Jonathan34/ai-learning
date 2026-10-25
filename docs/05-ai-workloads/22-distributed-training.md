@@ -93,6 +93,30 @@ The next forward pass produces a prediction closer to `10`. A real neural networ
 
 **Optimizer step.** The gradients provide directions, but they do not change the model themselves. An optimizer such as AdamW uses them to nudge each weight a small distance in the direction expected to reduce the error. The gradients are then cleared and the next batch starts.
 
+### What this looks like in PyTorch
+
+A basic training loop maps directly to the steps above:
+
+```python
+for features, labels in data_loader:
+    features = features.to(device)
+    labels = labels.to(device)
+
+    optimizer.zero_grad(set_to_none=True)
+    predictions = model(features)          # Forward pass
+    loss = loss_function(predictions, labels)
+    loss.backward()                        # Backward pass
+    optimizer.step()                       # Update weights
+```
+
+PyTorch records the operations used during the forward pass. Calling `loss.backward()` calculates the gradients and stores them on the trainable parameters. The optimizer then reads those gradients.
+
+With Distributed Data Parallel, or DDP, each process runs this loop on its local batch. PyTorch starts gradient all-reduces during the backward pass so every process reaches the same averaged update. FSDP changes the communication to gather parameter shards and reduce-scatter gradient shards.
+
+TensorFlow uses different names for the same ideas: `tf.GradientTape` records the forward operations, an optimizer applies the gradients, and `tf.distribute.Strategy` coordinates multiple devices.
+
+An architect usually does not implement these algorithms. You should be able to read this loop, identify what is stored or communicated, change batch and device settings, and understand where a distributed failure appears.
+
 Training repeats this cycle many times. The useful behavior comes from millions of small weight updates, not one dramatic change.
 
 In data-parallel training, each GPU processes a different local batch. The GPUs combine their gradients before the optimizer step so their copies of the model stay in sync.

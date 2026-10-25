@@ -130,6 +130,7 @@ Later phases add federation, stronger isolation, reservations, policy, backup, i
 - [Open Policy Agent](https://www.openpolicyagent.org/docs/latest/)
 - [Argo CD documentation](https://argo-cd.readthedocs.io/)
 - [AI infrastructure video guide](../reference/ai-infrastructure-videos.md#infrastructure-as-code)
+- [Workshop W17 — Automate an AI Platform](../05-workshops/W17-automate-ai-platform.md)
 
 ---
 

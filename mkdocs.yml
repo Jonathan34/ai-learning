@@ -149,6 +149,7 @@ nav:
           - Glossary: reference/glossary.md
           - Papers to Know: reference/papers-to-know.md
           - Tools and Models: reference/tools-and-models.md
+          - Cloud ML Platform Landscape: reference/cloud-ml-platform-landscape.md
           - Gotchas: reference/gotchas-consolidated.md
           - AI Infrastructure Videos: reference/ai-infrastructure-videos.md
   - Workshops:
@@ -168,6 +169,8 @@ nav:
       - Workload Sizing and TCO: 05-workshops/W13-workload-sizing-tco.md
       - Enterprise AI Platform Capstone: 05-workshops/W14-enterprise-ai-platform.md
       - End-to-End MLOps: 05-workshops/W15-end-to-end-mlops.md
+      - Kubernetes Operations for AI: 05-workshops/W16-kubernetes-ai-operations.md
+      - Automate an AI Platform: 05-workshops/W17-automate-ai-platform.md
   - Perspectives:
       - Overview: perspectives/index.md
       - "Neurology of AI Safety": perspectives/neurology-of-ai-safety.md

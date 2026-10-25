@@ -94,7 +94,28 @@ Create a 90-day plan:
 
 Adjust the schedule, but give each milestone an owner and exit criterion.
 
-## Part 5: Failure review
+## Part 5: Adoption and business case
+
+Create a stakeholder and decision map covering:
+
+- Executive sponsor
+- Technical champion
+- Platform and ML practitioners
+- Security, risk, and governance
+- Finance and procurement
+- Production operator
+
+For each stage—evaluation, decision, onboarding, production adoption, and expansion—state:
+
+- Decision owner
+- Required evidence
+- Blocking risk
+- Success measure
+- Next commitment
+
+Build a short business case from the current baseline, expected value, three-year cost range, migration effort, and cost of delay. Keep technical benefits tied to measurable outcomes.
+
+## Part 6: Failure review
 
 Walk through:
 
@@ -106,12 +127,14 @@ Walk through:
 
 For each, explain detection, containment, recovery, and prevention.
 
-## Part 6: Present it
+## Part 7: Present and enable
 
 Prepare two versions:
 
 - A 20-minute technical design review
 - A 5-minute decision summary
+- A 45-minute customer workshop with decisions and owners
+- A short operator quickstart that another engineer can follow
 
 The short version should cover the decision, cost range, largest risk, and next gate. Do not shrink the technical talk by speaking faster.
 
@@ -126,6 +149,7 @@ The short version should cover the decision, cost range, largest risk, and next 
 | Reliability | Baselines, spare capacity, recovery, and runbooks exist |
 | Economics | Cost is a range with utilization and migration included |
 | Delivery | PoC criteria lead to a production gate |
+| Adoption | Stakeholders, evidence, buying decisions, onboarding, and expansion are explicit |
 | Communication | Trade-offs are clear and jargon is explained |
 
 ## What you should have
@@ -134,9 +158,11 @@ The short version should cover the decision, cost range, largest risk, and next 
 - Architecture diagram
 - Ten-page maximum design document
 - Capacity model
+- Stakeholder and decision map
+- Business case
 - 90-day plan
 - Risk register
-- Technical and executive presentations
+- Technical review, executive briefing, workshop, and operator quickstart
 
 ## Go deeper
 
@@ -144,3 +170,5 @@ The short version should cover the decision, cost range, largest risk, and next 
 - [Chapter 33 — Secure AI Platforms](../07-enterprise-architecture/33-secure-ai-platforms.md)
 - [Chapter 34 — From Proof of Concept to Production](../07-enterprise-architecture/34-poc-to-production.md)
 - [Workshop W15 — End-to-End MLOps](W15-end-to-end-mlops.md)
+- [Workshop W16 — Kubernetes Operations for AI](W16-kubernetes-ai-operations.md)
+- [Workshop W17 — Automate an AI Platform](W17-automate-ai-platform.md)

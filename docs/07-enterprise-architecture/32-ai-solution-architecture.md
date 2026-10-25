@@ -37,6 +37,22 @@ A solution architect is usually responsible for technical confidence in a decisi
 
 The architect may not own the commercial agreement or production service. They do own making technical claims testable and keeping the design tied to the outcome.
 
+## Enterprise adoption is a lifecycle
+
+Large organizations rarely move from a demo straight to a production platform.
+
+| Stage | Technical work | Decision being made |
+|---|---|---|
+| Explore | Discover the outcome, stakeholders, current platform, constraints, and urgency | Is this worth evaluating? |
+| Validate | Agree on success criteria, architecture options, risks, and a proof of concept | Can it meet the technical and business bar? |
+| Decide | Present results, TCO, security evidence, migration effort, and ownership | Should the organization commit? |
+| Adopt | Build the production path, enable operators, integrate governance, and complete handoff | Can teams run it safely? |
+| Expand | Measure realized value, remove adoption friction, and create reusable patterns | Where should it be used next? |
+
+Different stakeholders answer different parts. Practitioners test the workflow. Platform teams judge operability. Security and risk teams govern the boundary. Finance and procurement test the business case. Executives decide whether the change supports the organization's priorities.
+
+A trusted advisor makes those decisions visible. Do not treat a successful benchmark as approval to purchase, or a signed agreement as proof of production adoption.
+
 ## The expected knowledge map
 
 An architect does not need equal depth everywhere. They do need to move across the layers without losing the thread.
@@ -57,6 +73,7 @@ An architect does not need equal depth everywhere. They do need to move across t
 | Security and identity | Define trust boundaries, private access, workload identity, secrets, tenancy, and audit |
 | Reliability | Set acceptance tests, observability, spare capacity, recovery, and operational ownership |
 | Economics | Size the workload and explain utilization, reservations, migration costs, and TCO |
+| Enterprise adoption | Connect evaluation, governance, technical buying decisions, onboarding, value realization, and expansion |
 | Communication and delivery | Lead discovery, workshops, technical decisions, risk reviews, and handoff across mixed audiences |
 
 You should be able to explain all of these in plain language. You should be hands-on enough to build or debug a representative path through the platform.
@@ -239,16 +256,44 @@ A strong engagement leaves reusable artifacts:
 - Discovery notes and agreed success criteria
 - Architecture diagram and decision record
 - Workload sizing and TCO model
+- Business case linking the platform change to a measurable outcome
 - Proof-of-concept plan
 - Infrastructure as Code and deployment examples
 - Benchmark and acceptance-test results
 - Model lifecycle, promotion gates, and monitoring plan
 - Security and data-flow review
 - Production-readiness checklist
-- Runbooks, ownership, and escalation path
+- Quickstarts, runbooks, ownership, and escalation path
 - Technical workshop and short decision summary
 
 The artifacts should help the team operate without the architect in the room.
+
+## Workshops, demos, and briefings
+
+These are different tools:
+
+- A **discovery workshop** should end with agreed requirements, assumptions, stakeholders, and open questions.
+- An **architecture workshop** should end with decisions, alternatives, risks, and owners.
+- A **demonstration** should prove a small number of claims with realistic data and a backup path if the live environment fails.
+- A **technical enablement session** should leave the customer able to repeat the task without the presenter.
+- An **executive briefing** should state the outcome, evidence, cost range, largest risks, and next decision.
+- A **public workshop or hackathon** needs a tested starting environment, time-boxed milestones, support plan, and fallback when setup fails.
+
+Design the session backward from its output. A slide deck is not the outcome.
+
+## Turning customer evidence into product feedback
+
+Useful feedback is specific enough for product and engineering to act on:
+
+- Customer scenario and affected users
+- Expected and observed behavior
+- Reproduction steps and technical evidence
+- Business or adoption impact
+- Current workaround and its cost
+- Frequency across customers
+- Desired outcome, without prescribing an untested implementation
+
+Separate a product gap from a documentation gap, support issue, configuration error, or feature request. Close the loop by telling the customer what was learned, what is owned, and when the next update will happen.
 
 ## How hands-on is hands-on?
 
@@ -280,11 +325,14 @@ You do not need to replace the kernel, fabric, storage, security, or ML speciali
 
 - [Workload Sizing and Economics](../05-ai-workloads/24-workload-sizing.md)
 - [The MLOps Lifecycle](../05-ai-workloads/25-mlops-lifecycle.md)
+- [Cloud ML Platform Landscape](../reference/cloud-ml-platform-landscape.md)
 - [Secure AI Platforms](33-secure-ai-platforms.md)
 - [From Proof of Concept to Production](34-poc-to-production.md)
 - [Workshop W13 — Workload Sizing and TCO](../05-workshops/W13-workload-sizing-tco.md)
 - [Workshop W14 — Enterprise AI Platform Capstone](../05-workshops/W14-enterprise-ai-platform.md)
 - [Workshop W15 — End-to-End MLOps](../05-workshops/W15-end-to-end-mlops.md)
+- [Workshop W16 — Kubernetes Operations for AI](../05-workshops/W16-kubernetes-ai-operations.md)
+- [Workshop W17 — Automate an AI Platform](../05-workshops/W17-automate-ai-platform.md)
 
 ---
 

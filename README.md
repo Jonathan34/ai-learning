@@ -27,8 +27,8 @@ This curriculum is designed for that gap.
 05-ai-workloads/             (ML foundations, workloads, sizing, and MLOps — 5 chapters)
 06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
 07-enterprise-architecture/  (Solution architecture and production adoption — 3 chapters)
-05-workshops/                (Hands-on practice — 15 workshops, multi-hour each)
-reference/                   (Glossary, papers, tools, gotchas, videos)
+05-workshops/                (Hands-on practice — 17 workshops, multi-hour each)
+reference/                   (Glossary, papers, tools, cloud platforms, gotchas, videos)
 ```
 
 ## Part I: Software engineering for AI
@@ -121,12 +121,15 @@ You can't reason about a field you haven't built in.
 - **W13. Workload Sizing and TCO** — build a small capacity and cost model
 - **W14. Enterprise AI Platform Capstone** — design and defend a production platform
 - **W15. End-to-End MLOps** — train, track, validate, deploy, monitor, promote, and roll back a model
+- **W16. Kubernetes Operations for AI** — operate networking, storage, scheduling, tenancy, failures, and upgrades
+- **W17. Automate an AI Platform** — provision a safe cloud platform with Terraform and validate it with Python
 
 ### Reference
 
 - **Glossary** — terms a PE needs in their vocabulary
 - **Papers to Know** — the ~20 papers that actually matter
 - **Tools and Models** — quick reference, caveat: changes fast
+- **Cloud ML Platform Landscape** — compare NVIDIA, AWS, Azure, and Google Cloud by architecture layer
 - **Gotchas** — consolidated list across all chapters
 - **AI Infrastructure Videos** — a guided watch list paired with the new chapters
 
@@ -136,7 +139,7 @@ Three ways to approach this depending on your time:
 
 **AI software sprint (2 weekends, ~20 hours).** Read Phase 1 and 2. Do W1, W2, and W4. You'll be conversant in applied AI.
 
-**AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W15. You'll be able to reason from model choice and lifecycle down to GPU, network, storage, and platform choices.
+**AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W17. You'll be able to reason from model choice and lifecycle down to GPU, network, storage, and platform choices.
 
 **Full stack (8-12 weeks, part-time).** Complete both parts and the core workshops. You'll be credible in software, platform, and architecture discussions.
 

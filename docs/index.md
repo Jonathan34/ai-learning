@@ -98,6 +98,8 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W13 | [Workload Sizing and TCO](05-workshops/W13-workload-sizing-tco.md) |
 | W14 | [Enterprise AI Platform Capstone](05-workshops/W14-enterprise-ai-platform.md) |
 | W15 | [End-to-End MLOps](05-workshops/W15-end-to-end-mlops.md) |
+| W16 | [Kubernetes Operations for AI](05-workshops/W16-kubernetes-ai-operations.md) |
+| W17 | [Automate an AI Platform](05-workshops/W17-automate-ai-platform.md) |
 
 ### Reference
 
@@ -106,6 +108,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | [Glossary](reference/glossary.md) | Terms a PE needs in their vocabulary |
 | [Papers to Know](reference/papers-to-know.md) | The ~20 papers that actually matter |
 | [Tools and Models](reference/tools-and-models.md) | Quick reference (changes fast) |
+| [Cloud ML Platform Landscape](reference/cloud-ml-platform-landscape.md) | Compare major AI stacks by architecture layer |
 | [Gotchas](reference/gotchas-consolidated.md) | Consolidated failure modes across all chapters |
 | [AI Infrastructure Videos](reference/ai-infrastructure-videos.md) | Guided videos for workloads, GPU platforms, and architecture |
 
@@ -115,6 +118,6 @@ You're a senior software engineer, architect, or engineering leader. You know di
 
 **AI software sprint (2 weekends, ~20 hours):** Read Phase 1 and 2. Do W1, W2, and W4.
 
-**AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W15.
+**AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W17.
 
 **Full stack (8-12 weeks, part-time):** Complete both parts and the core workshops. Ship one production-grade project.

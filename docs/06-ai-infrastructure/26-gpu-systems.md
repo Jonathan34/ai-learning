@@ -99,6 +99,22 @@ From bottom to top:
 
 Version skew is one of the most common failures. The host driver, container CUDA version, communication library, and framework need a tested compatibility matrix.
 
+### CUDA, OpenCL, and the framework layer
+
+These names sit at different levels:
+
+| Layer | Purpose |
+|---|---|
+| GPU driver | Lets the operating system and applications communicate with the device |
+| CUDA | NVIDIA's programming platform, runtime, compiler, and core GPU APIs |
+| Accelerated libraries | Implement common operations; examples include cuBLAS, cuDNN, and NCCL |
+| OpenCL | An open standard for compute across hardware from different vendors |
+| ML framework | Builds models and sends tensor operations to the lower libraries |
+
+Most ML engineers use PyTorch, TensorFlow, or JAX rather than writing CUDA kernels. The framework still depends on a compatible driver, runtime, and library stack.
+
+CUDA dominates the NVIDIA AI ecosystem. OpenCL matters when portability across vendors is a requirement, but it has a smaller role in modern large-model training stacks. An architect should be able to explain the boundary and debug compatibility without being a GPU-kernel programmer.
+
 ## Health signals
 
 DCGM, the Data Center GPU Manager, exposes utilization, memory activity, power, temperature, ECC errors, PCIe and NVLink traffic, and diagnostic tests.

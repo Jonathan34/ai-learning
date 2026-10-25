@@ -4,7 +4,7 @@
 
 **Time:** 3-4 hours
 
-**Prerequisites:** Python, basic testing, and Chapters 24-29
+**Prerequisites:** Python, basic testing, and familiarity with distributed training, cluster networking, and reliability
 
 ---
 
