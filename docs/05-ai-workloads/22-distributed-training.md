@@ -67,17 +67,33 @@ Activation checkpointing reduces memory by discarding some activations and recom
 
 ## The parallelism toolbox
 
-There is no single "distributed training" switch. Different kinds of parallelism split different things.
+There is no single "distributed training" switch. A method may divide the input examples, the model's calculations, or the model state stored in memory.
 
-| Method | What is split | Main communication | Good default boundary |
+| Method | What is divided across GPUs | What each GPU does | Why GPUs communicate |
 |---|---|---|---|
-| Data parallelism | The batch | Gradient all-reduce | Across replicas |
-| FSDP / ZeRO | Parameters, gradients, optimizer state | All-gather and reduce-scatter | Across a fast cluster |
-| Tensor parallelism | Matrices inside each layer | Collective operations every layer | Inside a fast GPU interconnect domain |
-| Pipeline parallelism | Groups of layers | Activations between stages | Across nodes when the model needs it |
-| Expert parallelism | Mixture-of-experts layers | All-to-all token exchange | Where the network can sustain it |
+| Data parallelism | The examples in one global batch | Holds the full model and trains on its share of the examples | Average the gradients produced by every GPU |
+| FSDP / ZeRO | Ownership of model state: parameters, gradients, and optimizer state, depending on the method or ZeRO stage | Temporarily gathers the parameters needed for a layer, computes with them, then keeps only its assigned shards | Gather parameters and combine and repartition gradients |
+| Tensor parallelism | The matrix calculations inside each layer | Computes one slice of the same layer | Combine partial results during every layer |
+| Pipeline parallelism | Groups of complete layers | Runs one stage of the model | Pass activations forward and their gradients backward between stages |
+| Expert parallelism | The experts in a mixture-of-experts layer | Hosts some experts and processes tokens routed to them | Send tokens to the GPUs that host their chosen experts |
 
-**FSDP** is Fully Sharded Data Parallel. It gives each worker only part of the model state, then gathers each layer when needed.
+### What happens to the batch and gradients?
+
+The dataset is processed as a sequence of batches. With data parallelism, each training step divides one **global batch** among the GPUs:
+
+```text
+global batch: 1,024 examples
+  → GPU 0: 256 examples
+  → GPU 1: 256 examples
+  → GPU 2: 256 examples
+  → GPU 3: 256 examples
+```
+
+Each GPU has a full copy of the model. It runs the forward and backward passes on its 256 examples and produces a complete gradient for every weight. The four GPUs then average their gradients. Each model copy applies the same averaged update, so the copies remain identical.
+
+FSDP and some ZeRO stages change where those gradients are kept. As blocks of gradients are produced during the backward pass, a **reduce-scatter** operation averages each block across the GPUs and leaves each GPU responsible for only one part of the result. The gradients were not divided before training; their storage is partitioned as they are calculated.
+
+**FSDP** is Fully Sharded Data Parallel. It gives each worker ownership of only part of the model state, then gathers each layer when needed.
 
 **Tensor parallelism** is much more sensitive to latency because GPUs communicate within every layer. Keep it on the fastest available interconnect. On a conventional eight-GPU server, that usually means inside the server.
 
