@@ -71,7 +71,7 @@ There is no single "distributed training" switch. A method may divide the input 
 
 | Method | What is divided across GPUs | What each GPU does | Why GPUs communicate |
 |---|---|---|---|
-| Data parallelism | The examples in one global batch | Holds the full model and trains on its share of the examples | Average the gradients produced by every GPU |
+| Data parallelism | One global batch into one local batch per GPU | Holds the full model and trains on its local batch | Average the gradients produced by every GPU |
 | FSDP / ZeRO | Ownership of model state: parameters, gradients, and optimizer state, depending on the method or ZeRO stage | Temporarily gathers the parameters needed for a layer, computes with them, then keeps only its assigned shards | Gather parameters and combine and repartition gradients |
 | Tensor parallelism | The matrix calculations inside each layer | Computes one slice of the same layer | Combine partial results during every layer |
 | Pipeline parallelism | Groups of complete layers | Runs one stage of the model | Pass activations forward and their gradients backward between stages |
@@ -79,17 +79,23 @@ There is no single "distributed training" switch. A method may divide the input 
 
 ### What happens to the batch and gradients?
 
-The dataset is processed as a sequence of batches. With data parallelism, each training step divides one **global batch** among the GPUs:
+The **dataset** contains all training examples. Training processes it over many steps.
+
+At each step, the system selects one **global batch** from the dataset. Data parallelism divides that global batch into **local batches**, one for each GPU:
 
 ```text
-global batch: 1,024 examples
-  → GPU 0: 256 examples
-  → GPU 1: 256 examples
-  → GPU 2: 256 examples
-  → GPU 3: 256 examples
+dataset: all training examples
+  → training step: global batch of 1,024 examples
+      → GPU 0: local batch of 256 examples
+      → GPU 1: local batch of 256 examples
+      → GPU 2: local batch of 256 examples
+      → GPU 3: local batch of 256 examples
+  → next training step: next global batch
 ```
 
-Each GPU has a full copy of the model. It runs the forward and backward passes on its 256 examples and produces a complete gradient for every weight. The four GPUs then average their gradients. Each model copy applies the same averaged update, so the copies remain identical.
+So yes: each GPU processes one local batch during the step. Together, those four local batches form the global batch used for one model update.
+
+Each GPU has a full copy of the model. It runs the forward and backward passes on its local batch and produces a complete gradient for every weight. The four GPUs then average their gradients. Each model copy applies the same averaged update, so the copies remain identical.
 
 FSDP and some ZeRO stages change where those gradients are kept. As blocks of gradients are produced during the backward pass, a **reduce-scatter** operation averages each block across the GPUs and leaves each GPU responsible for only one part of the result. The gradients were not divided before training; their storage is partitioned as they are calculated.
 
