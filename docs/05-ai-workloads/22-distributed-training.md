@@ -132,7 +132,11 @@ Track **goodput** too: the share of wall-clock time that produces useful trainin
 
 ## Training time estimate
 
-A common estimate for dense transformer training is:
+A **dense transformer** uses the same complete set of layers for every token. Each token passes through every attention and feed-forward layer, so nearly all the model's parameters take part in its computation.
+
+This differs from a **mixture-of-experts**, or MoE, transformer. An MoE model has many alternative expert blocks and routes each token through only a small selection of them. It may therefore have many total parameters but use only a fraction for each token.
+
+A common estimate for training a dense transformer is:
 
 ```text
 training FLOPs ≈ 6 × parameters × training tokens
@@ -142,6 +146,8 @@ time ≈ training FLOPs /
 ```
 
 Treat the result as a range. MFU is an assumption until the real code, data path, and parallelism run on the target cluster.
+
+For an MoE model, total parameter count is not enough for this estimate because not every expert processes every token. Use the number of active parameters and account for the cost of routing and moving tokens between experts.
 
 ## Failure is part of the design
 
