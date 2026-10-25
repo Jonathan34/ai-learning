@@ -6,7 +6,7 @@ Every GPU repeats the same training step. At scale, the GPUs must exchange data 
 
 ## One training step, in plain English
 
-A model contains billions of **weights**: learned numbers that control how an input is transformed into an output. Training adjusts those weights a little at a time.
+A model contains learned numbers called **parameters**. Most are weights that control how an input is transformed into an output. A small model may have millions of parameters; the language models discussed in distributed training commonly have billions. Training adjusts the trainable parameters a little at a time.
 
 Each step processes a **batch**, which is a small group of training examples:
 
@@ -32,7 +32,13 @@ weight → layer result → prediction → loss
 
 It starts at the end and checks each link in reverse: how a small change in the prediction affects the loss, how a small change in the layer result affects the prediction, and finally how a small change in the weight affects the layer result. For this simple chain, it multiplies the effect measured at each link. The result says how a small change in the weight would change the loss. That result is the weight's **gradient**. Frameworks such as PyTorch do this automatically for every weight; this is **automatic differentiation**.
 
-### Worked example: one weight
+### Worked example: one weight out of billions
+
+One weight is not a typical model. It is the smallest useful example of the calculation.
+
+Real models store weights in large matrices. A single `4,096 × 4,096` matrix contains `16,777,216` weights. A model described as **7B** has roughly 7 billion parameters spread across many such matrices and other tensors.
+
+During full training, the backward pass calculates roughly one gradient for every trainable parameter. GPUs calculate many of them in parallel. We isolate one weight below because the same basic rule applies to each of them.
 
 Use a deliberately small model:
 
