@@ -58,9 +58,15 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Batching** — processing multiple requests together for throughput
 
-- **Attention head / Query head** — one independent slice of an attention layer that matches a query against keys
+- **Query (Q)** — a learned numeric vector representing what information the current position needs
 
-- **KV head** — one key and value projection in an attention layer; it may be used by one or several query heads
+- **Key (K)** — a learned numeric vector used to decide how well a sequence position matches a query
+
+- **Value (V)** — a learned numeric vector containing the information returned from a matching position
+
+- **Attention head / Query head** — one query-key-value lookup process; several run in parallel in an attention layer
+
+- **KV head** — one set of key and value projections that may be searched by one or several query heads
 
 - **MHA (Multi-Head Attention)** — each query head has its own key and value head
 

@@ -43,11 +43,54 @@ token representations
 
 Each layer receives the representations produced by the previous layer and transforms them again. A token therefore has a different representation at layer 1, layer 2, and so on.
 
-In each layer that performs attention, the layer creates three vectors from its current representation of a token:
+### A mental model: question, label, content
 
-- **Query:** what information the current position needs from the sequence
-- **Key:** how this position can be matched by another position
-- **Value:** the information this position can contribute
+Attention lets the current position retrieve useful information from the
+sequence. A simple way to remember the three parts is:
+
+- **Query (Q) asks:** what information might help at the current position?
+- **Key (K) labels:** what kind of match can this position offer?
+- **Value (V) supplies:** what information should be returned if it matches?
+
+The query, keys, and values are learned lists of numbers, not readable
+questions, labels, or text. Those words describe their jobs in the
+calculation.
+
+One attention head performs four high-level steps:
+
+1. Create a query for the current position.
+2. Compare that query with the key for every visible position.
+3. Turn the match scores into weights that add up to `1`.
+4. Use the weights to mix the corresponding values.
+
+```text
+one query
+    ↓ compare with every key
+match scores
+    ↓ convert to weights
+0.02, 0.10, 0.03, 0.80, 0.05
+    ↓ use those weights to mix the values
+attention result
+```
+
+For a simplified illustration, consider:
+
+```text
+tokens:  [The] [capital] [of] [France] [is]
+weights:  2%     10%     3%     80%      5%
+```
+
+An attention head processing the final position has placed most of its weight
+on `[France]`. Its result therefore contains much more of the value from the
+`[France]` position than from the other positions. The model learns these
+matches during training; an individual head does not always have a neat,
+human-readable purpose.
+
+The short memory aid is:
+
+```text
+Q asks → K matches → V supplies
+```
 
 The timing matters: the model does not have a query from the token it is
 about to predict. It creates a query from a token that is already in the
@@ -92,7 +135,25 @@ Without the cache, generating each new token would require recalculating keys an
 
 ## Attention heads and KV heads
 
-A model does not perform only one attention calculation per layer. It divides its hidden representation into several **query heads**, usually called attention heads. Each head can learn a different way to match information.
+One **attention head**, also called a **query head**, is one run of the
+query-key-value process described above. A model uses many heads in parallel
+because different learned queries can retrieve different information.
+
+A **KV head** is one set of keys and values that query heads can search. Think
+of the query heads as searchers and the KV heads as sets of searchable cards:
+
+```text
+query head = one searcher
+KV head    = one set of key labels and value contents
+attention  = match a searcher's query to the labels, then mix the contents
+```
+
+There is normally no separate term called a **QV head**. `Q`, `K`, and `V`
+are the three roles. `K` and `V` are grouped in the names **KV head** and
+**KV cache** because their past results are stored and reused together.
+
+After all query heads finish, the layer combines their attention results into
+one representation and continues to the feed-forward part of the layer.
 
 For example:
 
@@ -102,13 +163,17 @@ query heads: 32
 head dimension: 4,096 / 32 = 128 values per head
 ```
 
-A **KV head** is one key projection and one value projection. The number of KV heads depends on the model's attention design:
+The number of KV heads depends on the model's attention design:
 
 | Design | Example with 32 query heads | Sharing | Relative KV-cache size |
 |---|---:|---|---:|
 | Multi-head attention, MHA | 32 KV heads | Each query head has its own key and value head | 1× |
 | Grouped-query attention, GQA | 8 KV heads | Four query heads share each KV head | 1/4 |
 | Multi-query attention, MQA | 1 KV head | All 32 query heads share one KV head | 1/32 |
+
+With 32 query heads and 8 KV heads, each group of four query heads uses the
+same set of keys and values. The four queries are still different; only the
+information they search is shared.
 
 GQA and MQA reduce cache memory and the amount of cache data read during decoding. The trade-off is that more query heads share the same key and value representation. The model designer chooses this structure during model development and training; a serving operator normally cannot change the KV-head count.
 
