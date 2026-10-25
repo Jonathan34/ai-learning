@@ -8,6 +8,8 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Parameters** — the learned weights of a model; "70B parameters" means ~70 billion of them
 
+- **Transformer layer / block** — one repeated processing stage, usually containing attention followed by a feed-forward network
+
 - **Pretraining** — the initial, compute-heavy stage of training on broad text
 
 - **Fine-tuning** — continuing to train on a specific dataset to specialize the model

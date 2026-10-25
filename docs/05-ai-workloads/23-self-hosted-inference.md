@@ -30,7 +30,20 @@ Add runtime overhead and the **KV cache**.
 
 ## What the KV cache stores
 
-At every transformer layer, attention creates three vectors for each token:
+A transformer is built from a stack of processing blocks, usually called **layers**. A simplified 32-layer model looks like:
+
+```text
+token representations
+  → layer 1: attention, then feed-forward processing
+  → layer 2: attention, then feed-forward processing
+  → ...
+  → layer 32: attention, then feed-forward processing
+  → output scores
+```
+
+Each layer receives the representations produced by the previous layer and transforms them again. A token therefore has a different representation at layer 1, layer 2, and so on.
+
+In each layer that performs attention, the layer creates three vectors from its current representation of a token:
 
 - **Query:** what information this token is looking for
 - **Key:** what information this token can be matched on
@@ -49,6 +62,10 @@ attention result for the new token
 ```
 
 The query for an earlier token is no longer needed. Its key and value are needed every time a later token attends to it, so the server keeps them in the KV cache.
+
+Each attention layer creates different keys and values because its input representations are different. The cache therefore keeps a separate key and value for every cached token at every attention layer.
+
+Most standard transformer layers contain attention. Some model architectures mix attention layers with other kinds of layers or use different cache rules. For sizing, count the layers that actually store keys and values.
 
 Without the cache, generating each new token would require recalculating keys and values for the entire sequence. The cache trades GPU memory for much less repeated computation.
 
@@ -101,7 +118,10 @@ A useful estimate is:
 
 ```text
 KV bytes per token =
-  2 × layers × KV heads × head dimension × bytes per value
+  2 × attention layers with a KV cache
+    × KV heads
+    × head dimension
+    × bytes per value
 ```
 
 The first `2` means one key and one value.
