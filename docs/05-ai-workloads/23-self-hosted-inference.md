@@ -26,18 +26,130 @@ weight memory = parameter count × bytes per parameter
 | FP8 | 1 | 70 GB |
 | INT4 / FP4 | 0.5 | 35 GB |
 
-Add runtime overhead and the **KV cache**, which stores attention keys and values for tokens already processed.
+Add runtime overhead and the **KV cache**.
 
-A useful cache estimate is:
+## What the KV cache stores
+
+At every transformer layer, attention creates three vectors for each token:
+
+- **Query:** what information this token is looking for
+- **Key:** what information this token can be matched on
+- **Value:** the information this token can contribute
+
+During generation, the new token's query is compared with the keys from earlier tokens. The resulting scores decide how much of each earlier value to use:
+
+```text
+new token's query
+        ↓ compare
+cached keys from earlier tokens
+        ↓ produce attention scores
+cached values from earlier tokens
+        ↓ weighted combination
+attention result for the new token
+```
+
+The query for an earlier token is no longer needed. Its key and value are needed every time a later token attends to it, so the server keeps them in the KV cache.
+
+Without the cache, generating each new token would require recalculating keys and values for the entire sequence. The cache trades GPU memory for much less repeated computation.
+
+## Attention heads and KV heads
+
+A model does not perform only one attention calculation per layer. It divides its hidden representation into several **query heads**, usually called attention heads. Each head can learn a different way to match information.
+
+For example:
+
+```text
+hidden size: 4,096
+query heads: 32
+head dimension: 4,096 / 32 = 128 values per head
+```
+
+A **KV head** is one key projection and one value projection. The number of KV heads depends on the model's attention design:
+
+| Design | Example with 32 query heads | Sharing | Relative KV-cache size |
+|---|---:|---|---:|
+| Multi-head attention, MHA | 32 KV heads | Each query head has its own key and value head | 1× |
+| Grouped-query attention, GQA | 8 KV heads | Four query heads share each KV head | 1/4 |
+| Multi-query attention, MQA | 1 KV head | All 32 query heads share one KV head | 1/32 |
+
+GQA and MQA reduce cache memory and the amount of cache data read during decoding. The trade-off is that more query heads share the same key and value representation. The model designer chooses this structure during model development and training; a serving operator normally cannot change the KV-head count.
+
+The **head dimension** is the number of values in one head's key or value vector. It is often:
+
+```text
+head dimension = hidden size / query heads
+```
+
+Do not assume that formula for every architecture. Some models store an explicit head dimension.
+
+The model configuration commonly exposes fields such as:
+
+```text
+num_hidden_layers
+hidden_size
+num_attention_heads
+num_key_value_heads
+head_dim
+torch_dtype
+```
+
+The exact names vary. Use the model configuration and serving engine rather than guessing from the model's parameter count.
+
+## Worked KV-cache calculation
+
+A useful estimate is:
 
 ```text
 KV bytes per token =
   2 × layers × KV heads × head dimension × bytes per value
 ```
 
-Then multiply by tokens in flight across all active requests. Long context and high concurrency can make the cache larger than the weights.
+The first `2` means one key and one value.
 
-Grouped-query attention, lower-precision cache values, shorter context limits, paging, and offload can reduce the footprint.
+Assume a model has:
+
+- 32 layers
+- 32 query heads
+- 8 KV heads using GQA
+- Head dimension of 128
+- BF16 cache values at 2 bytes each
+
+```text
+KV bytes per token
+  = 2 × 32 × 8 × 128 × 2
+  = 131,072 bytes
+  = 128 KiB, where 1 KiB = 1,024 bytes
+```
+
+One request holding 8,192 prompt and generated tokens needs:
+
+```text
+128 KiB × 8,192 tokens = 1 GiB
+```
+
+One GiB is `1,024³` bytes. One hundred requests at that length need about `100 GiB` of KV cache across the model replica, before allocator and runtime overhead.
+
+If the same example used MHA with 32 KV heads, the cache would be four times larger:
+
+```text
+512 KiB per token
+4 GiB per 8,192-token request
+400 GiB for 100 such requests
+```
+
+For requests with different lengths, add their current sequence lengths:
+
+```text
+total KV cache =
+  KV bytes per token ×
+  sum of current tokens across active requests
+```
+
+Tensor parallelism may split that cache across the GPUs in one replica. It lowers the cache stored on each GPU but does not change the replica's total.
+
+Long context and high concurrency can make the cache larger than the weights.
+
+GQA or MQA, lower-precision cache values, shorter context limits, prefix sharing, paging, sliding-window attention, and offload can reduce the GPU footprint. Paging mainly reduces wasted space; offload saves GPU memory but adds data movement and may hurt latency.
 
 ## The serving loop
 

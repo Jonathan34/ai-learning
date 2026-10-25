@@ -56,7 +56,17 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **Batching** — processing multiple requests together for throughput
 
-- **KV cache** — intermediate computation stored during generation, freed at the end
+- **Attention head / Query head** — one independent slice of an attention layer that matches a query against keys
+
+- **KV head** — one key and value projection in an attention layer; it may be used by one or several query heads
+
+- **MHA (Multi-Head Attention)** — each query head has its own key and value head
+
+- **GQA (Grouped-Query Attention)** — groups of query heads share fewer key and value heads, reducing KV-cache size
+
+- **MQA (Multi-Query Attention)** — all query heads share one key and value head
+
+- **KV cache** — keys and values retained for earlier tokens so generation does not recalculate them at every step
 
 ## Quantization
 
