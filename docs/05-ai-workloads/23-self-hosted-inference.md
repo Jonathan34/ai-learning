@@ -45,23 +45,44 @@ Each layer receives the representations produced by the previous layer and trans
 
 In each layer that performs attention, the layer creates three vectors from its current representation of a token:
 
-- **Query:** what information this token is looking for
-- **Key:** what information this token can be matched on
-- **Value:** the information this token can contribute
+- **Query:** what information the current position needs from the sequence
+- **Key:** how this position can be matched by another position
+- **Value:** the information this position can contribute
 
-During generation, the new token's query is compared with the keys from earlier tokens. The resulting scores decide how much of each earlier value to use:
+The timing matters: the model does not have a query from the token it is
+about to predict. It creates a query from a token that is already in the
+sequence.
+
+For example, suppose the prompt has been split into these tokens:
 
 ```text
-new token's query
-        ↓ compare
-cached keys from earlier tokens
-        ↓ produce attention scores
-cached values from earlier tokens
-        ↓ weighted combination
-attention result for the new token
+[The] [capital] [of] [France] [is]
 ```
 
-The query for an earlier token is no longer needed. Its key and value are needed every time a later token attends to it, so the server keeps them in the KV cache.
+The initial prompt pass calculates keys and values for all five tokens. The
+representation at the final position, `[is]`, helps the model predict the
+token that follows it, perhaps `[Paris]`.
+
+After `[Paris]` is selected, it is appended to the sequence and becomes the
+current input for the next generation step. At each attention layer:
+
+```text
+query calculated from [Paris]
+        ↓ compared with
+keys for [The] [capital] [of] [France] [is] [Paris]
+        ↓ produce attention scores
+corresponding values are combined using those scores
+        ↓
+attention result helps predict the token after [Paris]
+```
+
+Here, **previous tokens** means the prompt tokens and generated tokens that
+were appended before the current token. The current token can also attend to
+itself. Its new key and value join the cache for later generation steps.
+
+A query is needed only while processing its position. A token's key and value
+may be used whenever a later position attends to it, so the server keeps them
+in the KV cache.
 
 Each attention layer creates different keys and values because its input representations are different. The cache therefore keeps a separate key and value for every cached token at every attention layer.
 

@@ -68,7 +68,7 @@ Terms a PE should know and be able to use correctly. Organized roughly by catego
 
 - **MQA (Multi-Query Attention)** — all query heads share one key and value head
 
-- **KV cache** — keys and values retained for earlier tokens so generation does not recalculate them at every step
+- **KV cache** — keys and values retained for prompt tokens and generated tokens already processed, so later generation steps do not recalculate them
 
 ## Quantization
 
