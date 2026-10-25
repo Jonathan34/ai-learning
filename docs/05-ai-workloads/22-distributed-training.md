@@ -24,7 +24,13 @@ flowchart LR
 
 **Loss.** The training code compares the prediction with the expected answer and produces one number that represents how wrong the model was. Lower is better for that batch, but one low number does not mean the model is good overall.
 
-**Backward pass.** The system asks, for every weight: "If this number changed slightly, would the error become larger or smaller, and by how much?" It follows the saved calculations backward from the loss to answer that question. The result for each weight is called its **gradient**. Frameworks such as PyTorch calculate these gradients automatically; this is **automatic differentiation**.
+**Backward pass.** The system asks, for every weight: "If this number changed slightly, would the error become larger or smaller, and by how much?" Consider a simplified chain:
+
+```text
+weight → layer result → prediction → loss
+```
+
+It starts at the end and checks each link in reverse: how a small change in the prediction affects the loss, how a small change in the layer result affects the prediction, and finally how a small change in the weight affects the layer result. For this simple chain, it multiplies the effect measured at each link. The result says how a small change in the weight would change the loss. That result is the weight's **gradient**. Frameworks such as PyTorch do this automatically for every weight; this is **automatic differentiation**.
 
 **Optimizer step.** The gradients provide directions, but they do not change the model themselves. An optimizer such as AdamW uses them to nudge each weight a small distance in the direction expected to reduce the error. The gradients are then cleared and the next batch starts.
 
