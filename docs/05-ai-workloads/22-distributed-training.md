@@ -32,11 +32,64 @@ weight → layer result → prediction → loss
 
 It starts at the end and checks each link in reverse: how a small change in the prediction affects the loss, how a small change in the layer result affects the prediction, and finally how a small change in the weight affects the layer result. For this simple chain, it multiplies the effect measured at each link. The result says how a small change in the weight would change the loss. That result is the weight's **gradient**. Frameworks such as PyTorch do this automatically for every weight; this is **automatic differentiation**.
 
+### Worked example: one weight
+
+Use a deliberately small model:
+
+```text
+prediction = weight × input
+loss = (prediction - expected answer)²
+```
+
+Suppose the input is `2`, the expected answer is `10`, and the current weight is `3`.
+
+The forward pass calculates:
+
+```text
+prediction = 3 × 2 = 6
+loss = (6 - 10)² = 16
+```
+
+To see what the gradient means, increase the weight by only `0.001`:
+
+```text
+new prediction = 3.001 × 2 = 6.002
+new loss = (6.002 - 10)² = 15.984004
+
+change in loss / change in weight
+  = (15.984004 - 16) / 0.001
+  ≈ -16
+```
+
+This small test shows that increasing the weight slightly decreases the loss. The gradient is about `-16`: around this point, a `0.001` increase in the weight produces roughly a `0.016` decrease in the loss.
+
+Trying a small change for each of billions of weights would be far too slow. The backward pass gets the same result from the operations already used by the model:
+
+```text
+loss = (prediction - expected answer)²
+local rate of change = 2 × (6 - 10) = -8
+
+prediction = weight × input
+local rate of change = input = 2
+
+gradient for the weight = -8 × 2 = -16
+```
+
+The first `-8` describes how the loss changes when the prediction changes. The `2` describes how the prediction changes when the weight changes. Multiplying them connects the two links and gives the effect of the weight on the loss.
+
+The negative gradient means increasing the weight should reduce the loss. With a learning rate of `0.01`, a basic optimizer update is:
+
+```text
+new weight = 3 - (0.01 × -16) = 3.16
+```
+
+The next forward pass produces a prediction closer to `10`. A real neural network repeats this calculation through many connected operations for billions of weights. Automatic differentiation handles that bookkeeping.
+
 **Optimizer step.** The gradients provide directions, but they do not change the model themselves. An optimizer such as AdamW uses them to nudge each weight a small distance in the direction expected to reduce the error. The gradients are then cleared and the next batch starts.
 
 Training repeats this cycle many times. The useful behavior comes from millions of small weight updates, not one dramatic change.
 
-In data-parallel training, each GPU processes a different batch. The GPUs combine their gradients before the optimizer step so their copies of the model stay in sync.
+In data-parallel training, each GPU processes a different local batch. The GPUs combine their gradients before the optimizer step so their copies of the model stay in sync.
 
 ## What training needs
 
@@ -59,7 +112,23 @@ Inference mainly stores model weights and a working cache. Full training stores 
 - Optimizer state
 - Activations saved for the backward pass
 
-For mixed-precision training with Adam, a useful first estimate is about **16 bytes per parameter**, before activations. A 70-billion-parameter model is therefore around 1.12 TB of model and optimizer state.
+For mixed-precision training with Adam, a common simplified estimate is:
+
+```text
+2 bytes  low-precision weight
+2 bytes  gradient
+4 bytes  full-precision copy of the weight
+4 bytes  Adam running average
+4 bytes  Adam running variance
+--------
+16 bytes per parameter, before activations
+```
+
+A 70-billion-parameter model is therefore roughly:
+
+```text
+70 billion × 16 bytes = 1.12 TB
+```
 
 That estimate is not a capacity plan. Framework choices change it. It is a quick way to prove that the job needs sharding.
 
@@ -96,6 +165,22 @@ dataset: all training examples
 So yes: each GPU processes one local batch during the step. Together, those four local batches form the global batch used for one model update.
 
 Each GPU has a full copy of the model. It runs the forward and backward passes on its local batch and produces a complete gradient for every weight. The four GPUs then average their gradients. Each model copy applies the same averaged update, so the copies remain identical.
+
+For one simplified weight, two GPUs might produce:
+
+```text
+GPU 0
+  local examples: A and B
+  local gradient: -12
+
+GPU 1
+  local examples: C and D
+  local gradient: -20
+
+all-reduce average: (-12 - 20) / 2 = -16
+```
+
+Both GPUs give `-16` to their optimizers and make the same weight update. The training collective shares the gradients, not examples A, B, C, and D. With a real model, each local gradient is a large tensor containing one value for every weight rather than a single number.
 
 FSDP and some ZeRO stages change where those gradients are kept. As blocks of gradients are produced during the backward pass, a **reduce-scatter** operation averages each block across the GPUs and leaves each GPU responsible for only one part of the result. The gradients were not divided before training; their storage is partitioned as they are calculated.
 
@@ -143,6 +228,28 @@ training FLOPs ≈ 6 × parameters × training tokens
 
 time ≈ training FLOPs /
        (GPU count × peak FLOP/s per GPU × expected MFU)
+```
+
+For example, assume:
+
+- 1 billion parameters
+- 100 billion training tokens
+- 100 GPUs rated at 100 teraFLOP/s each
+- 50% expected MFU
+
+```text
+training work
+  = 6 × 1 billion × 100 billion
+  = 600,000,000,000,000,000,000 FLOPs
+
+effective cluster performance
+  = 100 GPUs × 100,000,000,000,000 FLOP/s × 0.50
+  = 5,000,000,000,000,000 FLOP/s
+
+estimated time
+  = training work / effective cluster performance
+  = 120,000 seconds
+  ≈ 33 hours
 ```
 
 Treat the result as a range. MFU is an assumption until the real code, data path, and parallelism run on the target cluster.
