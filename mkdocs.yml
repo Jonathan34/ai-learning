@@ -171,6 +171,9 @@ nav:
       - End-to-End MLOps: 05-workshops/W15-end-to-end-mlops.md
       - Kubernetes Operations for AI: 05-workshops/W16-kubernetes-ai-operations.md
       - Automate an AI Platform: 05-workshops/W17-automate-ai-platform.md
+  - Quizzes:
+      - Overview: 08-quizzes/index.md
+      - AI Infrastructure Solutions Architect Interview: 08-quizzes/ai-infrastructure-solutions-architect-interview.md
   - Perspectives:
       - Overview: perspectives/index.md
       - "Neurology of AI Safety": perspectives/neurology-of-ai-safety.md

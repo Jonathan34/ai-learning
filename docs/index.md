@@ -101,6 +101,12 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W16 | [Kubernetes Operations for AI](05-workshops/W16-kubernetes-ai-operations.md) |
 | W17 | [Automate an AI Platform](05-workshops/W17-automate-ai-platform.md) |
 
+## Quizzes
+
+| Quiz | What it tests |
+|---|---|
+| [AI Infrastructure Solutions Architect Interview](08-quizzes/ai-infrastructure-solutions-architect-interview.md) | Technical depth, workload sizing, architecture cases, and customer communication |
+
 ### Reference
 
 | Document | Description |

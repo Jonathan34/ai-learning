@@ -27,6 +27,7 @@ This curriculum is designed for that gap.
 05-ai-workloads/             (ML foundations, workloads, sizing, and MLOps — 5 chapters)
 06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
 07-enterprise-architecture/  (Solution architecture and production adoption — 3 chapters)
+08-quizzes/                  (Interview and knowledge checks)
 05-workshops/                (Hands-on practice — 17 workshops, multi-hour each)
 reference/                   (Glossary, papers, tools, cloud platforms, gotchas, videos)
 ```
@@ -123,6 +124,10 @@ You can't reason about a field you haven't built in.
 - **W15. End-to-End MLOps** — train, track, validate, deploy, monitor, promote, and roll back a model
 - **W16. Kubernetes Operations for AI** — operate networking, storage, scheduling, tenancy, failures, and upgrades
 - **W17. Automate an AI Platform** — provision a safe cloud platform with Terraform and validate it with Python
+
+## Quizzes
+
+- **AI Infrastructure Solutions Architect Interview** — 40 questions with hidden model answers across AI/ML, MLOps, distributed training, inference, GPU infrastructure, architecture cases, and customer communication
 
 ### Reference
 
