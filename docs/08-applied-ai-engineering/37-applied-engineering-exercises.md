@@ -4,12 +4,15 @@ These exercises combine practical application code with senior system design.
 Several are simplified adaptations of the public
 [Hack2Hire OpenAI coding list](https://www.hack2hire.com/question-bank/companies/openai/coding-questions)
 and [system design list](https://www.hack2hire.com/question-bank/companies/openai/system-design).
-Treat those lists as practice material, not proof that a specific question
-will appear in an interview.
+The lists are starting points for skill practice rather than a required set of
+questions.
 
 The original prompts sometimes use specialist business language. The versions
 here state the engineering problem in ordinary words and define any domain
 term that remains.
+
+Use these exercises to become proficient in practical coding and system
+design. They can also help with job interviews if you need that practice.
 
 ## How to run a coding exercise
 

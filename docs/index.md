@@ -139,6 +139,6 @@ You're a senior software engineer, architect, or engineering leader. You know di
 
 **AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W17.
 
-**Applied AI interview path (2-3 weeks, part-time):** Read Phase 8. Do four coding exercises, four system design exercises, the support-agent deep dive, and W18.
+**Applied AI proficiency path (2-3 weeks, part-time):** Read Phase 8. Do four coding exercises, four system design exercises, the support-agent deep dive, and W18.
 
 **Full stack (8-12 weeks, part-time):** Complete both parts and the core workshops. Ship one production-grade project.

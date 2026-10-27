@@ -162,7 +162,7 @@ Three ways to approach this depending on your time:
 
 **AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W17. You'll be able to reason from model choice and lifecycle down to GPU, network, storage, and platform choices.
 
-**Applied AI interview path (2-3 weeks, part-time).** Read Phase 8. Do four coding and four system design exercises, present the support-agent deep dive, and complete W18.
+**Applied AI proficiency path (2-3 weeks, part-time).** Read Phase 8. Do four coding and four system design exercises, present the support-agent deep dive, and complete W18.
 
 **Full stack (8-12 weeks, part-time).** Complete both parts and the core workshops. You'll be credible in software, platform, and architecture discussions.
 

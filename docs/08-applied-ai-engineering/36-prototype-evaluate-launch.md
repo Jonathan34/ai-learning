@@ -226,7 +226,10 @@ evidence attached:
 Aggregate repeated patterns. Ten examples across four customers are more
 useful than one loud complaint.
 
-## A 45-minute interview structure
+## A 45-minute design practice
+
+Use this to rehearse a clear design under time pressure. The same structure is
+useful if you later need it for a system-design interview.
 
 ```text
 0-5 min    clarify the user, goal, scale, and failure cost

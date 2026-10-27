@@ -1,13 +1,14 @@
 # Applied AI Engineering
 
 Applied AI work sits between product discovery, software engineering, and
-customer architecture. The job is not to demonstrate a model. It is to find a
+customer architecture. The goal is not to demonstrate a model. It is to find a
 valuable problem, build enough of the real system to test it, measure whether
 it works, and help the customer run it in production.
 
 This section is for a senior engineer or architect who already understands the
-basics of LLM applications. It focuses on the part that interviews and real
-customer work expose quickly: how you think when the problem is unclear.
+basics of LLM applications. It focuses on what real customer work exposes
+quickly: how you think when the problem is unclear. The same practice can also
+help with technical job interviews when needed.
 
 | # | Chapter |
 |---|---|

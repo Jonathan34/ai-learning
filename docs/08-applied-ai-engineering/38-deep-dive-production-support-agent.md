@@ -377,7 +377,7 @@ Each stage has a stop metric, owner, and rollback path.
 - production backlog with owners;
 - a short decision document: launch, iterate, or stop.
 
-## How to present this in an interview
+## How to present the design
 
 Lead with:
 
@@ -396,6 +396,9 @@ Then cover:
 
 If time remains, go deep on idempotency, prompt injection through tool data,
 or how the eval becomes a release gate.
+
+This presentation shape works in a customer review or architecture meeting.
+It can also help with a technical job interview when needed.
 
 ## Go deeper
 

@@ -58,7 +58,7 @@ You're not here to become an ML researcher. You're here to become someone ML eng
 
 **Infrastructure bridge (4-6 weeks, part-time):** Phases 5-7 plus W11-W17. Use a real workload and real measurements whenever you can.
 
-**Applied AI interview path (2-3 weeks, part-time):** Phase 8, then four coding exercises, four system design exercises, the production support-agent deep dive, and W18.
+**Applied AI proficiency path (2-3 weeks, part-time):** Phase 8, then four coding exercises, four system design exercises, the production support-agent deep dive, and W18.
 
 ## One piece of advice
 

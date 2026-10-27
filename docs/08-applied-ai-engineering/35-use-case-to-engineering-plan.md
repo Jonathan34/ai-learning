@@ -211,7 +211,7 @@ A useful customer recommendation has this shape:
 
 Recommend one. Say what evidence would make you choose another.
 
-## What senior interviewers listen for
+## What good senior-level reasoning looks like
 
 - You clarify before designing.
 - You know which fact is measured and which is assumed.
@@ -220,6 +220,9 @@ Recommend one. Say what evidence would make you choose another.
 - You place human review according to the cost of failure.
 - You can build the prototype, not only draw it.
 - You have a path from prototype to adoption.
+
+These are useful standards for real design reviews. They also help in a
+technical job interview because they make your reasoning easy to follow.
 
 ## Review exercise
 
