@@ -156,6 +156,32 @@ idempotent because a job can run more than once.
                 job.lease_token = None
                 job.lease_deadline = None
                 return True
+
+
+    if __name__ == "__main__":
+        queue = WorkQueue(max_attempts=2)
+        queue.add("image-42", {"file": "photo.png"})
+
+        first_claim = queue.claim(now=0, lease_seconds=5)
+        retry = queue.claim(now=6, lease_seconds=5)
+
+        stale_result = queue.acknowledge("image-42", first_claim[2])
+        completed = queue.acknowledge("image-42", retry[2])
+
+        assert retry[0] == "image-42"
+        assert stale_result is False
+        assert completed is True
+        print("Retried job:", retry[0])
+        print("Old lease accepted:", stale_result)
+        print("Final state:", queue.jobs["image-42"].state)
+    ```
+
+    Sample output:
+
+    ```text
+    Retried job: image-42
+    Old lease accepted: False
+    Final state: done
     ```
 
     Queue operations are `O(1)` except heap work, which is `O(log n)`. This
@@ -233,6 +259,24 @@ points, and unreachable cells.
             minutes += 1
 
         return minutes if healthy == 0 else -1
+
+
+    if __name__ == "__main__":
+        sample = [
+            [2, 1, 1],
+            [1, 1, 0],
+            [0, 1, 2],
+        ]
+        result = spread_time(sample)
+
+        assert result == 2
+        print("Minutes to infect every reachable cell:", result)
+    ```
+
+    Sample output:
+
+    ```text
+    Minutes to infect every reachable cell: 2
     ```
 
     Each cell enters the queue at most once, so time and space are
@@ -346,14 +390,21 @@ parsing for untrusted input, and separating tokenization from grammar.
         tree = parser.parse_expression()
         parser.consume("END")
         return tree
+
+
+    if __name__ == "__main__":
+        expression = "(cat,(dog,bird))"
+        tree = parse(expression)
+
+        assert tree[0] == "pair"
+        assert tree[2][1] == ("word", "dog")
+        print(tree)
     ```
 
-    For example, `parse("(cat,(dog,bird))")` returns:
+    Sample output:
 
     ```text
-    ("pair",
-        ("word", "cat"),
-        ("pair", ("word", "dog"), ("word", "bird")))
+    ('pair', ('word', 'cat'), ('pair', ('word', 'dog'), ('word', 'bird')))
     ```
 
     Tokenization and parsing are both `O(n)`. The call stack is
@@ -487,6 +538,28 @@ needed in production.
                     )
 
             return remaining
+
+
+    if __name__ == "__main__":
+        ledger = CreditLedger()
+        ledger.grant("A", amount=10, start=0, end=20)
+        ledger.grant("B", amount=10, start=0, end=30)
+        ledger.spend("job-1", amount=12, time=15)
+
+        at_15 = ledger.balance_at(15)
+        at_25 = ledger.balance_at(25)
+
+        assert at_15 == 8
+        assert at_25 == 8
+        print("Balance at time 15:", at_15)
+        print("Balance at time 25:", at_25)
+    ```
+
+    Sample output:
+
+    ```text
+    Balance at time 15: 8
+    Balance at time 25: 8
     ```
 
     Example: grant A has 10 credits and expires at 20; grant B has 10 and
@@ -585,6 +658,26 @@ rectangle over itself, and coordinates on the board boundary.
                 self.rectangles[rectangle_id]
                 for rectangle_id in sorted(self.rectangles)
             ]
+
+
+    if __name__ == "__main__":
+        board = Board(width=10, height=10)
+        board.add(Rectangle("A", x=0, y=0, width=2, height=2))
+        board.add(Rectangle("B", x=2, y=0, width=3, height=2))
+        board.move("B", x=3, y=1)
+
+        rectangles = board.list()
+        assert rectangles[1].x == 3
+        assert rectangles[1].y == 1
+        for rectangle in rectangles:
+            print(rectangle)
+    ```
+
+    Sample output:
+
+    ```text
+    Rectangle(rectangle_id='A', x=0, y=0, width=2, height=2)
+    Rectangle(rectangle_id='B', x=3, y=1, width=3, height=2)
     ```
 
     `add` and `move` are `O(n)` because they compare with every rectangle.
@@ -667,6 +760,29 @@ previous answer.
                 )
 
         raise LookupError("the hidden number is not in the given range")
+
+
+    async def comparison_demo():
+        hidden = 73
+
+        async def compare(guess):
+            if guess == hidden:
+                return "correct"
+            return "too_low" if guess < hidden else "too_high"
+
+        result = await find_hidden_number(compare, low=1, high=100)
+        assert result == hidden
+        print("Hidden number:", result)
+
+
+    if __name__ == "__main__":
+        asyncio.run(comparison_demo())
+    ```
+
+    Sample output:
+
+    ```text
+    Hidden number: 73
     ```
 
     With reliable calls, the number of comparisons is
@@ -765,6 +881,50 @@ happens when an edit arrives after a delete.
                 }
             )
         return view
+
+
+    if __name__ == "__main__":
+        sample_events = [
+            {
+                "event_id": "event-3",
+                "message_id": "message-1",
+                "version": 3,
+                "type": "reaction_added",
+                "reaction_id": "reaction-1",
+                "emoji": "👍",
+            },
+            {
+                "event_id": "event-1",
+                "message_id": "message-1",
+                "version": 1,
+                "type": "message_created",
+                "author": "Mina",
+                "content": "Draft",
+            },
+            {
+                "event_id": "event-2",
+                "message_id": "message-1",
+                "version": 2,
+                "type": "message_edited",
+                "content": "Ready",
+            },
+        ]
+
+        current_view = aggregate_chat_events(sample_events)
+        assert current_view[0]["content"] == "Ready"
+        assert current_view[0]["reaction_counts"] == {"👍": 1}
+        message = current_view[0]
+        print("Message:", message["message_id"])
+        print("Content:", message["content"])
+        print("Reactions:", message["reaction_counts"])
+    ```
+
+    Sample output:
+
+    ```text
+    Message: message-1
+    Content: Ready
+    Reactions: {'👍': 1}
     ```
 
     Sorting makes this `O(e log e)` for `e` events. A production event stream
@@ -900,6 +1060,50 @@ gold-standard check tasks, and separating scheduling from label quality.
             task.lease_token = None
             task.lease_deadline = None
             return True
+
+
+    if __name__ == "__main__":
+        scheduler = TaskScheduler()
+        scheduler.add(
+            LabelingTask(
+                "normal-task",
+                {"text": "Good morning"},
+                skill="English",
+                priority=10,
+            )
+        )
+        scheduler.add(
+            LabelingTask(
+                "urgent-task",
+                {"text": "Account locked"},
+                skill="English",
+                priority=100,
+            )
+        )
+
+        claim = scheduler.claim(
+            skill="English",
+            worker_id="worker-7",
+            now=0,
+            lease_seconds=30,
+        )
+        completed = scheduler.complete(
+            claim[0],
+            claim[2],
+            label="support_request",
+        )
+
+        assert claim[0] == "urgent-task"
+        assert completed is True
+        print("Claimed first:", claim[0])
+        print("Final state:", scheduler.tasks[claim[0]].state)
+    ```
+
+    Sample output:
+
+    ```text
+    Claimed first: urgent-task
+    Final state: done
     ```
 
     Heap operations are `O(log n)`. These methods need one lock in memory or
@@ -1069,6 +1273,74 @@ parallel reads, refusal, and a model that never stops.
             ]
 
         raise RuntimeError("model did not finish within the turn budget")
+
+
+    class DemoModel:
+        async def __call__(self, messages):
+            if len(messages) == 1:
+                return {
+                    "type": "tool_calls",
+                    "calls": [
+                        {
+                            "id": "call-1",
+                            "name": "read_profile",
+                            "arguments": {"user_id": 42},
+                        }
+                    ],
+                }
+
+            tool_result = messages[-1]["content"][0]["value"]
+            return {
+                "type": "final",
+                "text": f"Profile status: {tool_result['status']}",
+            }
+
+
+    async def read_profile(user_id):
+        return {"user_id": user_id, "status": "active"}
+
+
+    def validate_profile_arguments(arguments):
+        if set(arguments) != {"user_id"}:
+            raise ValueError("user_id is required")
+        return {"user_id": int(arguments["user_id"])}
+
+
+    async def approve(_tool_name, _arguments):
+        return True
+
+
+    async def tool_loop_demo():
+        tools = {
+            "read_profile": Tool(
+                run=read_profile,
+                validate=validate_profile_arguments,
+            )
+        }
+        answer = await run_tool_loop(
+            model=DemoModel(),
+            tools=tools,
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Is user 42 active?",
+                }
+            ],
+            approve=approve,
+        )
+
+        assert answer == "Profile status: active"
+        print(answer)
+
+
+    if __name__ == "__main__":
+        asyncio.run(tool_loop_demo())
+    ```
+
+    Sample output:
+
+    ```text
+    Profile status: active
     ```
 
     Only independent reads should appear in the same parallel batch.
@@ -1202,14 +1474,55 @@ a serious regression.
             "baseline": baseline_report,
             "candidate": candidate_report,
         }
+
+
+    def exact_match(output, expected):
+        if output == expected:
+            return 1.0, "matched"
+        return 0.0, "did not match"
+
+
+    if __name__ == "__main__":
+        cases = [
+            EvaluationCase(
+                case_id="uppercase",
+                input="hello",
+                expected="HELLO",
+                category="correctness",
+                grader=exact_match,
+                blocking=True,
+            )
+        ]
+        report = evaluate_release(
+            baseline=lambda value: value.upper(),
+            candidate=lambda value: value.lower(),
+            cases=cases,
+        )
+
+        assert report["ship"] is False
+        print("Ship candidate:", report["ship"])
+        print(
+            "Candidate score:",
+            report["candidate"]["overall"],
+        )
+        print(
+            "Blocking failures:",
+            report["candidate"]["blocking_failures"],
+        )
     ```
 
-    A simple exact-match grader can return `(1.0, "matched")` when output
-    equals the expected value and `(0.0, "did not match")` otherwise. Real AI
-    evaluations often combine deterministic checks, human review, and model
-    graders. Calibrate model graders against people, retain the raw outputs,
-    and inspect close results rather than treating a small score difference as
-    certain.
+    Sample output:
+
+    ```text
+    Ship candidate: False
+    Candidate score: 0.0
+    Blocking failures: ['uppercase']
+    ```
+
+    Real AI evaluations often combine deterministic checks, human review, and
+    model graders. Calibrate model graders against people, retain the raw
+    outputs, and inspect close results rather than treating a small score
+    difference as certain.
 
 <!-- markdownlint-enable MD046 -->
 
