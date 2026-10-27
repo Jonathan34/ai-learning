@@ -79,6 +79,17 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | 33 | [Secure AI Platforms](07-enterprise-architecture/33-secure-ai-platforms.md) |
 | 34 | [From Proof of Concept to Production](07-enterprise-architecture/34-poc-to-production.md) |
 
+## Part III: Applied AI engineering
+
+### Phase 8: Customer applied AI
+
+| # | Chapter |
+|---|---|
+| 35 | [From Use Case to Engineering Plan](08-applied-ai-engineering/35-use-case-to-engineering-plan.md) |
+| 36 | [Prototype, Evaluate, Launch, Learn](08-applied-ai-engineering/36-prototype-evaluate-launch.md) |
+| 37 | [Applied Coding and System Design Practice](08-applied-ai-engineering/37-applied-engineering-exercises.md) |
+| 38 | [Deep Dive: Production Support Agent](08-applied-ai-engineering/38-deep-dive-production-support-agent.md) |
+
 ## Workshops (hands-on)
 
 | # | Workshop |
@@ -100,6 +111,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | W15 | [End-to-End MLOps](05-workshops/W15-end-to-end-mlops.md) |
 | W16 | [Kubernetes Operations for AI](05-workshops/W16-kubernetes-ai-operations.md) |
 | W17 | [Automate an AI Platform](05-workshops/W17-automate-ai-platform.md) |
+| W18 | [Applied AI Customer Pilot](05-workshops/W18-applied-ai-customer-pilot.md) |
 
 ## Quizzes
 
@@ -117,6 +129,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 | [Cloud ML Platform Landscape](reference/cloud-ml-platform-landscape.md) | Compare major AI stacks by architecture layer |
 | [Gotchas](reference/gotchas-consolidated.md) | Consolidated failure modes across all chapters |
 | [AI Infrastructure Videos](reference/ai-infrastructure-videos.md) | Guided videos for workloads, GPU platforms, and architecture |
+| [Applied AI Engineering Videos](reference/applied-ai-engineering-videos.md) | Official videos paired with use-case, prototype, and production chapters |
 
 ---
 
@@ -125,5 +138,7 @@ You're a senior software engineer, architect, or engineering leader. You know di
 **AI software sprint (2 weekends, ~20 hours):** Read Phase 1 and 2. Do W1, W2, and W4.
 
 **AI infrastructure bridge (4-6 weeks, part-time):** Read Phase 5 through 7. Do W11 through W17.
+
+**Applied AI interview path (2-3 weeks, part-time):** Read Phase 8. Do four coding exercises, four system design exercises, the support-agent deep dive, and W18.
 
 **Full stack (8-12 weeks, part-time):** Complete both parts and the core workshops. Ship one production-grade project.

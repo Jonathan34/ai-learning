@@ -20,11 +20,13 @@ Most chapters include:
 
 Workshops are hands-on. Every workshop has you build something real and compare it to what you expected.
 
-## Two parts, one stack
+## Three parts, one stack
 
 Part I is about software engineering for AI: model behavior, agents, evaluation, production systems, and technical leadership.
 
 Part II starts where an API abstraction stops. It covers distributed training, self-hosted inference, GPU systems, cluster networks, storage, scheduling, IaC, and enterprise platform design.
+
+Part III returns to customer-facing applied AI. It covers use-case selection, production-shaped prototypes, eval-driven delivery, practical coding, system design, and a complete solution deep dive.
 
 If you already build production AI applications, start at Phase 5. Go back to Part I when a topic exposes a gap.
 
@@ -55,6 +57,8 @@ You're not here to become an ML researcher. You're here to become someone ML eng
 **Principled path (6-12 months):** Add the papers. Contribute to an open-source project. Ship something production-grade at work.
 
 **Infrastructure bridge (4-6 weeks, part-time):** Phases 5-7 plus W11-W17. Use a real workload and real measurements whenever you can.
+
+**Applied AI interview path (2-3 weeks, part-time):** Phase 8, then four coding exercises, four system design exercises, the production support-agent deep dive, and W18.
 
 ## One piece of advice
 

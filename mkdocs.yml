@@ -144,6 +144,13 @@ nav:
               - AI Solution Architecture: 07-enterprise-architecture/32-ai-solution-architecture.md
               - Secure AI Platforms: 07-enterprise-architecture/33-secure-ai-platforms.md
               - PoC to Production: 07-enterprise-architecture/34-poc-to-production.md
+      - Part III — Applied AI Engineering:
+          - 08 — Customer Applied AI:
+              - Overview: 08-applied-ai-engineering/index.md
+              - From Use Case to Engineering Plan: 08-applied-ai-engineering/35-use-case-to-engineering-plan.md
+              - Prototype, Evaluate, Launch, Learn: 08-applied-ai-engineering/36-prototype-evaluate-launch.md
+              - Coding and System Design Practice: 08-applied-ai-engineering/37-applied-engineering-exercises.md
+              - Deep Dive — Production Support Agent: 08-applied-ai-engineering/38-deep-dive-production-support-agent.md
       - Reference:
           - Overview: reference/index.md
           - Glossary: reference/glossary.md
@@ -152,6 +159,7 @@ nav:
           - Cloud ML Platform Landscape: reference/cloud-ml-platform-landscape.md
           - Gotchas: reference/gotchas-consolidated.md
           - AI Infrastructure Videos: reference/ai-infrastructure-videos.md
+          - Applied AI Engineering Videos: reference/applied-ai-engineering-videos.md
   - Workshops:
       - Overview: 05-workshops/index.md
       - Local LLM Setup: 05-workshops/W1-local-llm-setup.md
@@ -171,6 +179,7 @@ nav:
       - End-to-End MLOps: 05-workshops/W15-end-to-end-mlops.md
       - Kubernetes Operations for AI: 05-workshops/W16-kubernetes-ai-operations.md
       - Automate an AI Platform: 05-workshops/W17-automate-ai-platform.md
+      - Applied AI Customer Pilot: 05-workshops/W18-applied-ai-customer-pilot.md
   - Quizzes:
       - Overview: 08-quizzes/index.md
       - AI Infrastructure Solutions Architect Interview: 08-quizzes/ai-infrastructure-solutions-architect-interview.md

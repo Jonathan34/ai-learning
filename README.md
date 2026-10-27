@@ -27,8 +27,9 @@ This curriculum is designed for that gap.
 05-ai-workloads/             (ML foundations, workloads, sizing, and MLOps — 5 chapters)
 06-ai-infrastructure/        (GPUs, networks, storage, orchestration, IaC — 6 chapters)
 07-enterprise-architecture/  (Solution architecture and production adoption — 3 chapters)
+08-applied-ai-engineering/   (Use cases, prototypes, exercises, and a deep dive — 4 chapters)
 08-quizzes/                  (Interview and knowledge checks)
-05-workshops/                (Hands-on practice — 17 workshops, multi-hour each)
+05-workshops/                (Hands-on practice — 18 workshops, multi-hour each)
 reference/                   (Glossary, papers, tools, cloud platforms, gotchas, videos)
 ```
 
@@ -103,6 +104,19 @@ This part follows the bytes below the API. It covers how training and inference 
 - **33. Secure AI Platforms** — identity, isolation, data boundaries, governance, and operations
 - **34. From Proof of Concept to Production** — discovery, success criteria, TCO, and handoff
 
+## Part III: Applied AI engineering
+
+This part focuses on the customer-facing engineering loop: find the right
+problem, build the smallest useful system, evaluate it, make it reliable, and
+help the customer adopt it.
+
+### Phase 8: Customer applied AI
+
+- **35. From Use Case to Engineering Plan** — discovery, selection, scope, and success criteria
+- **36. Prototype, Evaluate, Launch, Learn** — vertical slices, evals, reliability, cost, rollout, and adoption
+- **37. Applied Coding and System Design Practice** — simplified practical problems with solution walkthroughs
+- **38. Deep Dive: Production Support Agent** — one complete design from customer goal to bounded automation
+
 ## Workshops (hands-on)
 
 You can't reason about a field you haven't built in.
@@ -124,6 +138,7 @@ You can't reason about a field you haven't built in.
 - **W15. End-to-End MLOps** — train, track, validate, deploy, monitor, promote, and roll back a model
 - **W16. Kubernetes Operations for AI** — operate networking, storage, scheduling, tenancy, failures, and upgrades
 - **W17. Automate an AI Platform** — provision a safe cloud platform with Terraform and validate it with Python
+- **W18. Applied AI Customer Pilot** — build a production-shaped API workflow, eval it, inject failures, and defend the result
 
 ## Quizzes
 
@@ -137,6 +152,7 @@ You can't reason about a field you haven't built in.
 - **Cloud ML Platform Landscape** — compare NVIDIA, AWS, Azure, and Google Cloud by architecture layer
 - **Gotchas** — consolidated list across all chapters
 - **AI Infrastructure Videos** — a guided watch list paired with the new chapters
+- **Applied AI Engineering Videos** — official videos paired with the use-case and delivery chapters
 
 ## Suggested path
 
@@ -145,6 +161,8 @@ Three ways to approach this depending on your time:
 **AI software sprint (2 weekends, ~20 hours).** Read Phase 1 and 2. Do W1, W2, and W4. You'll be conversant in applied AI.
 
 **AI infrastructure bridge (4-6 weeks, part-time).** Read Phase 5 through 7. Do W11 through W17. You'll be able to reason from model choice and lifecycle down to GPU, network, storage, and platform choices.
+
+**Applied AI interview path (2-3 weeks, part-time).** Read Phase 8. Do four coding and four system design exercises, present the support-agent deep dive, and complete W18.
 
 **Full stack (8-12 weeks, part-time).** Complete both parts and the core workshops. You'll be credible in software, platform, and architecture discussions.
 
